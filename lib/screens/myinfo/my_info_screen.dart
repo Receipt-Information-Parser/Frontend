@@ -6,6 +6,7 @@ import 'package:rip_front/models/current_index.dart';
 import '../../../http/dto.dart';
 import '../../../models/user_attribute.dart';
 import '../../../providers/user_attribute_api.dart';
+import '../Home/home_screen.dart';
 import 'my_info_setting_screen.dart';
 
 class MyInfoScreen extends StatefulWidget {

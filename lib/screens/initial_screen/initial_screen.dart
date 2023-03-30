@@ -1,8 +1,8 @@
 
 import 'package:flutter/material.dart';
 import 'package:rip_front/constants.dart';
-import 'package:rip_front/screens/initial_screen/signin/signin1.dart';
 
+import '../signin/signin1.dart';
 import 'login_screen.dart';
 
 

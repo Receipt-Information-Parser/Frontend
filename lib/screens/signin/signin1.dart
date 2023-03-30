@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:rip_front/screens/initial_screen/signin/signin2.dart';
+import 'package:rip_front/screens/signin/signin2.dart';
 
 import '../../../constants.dart';
 import '../../../http/dto.dart';

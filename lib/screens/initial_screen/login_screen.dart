@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:rip_front/screens/initial_screen/signin/signin1.dart';
 
 import '../../constants.dart';
 import '../../http/dto.dart';
 import '../../http/request.dart';
 import '../../models/user_attribute.dart';
+import '../Home/home_screen.dart';
+import '../signin/signin1.dart';
 
 class LoginScreen extends StatefulWidget {
   @override

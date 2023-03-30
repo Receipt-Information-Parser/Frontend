@@ -9,6 +9,7 @@ import '../../../http/request.dart';
 import '../../../models/user_attribute.dart';
 import '../../../providers/user_attribute_api.dart';
 import '../../../providers/user_auth_info_api.dart';
+import '../Home/home_screen.dart';
 
 class Signin3 extends StatefulWidget {
   @override

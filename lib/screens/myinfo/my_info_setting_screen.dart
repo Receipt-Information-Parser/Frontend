@@ -8,6 +8,7 @@ import '../../../http/request.dart';
 import '../../../models/current_index.dart';
 import '../../../models/user_attribute.dart';
 import '../../../providers/user_attribute_api.dart';
+import '../Home/home_screen.dart';
 import 'my_info_screen.dart';
 
 class MyInfoSettingScreen extends StatefulWidget {
