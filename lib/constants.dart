@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 
-const Color defaultColorSkyBlue = Color(0x00cadaf2); // 앱 고유 색상
-const Color defaultColorBlue = Color(0x0093baf3); // 앱 고유 색상
-const Color defaultColorDarkBlue = Color(0x006585ea); // 앱 고유 색상
+const Color defaultColor = Color(0xff001454); // 앱 고유 색상
 
 const String baseUrl = "http://.../api/"; // api 주소
 

@@ -46,7 +46,7 @@ class Signin3_2 extends State<Signin3> {
               child: Text("이제 마지막 입니다.",
                   style: TextStyle(
                       fontSize: 28.0,
-                      color: defaultColorBlue,
+                      color: defaultColor,
                       fontWeight: FontWeight.w300),
                   textAlign: TextAlign.left),
             ),
@@ -55,7 +55,7 @@ class Signin3_2 extends State<Signin3> {
               child: Text("수고하셨습니다!",
                   style: TextStyle(
                       fontSize: 28.0,
-                      color: defaultColorBlue,
+                      color: defaultColor,
                       fontWeight: FontWeight.w300),
                   textAlign: TextAlign.left),
             ),
@@ -141,7 +141,7 @@ class Signin3_2 extends State<Signin3> {
                 child: ElevatedButton(
                   style: ElevatedButton.styleFrom(
                     textStyle: const TextStyle(fontSize: 20),
-                    backgroundColor: defaultColorBlue,
+                    backgroundColor: defaultColor,
                   ),
                   onPressed: () async {
                     // 성별, 생년월일 전달 후

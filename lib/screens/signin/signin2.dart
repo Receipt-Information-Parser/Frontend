@@ -32,7 +32,7 @@ class Signin2 extends StatelessWidget {
               child: Text("거의 다 왔습니다.",
                   style: TextStyle(
                       fontSize: 28.0,
-                      color: defaultColorBlue,
+                      color: defaultColor,
                       fontWeight: FontWeight.w300),
                   textAlign: TextAlign.left),
             ),
@@ -41,7 +41,7 @@ class Signin2 extends StatelessWidget {
               child: Text("조금만 힘내세요!",
                   style: TextStyle(
                       fontSize: 28.0,
-                      color: defaultColorBlue,
+                      color: defaultColor,
                       fontWeight: FontWeight.w300),
                   textAlign: TextAlign.left),
             ),
@@ -122,7 +122,7 @@ class Signin2 extends StatelessWidget {
               child: ElevatedButton(
                   style: ElevatedButton.styleFrom(
                     textStyle: const TextStyle(fontSize: 20),
-                    backgroundColor: defaultColorBlue,
+                    backgroundColor: defaultColor,
                     minimumSize: const Size(350, 50),
                   ),
                   onPressed: () {

@@ -40,7 +40,7 @@ class Signin1 extends StatelessWidget {
                 child: Text("SimpleTeamUp과",
                     style: TextStyle(
                         fontSize: 28.0,
-                        color: defaultColorBlue,
+                        color: defaultColor,
                         fontWeight: FontWeight.w300),
                     textAlign: TextAlign.left),
               ),
@@ -49,7 +49,7 @@ class Signin1 extends StatelessWidget {
                 child: Text("함께 해주시겠어요?",
                     style: TextStyle(
                         fontSize: 28.0,
-                        color: defaultColorBlue,
+                        color: defaultColor,
                         fontWeight: FontWeight.w300),
                     textAlign: TextAlign.left),
               ),
@@ -170,7 +170,7 @@ class Signin1 extends StatelessWidget {
                 child: ElevatedButton(
                   style: ElevatedButton.styleFrom(
                     textStyle: const TextStyle(fontSize: 20),
-                    backgroundColor: defaultColorBlue,
+                    backgroundColor: defaultColor,
                     minimumSize: const Size(350, 50),
                   ),
                   onPressed: () {

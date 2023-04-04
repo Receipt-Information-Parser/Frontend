@@ -2,7 +2,6 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:http/http.dart' as http;
-import 'package:intl/intl.dart';
 import 'dto.dart';
 
 // 지금까지 구현된 것
