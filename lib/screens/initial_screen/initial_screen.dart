@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:rip_front/constants.dart';
+import 'package:rip_front/screens/signin/signin2.dart';
+import 'package:rip_front/screens/signin/signin3.dart';
 
 import '../signin/signin1.dart';
 import 'login_screen.dart';
@@ -20,23 +22,23 @@ class InitialScreen extends StatelessWidget {
               children: [
                 Container(
                   alignment: Alignment.centerLeft,
-                  margin: const EdgeInsets.only(left: 20),
+                  margin: const EdgeInsets.only(left: marginHorizontalHeader),
                   child: const Text(
                     '영수증을 한번에 정리하는',
                     textAlign: TextAlign.left,
                     style: TextStyle(
-                        fontSize: 20.0,
+                        fontSize: fontSizeMiddle,
                         color: defaultColor,
                         fontWeight: FontWeight.bold),
                   ),
                 ),
                 Container(
                   alignment: Alignment.centerLeft,
-                  margin: const EdgeInsets.only(left: 20),
+                  margin: const EdgeInsets.only(left: marginHorizontalHeader),
                   child: const Text(
                     'RIP에 오신 것을 환영합니다!',
                     style: TextStyle(
-                        fontSize: 30,
+                        fontSize: fontSizeHeader,
                         color: defaultColor,
                         fontWeight: FontWeight.bold),
                   ),
@@ -62,7 +64,8 @@ class InitialScreen extends StatelessWidget {
                 Center(
                   child: ElevatedButton(
                     style: ElevatedButton.styleFrom(
-                      textStyle: const TextStyle(fontSize: 20),
+                      textStyle: const TextStyle(fontSize: fontSizeButton),
+                      backgroundColor: defaultColor,
                       minimumSize: const Size(350, 50),
                     ),
                     onPressed: () {
@@ -75,7 +78,7 @@ class InitialScreen extends StatelessWidget {
                 Center(
                   child: TextButton(
                     style: TextButton.styleFrom(
-                      textStyle: const TextStyle(fontSize: 14),
+                      textStyle: const TextStyle(fontSize: fontSizeSmallButton),
                     ),
                     onPressed: () {
                       Navigator.of(context).pushReplacement(

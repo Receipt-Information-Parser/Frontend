@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:rip_front/constants.dart';
 
 import '../../../http/dto.dart';
 import '../../../models/current_index.dart';
@@ -7,6 +8,8 @@ import '../../../models/user_id.dart';
 import '../myinfo/my_info_screen.dart';
 
 class HomeScreen extends StatefulWidget {
+  const HomeScreen({super.key});
+
   @override
   _HomeScreenState createState() {
     return _HomeScreenState();
@@ -27,10 +30,10 @@ class _HomeScreenState extends State<HomeScreen> {
       appBar: AppBar(
         title: const Text("홈",
             style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
-        backgroundColor: const Color(0xFF6667AB),
+        backgroundColor: defaultColor,
       ),
       body: Column(
-        children: [
+        children: const [
 
         ],
       ),
@@ -41,7 +44,7 @@ class _HomeScreenState extends State<HomeScreen> {
           BottomNavigationBarItem(icon: Icon(Icons.settings), label: "내정보"),
         ],
         currentIndex: currentIndex.index,
-        selectedItemColor: const Color(0xFF6667AB),
+        selectedItemColor: defaultColor,
         onTap: ((value) {
 
           setState(() {
