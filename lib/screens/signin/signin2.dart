@@ -8,7 +8,7 @@ import 'signin3.dart';
 class Signin2 extends StatelessWidget {
   Signin2({Key? key}) : super(key: key);
   final formGlobalKey = GlobalKey<FormState>();
-  final validName = RegExp(r"^[가-힣]{2,4}$");
+  final validName = RegExp(r"^[가-힣]{2,4}|[A-Za-z\s]{2,30}$");
   final validNickname = RegExp('[A-Za-z][A-Za-z0-9_]{3,29}');
   TextEditingController nameInputController = TextEditingController();
   TextEditingController nicknameInputController = TextEditingController();
