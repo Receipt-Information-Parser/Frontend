@@ -189,15 +189,15 @@ class _MyInfoScreenState extends State<MyInfoScreen> {
               case 0:
                 Navigator.of(context)
                     .pushReplacement(MaterialPageRoute(builder: ((context) {
-                  return Screen();
+                  return HomeScreen();
                 })));
                 break;
 
               case 1:
-                Navigator.of(context)
-                    .pushReplacement(MaterialPageRoute(builder: ((context) {
-                  return HomeScreen();
-                })));
+                // Navigator.of(context)
+                //     .pushReplacement(MaterialPageRoute(builder: ((context) {
+                //       //영수증 추가화면 merge
+                // })));
                 break;
 
               case 2:

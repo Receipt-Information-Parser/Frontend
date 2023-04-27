@@ -9,6 +9,7 @@ import 'http/dto.dart';
 import 'models/current_index.dart';
 import 'models/user_attribute.dart';
 import 'models/user_auth_info.dart';
+import 'models/user_id.dart';
 
 MaterialColor createMaterialColor(Color color) {
   List strengths = <double>[.05];
@@ -43,8 +44,9 @@ class MyApp extends StatelessWidget {
 
     return MultiProvider(
       providers: [
+        Provider<UserId>.value(value: UserId(userId: -1)), // userId
         Provider<UserAttribute?>.value(
-            value: UserAttributeApi.getUserAttribute()), // for ContestList,
+            value: UserAttributeApi.getUserAttribute()),
         Provider<UserAuthInfo?>.value(value: UserAuthInfoApi.getUserAuthInfo()),
         Provider<TokenResponse>.value(
             value: TokenResponse("", accessToken: "", refreshToken: "")),
@@ -63,7 +65,7 @@ class MyApp extends StatelessWidget {
           // or simply save your changes to "hot reload" in a Flutter IDE).
           // Notice that the counter didn't reset back to zero; the application
           // is not restarted.
-          primarySwatch: createMaterialColor(defaultColorBlue),
+          primarySwatch: createMaterialColor(defaultColor),
         ),
         home: SplashScreen(),
       ),

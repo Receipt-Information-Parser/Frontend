@@ -52,185 +52,221 @@ class LoginScreen_ extends State<LoginScreen> {
       body: Form(
         key: formGlobalKey,
         child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            const SizedBox(
-              height: 100.0,
-            ),
-            const Padding(
-              padding: EdgeInsets.only(left: 20),
-              child: Text("팀원이 기다리고 있어요!",
-                  style: TextStyle(
-                      fontSize: 28.0,
-                      color: defaultColorBlue,
-                      fontWeight: FontWeight.w300),
-                  textAlign: TextAlign.left),
-            ),
-            const SizedBox(
-              height: 40.0,
-            ),
-            const Padding(
-              padding: EdgeInsets.only(left: 20),
-              child: Text("이메일",
-                  style: TextStyle(
-                      fontSize: 20.0,
-                      color: Colors.black,
-                      fontWeight: FontWeight.w300),
-                  textAlign: TextAlign.left),
-            ),
-            Container(
-              height: 100,
-              padding: const EdgeInsets.only(left: 20, top: 10, right: 20),
-              child: TextFormField(
-                autovalidateMode: AutovalidateMode.onUserInteraction,
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return '입력칸을 채워주세요.';
-                  }
-                  if (!validEmail.hasMatch(emailInputController.text)) {
-                    return '이메일 양식이 잘못되었습니다.';
-                  }
-                  return null;
-                },
-                style: const TextStyle(fontSize: 16),
-                decoration: const InputDecoration(
-                  hintText: "username@email.com",
-                  focusedBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.all(Radius.circular(2)),
-                    borderSide:
-                        BorderSide(width: 1.4, color: Color(0xFF6667AB)),
-                  ),
-                  enabledBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.all(Radius.circular(2)),
-                    borderSide:
-                        BorderSide(width: 1.4, color: Color(0xFF6667AB)),
-                  ),
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.all(Radius.circular(2)),
-                    borderSide:
-                        BorderSide(width: 1.4, color: Color(0x0F6A6B92)),
-                  ),
-                ),
-                controller: emailInputController,
-              ),
-            ),
-            const Padding(
-              padding: EdgeInsets.only(left: 20, top: 20),
-              child: Text("비밀번호",
-                  style: TextStyle(
-                      fontSize: 20.0,
-                      color: Colors.black,
-                      fontWeight: FontWeight.w300),
-                  textAlign: TextAlign.left),
-            ),
-            Container(
-              height: 100,
-              padding: const EdgeInsets.only(left: 20, top: 10, right: 20),
-              child: TextFormField(
-                autovalidateMode: AutovalidateMode.onUserInteraction,
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return '입력칸을 채워주세요.';
-                  }
-                  return null;
-                },
-                style: const TextStyle(fontSize: 16),
-                decoration: const InputDecoration(
-                  hintText: "password",
-                  focusedBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.all(Radius.circular(2)),
-                    borderSide:
-                        BorderSide(width: 1.4, color: Color(0xFF6667AB)),
-                  ),
-                  enabledBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.all(Radius.circular(2)),
-                    borderSide:
-                        BorderSide(width: 1.4, color: Color(0xFF6667AB)),
-                  ),
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.all(Radius.circular(2)),
-                    borderSide:
-                        BorderSide(width: 1.4, color: Color(0x0F6A6B92)),
-                  ),
-                ),
-                obscureText: true,
-                controller: PWInputController,
-              ),
-            ),
-            const SizedBox(
-              height: 100.0,
-            ),
-            Center(
-              child: ElevatedButton(
-                style: ElevatedButton.styleFrom(
-                  padding: const EdgeInsets.all(16.0),
-                  textStyle: const TextStyle(fontSize: 20),
-                  backgroundColor: defaultColorBlue,
-                  minimumSize: const Size(350, 50),
-                ),
-                onPressed: () async {
-                  if (validEmail.hasMatch(emailInputController.text)) {
-                    if (validPW.hasMatch(PWInputController.text)) {
-                      if (formGlobalKey.currentState!.validate()) {
-                        LoginRequest loginRequest = LoginRequest(
-                            email: emailInputController.text,
-                            password: PWInputController.text);
-                        String url = '${baseUrl}user/login';
-
-                        await Login(url, loginRequest).then((value) {
-                          tokenResponse.accessToken =
-                              value.tokenResponse?.accessToken;
-                          tokenResponse.refreshToken =
-                              value.tokenResponse?.refreshToken;
-
-                          userAttribute?.email = value.email!;
-                          userAttribute?.name = value.name!;
-                          if (value.gender == 'MALE') {
-                            userAttribute?.gender = true;
-                          }
-                          if (value.gender == 'FEMALE') {
-                            userAttribute?.gender = false;
-                          }
-
-                          userAttribute?.birthDate =
-                              DateTime.parse(value.birthday!);
-                          userAttribute?.nickname = value.nickname!;
-
-                          Navigator.of(context).pushReplacement(
-                              MaterialPageRoute(
-                                  builder: ((context) => HomeScreen())));
-                        }, onError: (err) {
-                          showLoginErrorDialog(context);
-                        });
-                      } else {
-                        showLoginErrorDialog(context);
-                      }
-                    } else {
-                      showLoginErrorDialog(context);
-                    }
-                  } else {
-                    showLoginErrorDialog(context);
-                  }
-                },
-                child: const Text('로그인'),
-              ),
-            ),
-            Center(
-              child: TextButton(
-                style: TextButton.styleFrom(
-                  padding: const EdgeInsets.all(16.0),
-                  textStyle: const TextStyle(fontSize: 16),
-                ),
-                onPressed: () {
-                  Navigator.of(context).push(
-                      MaterialPageRoute(builder: ((context) => Signin1())));
-                },
+            Expanded(
+              child: Container(
+                alignment: Alignment.centerLeft,
+                margin: const EdgeInsets.only(left: marginHorizontalHeader),
                 child: const Text(
-                  '가입하시겠습니까?',
+                  '돌아오신 것을 환영합니다 :)',
+                  textAlign: TextAlign.left,
                   style: TextStyle(
-                      decoration: TextDecoration.underline,
-                      color: defaultColorBlue),
+                      fontSize: fontSizeHeader,
+                      color: defaultColor,
+                      fontWeight: FontWeight.bold),
                 ),
+              ),
+            ),
+            Expanded(
+              child: Column(
+                children: [
+                  Expanded(
+                    child: Column(
+                      children: [
+                        Container(
+                          alignment: Alignment.bottomLeft,
+                          margin: const EdgeInsets.only(left: marginHorizontalHeader),
+                          child: const Text('이메일',
+                              style: TextStyle(
+                                  fontSize: fontSizeTextForm,
+                                  color: Colors.black,
+                                  fontWeight: FontWeight.w300),
+                              textAlign: TextAlign.left),
+                        ),
+                        Container(
+                          alignment: Alignment.centerLeft,
+                          padding: const EdgeInsets.only(
+                              left: marginHorizontalHeader,right: marginHorizontalHeader),
+                          child: TextFormField(
+                            autovalidateMode:
+                                AutovalidateMode.onUserInteraction,
+                            validator: (value) {
+                              if (value == null || value.isEmpty) {
+                                return '입력칸을 채워주세요.';
+                              }
+                              if (!validEmail
+                                  .hasMatch(emailInputController.text)) {
+                                return '이메일 양식이 잘못되었습니다.';
+                              }
+                              return null;
+                            },
+                            style: const TextStyle(fontSize: fontSizeInputText),
+                            decoration: const InputDecoration(
+                              hintText: 'username@email.com',
+                              focusedBorder: OutlineInputBorder(
+                                borderRadius:
+                                    BorderRadius.all(Radius.circular(2)),
+                                borderSide: BorderSide(
+                                    width: 1.4, color: Color(0xFF6667AB)),
+                              ),
+                              enabledBorder: OutlineInputBorder(
+                                borderRadius:
+                                    BorderRadius.all(Radius.circular(2)),
+                                borderSide: BorderSide(
+                                    width: 1.4, color: Color(0xFF6667AB)),
+                              ),
+                              border: OutlineInputBorder(
+                                borderRadius:
+                                    BorderRadius.all(Radius.circular(2)),
+                                borderSide: BorderSide(
+                                    width: 1.4, color: Color(0x0F6A6B92)),
+                              ),
+                            ),
+                            controller: emailInputController,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  Expanded(
+                    child: Column(
+                      children: [
+                        Container(
+                          alignment: Alignment.centerLeft,
+                          margin: const EdgeInsets.only(left: marginHorizontalHeader),
+                          child: const Text('비밀번호',
+                              style: TextStyle(
+                                  fontSize: fontSizeTextForm,
+                                  color: Colors.black,
+                                  fontWeight: FontWeight.w300),
+                              textAlign: TextAlign.left),
+                        ),
+                        Container(
+                          alignment: Alignment.centerLeft,
+                          padding: const EdgeInsets.only(
+                              left: marginHorizontalHeader,right: marginHorizontalHeader),
+                          child: TextFormField(
+                            autovalidateMode:
+                                AutovalidateMode.onUserInteraction,
+                            validator: (value) {
+                              if (value == null || value.isEmpty) {
+                                return '입력칸을 채워주세요.';
+                              }
+                              return null;
+                            },
+                            style: const TextStyle(fontSize: fontSizeInputText),
+                            decoration: const InputDecoration(
+                              hintText: 'password',
+                              focusedBorder: OutlineInputBorder(
+                                borderRadius:
+                                    BorderRadius.all(Radius.circular(2)),
+                                borderSide: BorderSide(
+                                    width: 1.4, color: Color(0xFF6667AB)),
+                              ),
+                              enabledBorder: OutlineInputBorder(
+                                borderRadius:
+                                    BorderRadius.all(Radius.circular(2)),
+                                borderSide: BorderSide(
+                                    width: 1.4, color: Color(0xFF6667AB)),
+                              ),
+                              border: OutlineInputBorder(
+                                borderRadius:
+                                    BorderRadius.all(Radius.circular(2)),
+                                borderSide: BorderSide(
+                                    width: 1.4, color: Color(0x0F6A6B92)),
+                              ),
+                            ),
+                            obscureText: true,
+                            controller: PWInputController,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            Expanded(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Center(
+                    child: ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        textStyle: const TextStyle(fontSize: fontSizeButton),
+                        backgroundColor: defaultColor,
+                        minimumSize: const Size(350, 50),
+                      ),
+                      onPressed: () async {
+                        Navigator.of(context).push(MaterialPageRoute(
+                            builder: ((context) => HomeScreen())));
+                        // if (validEmail.hasMatch(emailInputController.text)) {
+                        //   if (validPW.hasMatch(PWInputController.text)) {
+                        //     if (formGlobalKey.currentState!.validate()) {
+                        //       LoginRequest loginRequest = LoginRequest(
+                        //           email: emailInputController.text,
+                        //           password: PWInputController.text);
+                        //       String url = '${baseUrl}user/login';
+                        //
+                        //       await Login(url, loginRequest).then((value) {
+                        //         tokenResponse.accessToken =
+                        //             value.tokenResponse?.accessToken;
+                        //         tokenResponse.refreshToken =
+                        //             value.tokenResponse?.refreshToken;
+                        //
+                        //         userAttribute?.email = value.email!;
+                        //         userAttribute?.name = value.name!;
+                        //         if (value.gender == 'MALE') {
+                        //           userAttribute?.gender = true;
+                        //         }
+                        //         if (value.gender == 'FEMALE') {
+                        //           userAttribute?.gender = false;
+                        //         }
+                        //
+                        //         userAttribute?.birthDate =
+                        //             DateTime.parse(value.birthday!);
+                        //         userAttribute?.nickname = value.nickname!;
+                        //
+                        //         Navigator.of(context).pushReplacement(
+                        //             MaterialPageRoute(
+                        //                 builder: ((context) =>
+                        //                     HomeScreen())));
+                        //       }, onError: (err) {
+                        //         showLoginErrorDialog(context);
+                        //       });
+                        //     } else {
+                        //       showLoginErrorDialog(context);
+                        //     }
+                        //   } else {
+                        //     showLoginErrorDialog(context);
+                        //   }
+                        // } else {
+                        //   showLoginErrorDialog(context);
+                        // }
+                      },
+                      child: const Text('로그인'),
+                    ),
+                  ),
+                  Center(
+                    child: TextButton(
+                      style: TextButton.styleFrom(
+                        padding: const EdgeInsets.all(16.0),
+                        textStyle: const TextStyle(fontSize: fontSizeSmallButton),
+                      ),
+                      onPressed: () {
+                        Navigator.of(context).push(MaterialPageRoute(
+                            builder: ((context) => Signin1())));
+                      },
+                      child: const Text(
+                        '가입하시겠습니까?',
+                        style: TextStyle(
+                            decoration: TextDecoration.underline,
+                            color: defaultColor),
+                      ),
+                    ),
+                  ),
+                ],
               ),
             ),
           ],
