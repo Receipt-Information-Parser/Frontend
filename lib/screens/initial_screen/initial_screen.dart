@@ -4,7 +4,7 @@ import 'package:rip_front/screens/signin/signin2.dart';
 import 'package:rip_front/screens/signin/signin3.dart';
 
 import '../signin/signin1.dart';
-import 'login_screen.dart';
+import '../Login/login_screen.dart';
 
 class InitialScreen extends StatelessWidget {
   const InitialScreen({super.key});
@@ -13,9 +13,8 @@ class InitialScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
         backgroundColor: Colors.white,
-        body: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
+        body: Column(mainAxisAlignment: MainAxisAlignment.center, children: <
+            Widget>[
           Expanded(
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
@@ -49,6 +48,7 @@ class InitialScreen extends StatelessWidget {
           Expanded(
             child: Container(
                 alignment: Alignment.center,
+                margin: const EdgeInsets.only(left: marginHorizontalHeader),
                 child: Center(
                   child: Image.asset(
                     'lib/assets/splash_logo.png',
@@ -61,7 +61,11 @@ class InitialScreen extends StatelessWidget {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Center(
+                Container(
+                  alignment: Alignment.center,
+                  margin: const EdgeInsets.only(
+                      left: marginHorizontalHeader,
+                      bottom: marginVerticalBetweenWidgets),
                   child: ElevatedButton(
                     style: ElevatedButton.styleFrom(
                       textStyle: const TextStyle(fontSize: fontSizeButton),
@@ -75,21 +79,24 @@ class InitialScreen extends StatelessWidget {
                     child: const Text('로그인'),
                   ),
                 ),
-                Center(
-                  child: TextButton(
-                    style: TextButton.styleFrom(
-                      textStyle: const TextStyle(fontSize: fontSizeSmallButton),
+                Container(
+                  alignment: Alignment.center,
+                  margin: const EdgeInsets.only(left: marginHorizontalHeader),
+                  child: ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      textStyle: const TextStyle(
+                          fontSize: fontSizeButton, color: defaultColor),
+                      backgroundColor: Colors.white,
+                      minimumSize: const Size(350, 50),
+                      side: BorderSide(color: defaultColor, width: 1.5),
+                      elevation: 0,
                     ),
-                    onPressed: () {
-                      Navigator.of(context).pushReplacement(
+                    onPressed: () async {
+                      Navigator.of(context).push(
                           MaterialPageRoute(builder: ((context) => Signin1())));
                     },
-                    child: const Text(
-                      '가입하시겠습니까?',
-                      style: TextStyle(
-                        decoration: TextDecoration.underline,
-                      ),
-                    ),
+                    child: const Text('회원가입',
+                        style: TextStyle(color: defaultColor)),
                   ),
                 ),
               ],

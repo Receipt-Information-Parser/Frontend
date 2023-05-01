@@ -32,21 +32,21 @@ class Signin2 extends StatelessWidget {
                   Container(
                     alignment: Alignment.centerLeft,
                     margin: const EdgeInsets.only(left: marginHorizontalHeader),
-                    child: const Text("닉네임과 이름을 입력해주세요.",
+                    child: const Text("닉네임과 이름을",
                         style: TextStyle(
                             fontSize: fontSizeHeader,
                             color: defaultColor,
-                            fontWeight: FontWeight.w300),
+                            fontWeight: FontWeight.bold),
                         textAlign: TextAlign.left),
                   ),
                   Container(
                     alignment: Alignment.centerLeft,
                     margin: const EdgeInsets.only(left: marginHorizontalHeader),
-                    child: const Text("잘하자!",
+                    child: const Text("입력해주세요.",
                         style: TextStyle(
                             fontSize: fontSizeHeader,
                             color: defaultColor,
-                            fontWeight: FontWeight.w300),
+                            fontWeight: FontWeight.bold),
                         textAlign: TextAlign.left),
                   ),
                 ],
@@ -63,7 +63,7 @@ class Signin2 extends StatelessWidget {
                       children: [
                         Container(
                           alignment: Alignment.centerLeft,
-                          margin: const EdgeInsets.only(left: marginHorizontalHeader),
+                          margin: const EdgeInsets.only(left: marginHorizontalHeader,bottom: marginVerticalBetweenWidgets),
                           child: const Text("닉네임",
                               style: TextStyle(
                                   fontSize: fontSizeTextForm,
@@ -105,7 +105,7 @@ class Signin2 extends StatelessWidget {
                       children: [
                         Container(
                           alignment: Alignment.centerLeft,
-                          margin: const EdgeInsets.only(left: marginHorizontalHeader),
+                          margin: const EdgeInsets.only(left: marginHorizontalHeader,bottom: marginVerticalBetweenWidgets),
                           child: const Text("이름",
                               style: TextStyle(
                                   fontSize: fontSizeTextForm,

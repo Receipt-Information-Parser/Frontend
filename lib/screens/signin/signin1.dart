@@ -71,7 +71,7 @@ class Signin1 extends StatelessWidget {
                       children: [
                         Container(
                           alignment: Alignment.centerLeft,
-                          margin: const EdgeInsets.only(left: marginHorizontalHeader),
+                          margin: const EdgeInsets.only(left: marginHorizontalHeader,bottom: marginVerticalBetweenWidgets),
                           child: const Text("이메일",
                               style: TextStyle(
                                   fontSize: fontSizeTextForm,
@@ -120,7 +120,7 @@ class Signin1 extends StatelessWidget {
                       children: [
                         Container(
                           alignment: Alignment.centerLeft,
-                          margin: const EdgeInsets.only(left: marginHorizontalHeader),
+                          margin: const EdgeInsets.only(left: marginHorizontalHeader,bottom: marginVerticalBetweenWidgets),
                           child: const Text("비밀번호",
                               style: TextStyle(
                                   fontSize: fontSizeTextForm,
@@ -163,7 +163,7 @@ class Signin1 extends StatelessWidget {
                       children: [
                         Container(
                           alignment: Alignment.centerLeft,
-                          margin: const EdgeInsets.only(left: marginHorizontalHeader),
+                          margin: const EdgeInsets.only(left: marginHorizontalHeader,bottom: marginVerticalBetweenWidgets),
                           child: const Text("비밀번호 재확인",
                               style: TextStyle(
                                   fontSize: fontSizeTextForm,

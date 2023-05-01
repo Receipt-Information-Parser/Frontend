@@ -1,5 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:auth_buttons/auth_buttons.dart';
+import 'package:rip_front/screens/Login/find_id_password.dart';
+import 'package:flutter/material.dart';
+import 'package:google_sign_in/google_sign_in.dart';
+import 'package:google_sign_in/widgets.dart';
 
 import '../../constants.dart';
 import '../../http/dto.dart';
@@ -76,7 +81,8 @@ class LoginScreen_ extends State<LoginScreen> {
                       children: [
                         Container(
                           alignment: Alignment.bottomLeft,
-                          margin: const EdgeInsets.only(left: marginHorizontalHeader),
+                          margin: const EdgeInsets.only(
+                              left: marginHorizontalHeader),
                           child: const Text('이메일',
                               style: TextStyle(
                                   fontSize: fontSizeTextForm,
@@ -87,7 +93,8 @@ class LoginScreen_ extends State<LoginScreen> {
                         Container(
                           alignment: Alignment.centerLeft,
                           padding: const EdgeInsets.only(
-                              left: marginHorizontalHeader,right: marginHorizontalHeader),
+                              left: marginHorizontalHeader,
+                              right: marginHorizontalHeader),
                           child: TextFormField(
                             autovalidateMode:
                                 AutovalidateMode.onUserInteraction,
@@ -97,7 +104,7 @@ class LoginScreen_ extends State<LoginScreen> {
                               }
                               if (!validEmail
                                   .hasMatch(emailInputController.text)) {
-                                return '이메일 양식이 잘못되었습니다.';
+                                return '잘못된 이메일 형식입니다.';
                               }
                               return null;
                             },
@@ -134,7 +141,8 @@ class LoginScreen_ extends State<LoginScreen> {
                       children: [
                         Container(
                           alignment: Alignment.centerLeft,
-                          margin: const EdgeInsets.only(left: marginHorizontalHeader),
+                          margin: const EdgeInsets.only(
+                              left: marginHorizontalHeader),
                           child: const Text('비밀번호',
                               style: TextStyle(
                                   fontSize: fontSizeTextForm,
@@ -145,7 +153,8 @@ class LoginScreen_ extends State<LoginScreen> {
                         Container(
                           alignment: Alignment.centerLeft,
                           padding: const EdgeInsets.only(
-                              left: marginHorizontalHeader,right: marginHorizontalHeader),
+                              left: marginHorizontalHeader,
+                              right: marginHorizontalHeader),
                           child: TextFormField(
                             autovalidateMode:
                                 AutovalidateMode.onUserInteraction,
@@ -191,7 +200,11 @@ class LoginScreen_ extends State<LoginScreen> {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Center(
+                  Container(
+                    alignment: Alignment.center,
+                    margin: const EdgeInsets.only(
+                        left: marginHorizontalHeader,
+                        bottom: marginVerticalBetweenWidgets),
                     child: ElevatedButton(
                       style: ElevatedButton.styleFrom(
                         textStyle: const TextStyle(fontSize: fontSizeButton),
@@ -248,24 +261,63 @@ class LoginScreen_ extends State<LoginScreen> {
                       child: const Text('로그인'),
                     ),
                   ),
-                  Center(
-                    child: TextButton(
-                      style: TextButton.styleFrom(
-                        padding: const EdgeInsets.all(16.0),
-                        textStyle: const TextStyle(fontSize: fontSizeSmallButton),
+                  Container(
+                    alignment: Alignment.center,
+                    margin: const EdgeInsets.only(
+                        left: marginHorizontalHeader,
+                        bottom: marginVerticalBetweenWidgets),
+                    child: ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        textStyle: const TextStyle(
+                            fontSize: fontSizeButton, color: defaultColor),
+                        backgroundColor: Colors.white,
+                        minimumSize: const Size(350, 50),
+                        side: BorderSide(color: defaultColor, width: 1.0),
+                        elevation: 0,
                       ),
-                      onPressed: () {
+                      onPressed: () async {
                         Navigator.of(context).push(MaterialPageRoute(
-                            builder: ((context) => Signin1())));
+                            builder: ((context) => FindIDPW())));
                       },
-                      child: const Text(
-                        '가입하시겠습니까?',
-                        style: TextStyle(
-                            decoration: TextDecoration.underline,
-                            color: defaultColor),
+                      child: const Text('이메일 찾기·비밀번호 재설정',
+                          style: TextStyle(color: defaultColor)),
+                    ),
+                  ),
+                  Container(
+                    alignment: Alignment.center,
+                    margin: const EdgeInsets.only(left: marginHorizontalHeader),
+                    child: GoogleAuthButton(
+                      text: 'Google로 로그인',
+                      onPressed: () {
+                        //
+                      },
+                      style: const AuthButtonStyle(
+                        borderColor: Color(0xffb0b0b0),
+                        borderWidth: 1.0,
+                        width: 350.0,
+                        height: 50.0,
                       ),
                     ),
                   ),
+                  // 글자로 된 버튼 출력 시
+                  // Center(
+                  //   child: TextButton(
+                  //     style: TextButton.styleFrom(
+                  //       padding: const EdgeInsets.all(16.0),
+                  //       textStyle: const TextStyle(fontSize: fontSizeSmallButton),
+                  //     ),
+                  //     onPressed: () {
+                  //       Navigator.of(context).push(MaterialPageRoute(
+                  //           builder: ((context) => Signin1())));
+                  //     },
+                  //     child: const Text(
+                  //       '가입하시겠습니까?',
+                  //       style: TextStyle(
+                  //           decoration: TextDecoration.underline,
+                  //           color: defaultColor),
+                  //     ),
+                  //   ),
+                  // ),
                 ],
               ),
             ),
