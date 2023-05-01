@@ -178,7 +178,7 @@ class FindIDPW extends StatelessWidget {
                             // 화면 전환 (이메일 존재시 비밀번호 재설정 창 출력, 이메일 부재시 Error message 출력)
                             _showdialog_id(context);
                           },
-                          child: const Text('계속하기')),
+                          child: const Text('비밀번호 재설정')),
                     ),
                   ),
                 ],
