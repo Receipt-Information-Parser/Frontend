@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
+import 'package:rip_front/constants.dart';
 import 'package:rip_front/models/current_index.dart';
 
 import '../../../http/dto.dart';
@@ -16,11 +17,11 @@ class MyInfoScreen extends StatefulWidget {
 
 class _MyInfoScreenState extends State<MyInfoScreen> {
 
-  // API를 통해 변환
-  String totalContestNum = '10';
-  var contestList = List<String>.filled(10, 'con', growable: true);
-  var contestsLabelList = List<String>.filled(10, 'label', growable: true);
-  var contestsLabelNumList = List<String>.filled(10, '1', growable: true);
+  // dummy data
+  String dummyName = '정우섭';
+  DateTime dummyBirth = DateTime.now();
+  String dummyEmail = 'example@naver.com';
+  String dummyNickname = '우끼끼맨';
 
   @override
   Widget build(BuildContext context) {
@@ -34,34 +35,37 @@ class _MyInfoScreenState extends State<MyInfoScreen> {
 
     userAttribute = UserAttributeApi.getUserAttribute();
 
-    // debug
-    print("[debug] accessToken: ${tokenResponse.accessToken}");
-    print("[debug] refreshToken: ${tokenResponse.refreshToken}");
-
     return Scaffold(
       resizeToAvoidBottomInset: false,
-      appBar: AppBar(
-        title: const Center(
-          child: Text(
-            '내 정보',
+      appBar: PreferredSize(
+        preferredSize: const Size.fromHeight(100.0),
+        child: Container(
+          height: 100,
+          child: AppBar(
+            centerTitle: true,
+            title: const Text(
+              '환경설정',
+              style: TextStyle(
+                fontSize: fontSizeAppbarTitle,
+              ),
+            ),
+            // actions: <Widget>[
+            //   IconButton(
+            //     icon: const Icon(
+            //       Icons.settings,
+            //       color: Colors.white,
+            //     ),
+            //     onPressed: () {
+            //       // go to MyInfosetting
+            //       Navigator.of(context).push(MaterialPageRoute(
+            //           builder: ((context) => MyInfoSettingScreen())));
+            //     },
+            //   )
+            // ],
           ),
         ),
-        actions: <Widget>[
-          IconButton(
-            icon: const Icon(
-              Icons.settings,
-              color: Colors.white,
-            ),
-            onPressed: () {
-              // go to MyInfosetting
-              Navigator.of(context).push(MaterialPageRoute(
-                  builder: ((context) => MyInfoSettingScreen())));
-            },
-          )
-        ],
       ),
       body: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: <Widget>[
           Row(

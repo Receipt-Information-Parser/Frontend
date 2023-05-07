@@ -165,7 +165,7 @@ class Signin3_2 extends State<Signin3> {
                   style: ElevatedButton.styleFrom(
                     textStyle: const TextStyle(fontSize: fontSizeButton),
                     backgroundColor: defaultColor,
-                    minimumSize: const Size(350, 50),
+                    minimumSize: const Size(WidthButton, HeightButton),
                   ),
                   onPressed: () async {
                   //   // 성별, 생년월일 전달 후

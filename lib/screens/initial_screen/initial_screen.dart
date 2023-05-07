@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:rip_front/constants.dart';
+import 'package:rip_front/screens/Home/home_screen.dart';
+import 'package:rip_front/screens/Login/kakaotalk_login_button.dart';
 import 'package:rip_front/screens/signin/signin2.dart';
 import 'package:rip_front/screens/signin/signin3.dart';
 
+import '../myinfo/my_info_screen.dart';
 import '../signin/signin1.dart';
 import '../Login/login_screen.dart';
 
@@ -62,6 +65,18 @@ class InitialScreen extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Container(
+                  width: WidthButton,
+                  alignment: Alignment.center,
+                  margin: const EdgeInsets.only(
+                      left: marginHorizontalHeader,
+                      bottom: marginVerticalBetweenWidgets),
+                  child: KakaoLoginButton(
+                    onPressed: () {
+                      // TODO: 카카오 로그인 처리를 구현
+                    },
+                  ),
+                ),
+                Container(
                   alignment: Alignment.center,
                   margin: const EdgeInsets.only(
                       left: marginHorizontalHeader,
@@ -70,7 +85,7 @@ class InitialScreen extends StatelessWidget {
                     style: ElevatedButton.styleFrom(
                       textStyle: const TextStyle(fontSize: fontSizeButton),
                       backgroundColor: defaultColor,
-                      minimumSize: const Size(350, 50),
+                      minimumSize: const Size(WidthButton, HeightButton),
                     ),
                     onPressed: () {
                       Navigator.of(context).pushReplacement(MaterialPageRoute(
@@ -87,7 +102,7 @@ class InitialScreen extends StatelessWidget {
                       textStyle: const TextStyle(
                           fontSize: fontSizeButton, color: defaultColor),
                       backgroundColor: Colors.white,
-                      minimumSize: const Size(350, 50),
+                      minimumSize: const Size(WidthButton, HeightButton),
                       side: BorderSide(color: defaultColor, width: 1.5),
                       elevation: 0,
                     ),

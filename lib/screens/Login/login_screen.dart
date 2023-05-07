@@ -1,10 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:auth_buttons/auth_buttons.dart';
 import 'package:rip_front/screens/Login/find_id_password.dart';
 import 'package:flutter/material.dart';
-import 'package:google_sign_in/google_sign_in.dart';
-import 'package:google_sign_in/widgets.dart';
 
 import '../../constants.dart';
 import '../../http/dto.dart';
@@ -209,7 +206,7 @@ class LoginScreen_ extends State<LoginScreen> {
                       style: ElevatedButton.styleFrom(
                         textStyle: const TextStyle(fontSize: fontSizeButton),
                         backgroundColor: defaultColor,
-                        minimumSize: const Size(350, 50),
+                        minimumSize: const Size(WidthButton, HeightButton),
                       ),
                       onPressed: () async {
                         Navigator.of(context).push(MaterialPageRoute(
@@ -271,7 +268,7 @@ class LoginScreen_ extends State<LoginScreen> {
                         textStyle: const TextStyle(
                             fontSize: fontSizeButton, color: defaultColor),
                         backgroundColor: Colors.white,
-                        minimumSize: const Size(350, 50),
+                        minimumSize: const Size(WidthButton, HeightButton),
                         side: BorderSide(color: defaultColor, width: 1.0),
                         elevation: 0,
                       ),
@@ -283,22 +280,23 @@ class LoginScreen_ extends State<LoginScreen> {
                           style: TextStyle(color: defaultColor)),
                     ),
                   ),
-                  Container(
-                    alignment: Alignment.center,
-                    margin: const EdgeInsets.only(left: marginHorizontalHeader),
-                    child: GoogleAuthButton(
-                      text: 'Google로 로그인',
-                      onPressed: () {
-                        //
-                      },
-                      style: const AuthButtonStyle(
-                        borderColor: Color(0xffb0b0b0),
-                        borderWidth: 1.0,
-                        width: 350.0,
-                        height: 50.0,
-                      ),
-                    ),
-                  ),
+                  // google oauth button
+                  // Container(
+                  //   alignment: Alignment.center,
+                  //   margin: const EdgeInsets.only(left: marginHorizontalHeader),
+                  //   child: GoogleAuthButton(
+                  //     text: 'Google로 로그인',
+                  //     onPressed: () {
+                  //       //
+                  //     },
+                  //     style: const AuthButtonStyle(
+                  //       borderColor: Color(0xffb0b0b0),
+                  //       borderWidth: 1.0,
+                  //       width: 350.0,
+                  //       height: 50.0,
+                  //     ),
+                  //   ),
+                  // ),
                   // 글자로 된 버튼 출력 시
                   // Center(
                   //   child: TextButton(
