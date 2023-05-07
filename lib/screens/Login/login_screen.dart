@@ -280,42 +280,6 @@ class LoginScreen_ extends State<LoginScreen> {
                           style: TextStyle(color: defaultColor)),
                     ),
                   ),
-                  // google oauth button
-                  // Container(
-                  //   alignment: Alignment.center,
-                  //   margin: const EdgeInsets.only(left: marginHorizontalHeader),
-                  //   child: GoogleAuthButton(
-                  //     text: 'Google로 로그인',
-                  //     onPressed: () {
-                  //       //
-                  //     },
-                  //     style: const AuthButtonStyle(
-                  //       borderColor: Color(0xffb0b0b0),
-                  //       borderWidth: 1.0,
-                  //       width: 350.0,
-                  //       height: 50.0,
-                  //     ),
-                  //   ),
-                  // ),
-                  // 글자로 된 버튼 출력 시
-                  // Center(
-                  //   child: TextButton(
-                  //     style: TextButton.styleFrom(
-                  //       padding: const EdgeInsets.all(16.0),
-                  //       textStyle: const TextStyle(fontSize: fontSizeSmallButton),
-                  //     ),
-                  //     onPressed: () {
-                  //       Navigator.of(context).push(MaterialPageRoute(
-                  //           builder: ((context) => Signin1())));
-                  //     },
-                  //     child: const Text(
-                  //       '가입하시겠습니까?',
-                  //       style: TextStyle(
-                  //           decoration: TextDecoration.underline,
-                  //           color: defaultColor),
-                  //     ),
-                  //   ),
-                  // ),
                 ],
               ),
             ),

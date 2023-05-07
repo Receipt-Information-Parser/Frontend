@@ -31,7 +31,8 @@ class FindIDPW extends StatelessWidget {
                   Expanded(
                     child: Container(
                       alignment: Alignment.bottomLeft,
-                      margin: const EdgeInsets.only(left: marginHorizontalHeader),
+                      margin:
+                          const EdgeInsets.only(left: marginHorizontalHeader),
                       child: const Text("이메일 찾기",
                           style: TextStyle(
                               fontSize: fontSizeHeader,
@@ -90,7 +91,8 @@ class FindIDPW extends StatelessWidget {
                     child: Center(
                       child: ElevatedButton(
                           style: ElevatedButton.styleFrom(
-                            textStyle: const TextStyle(fontSize: fontSizeButton),
+                            textStyle:
+                                const TextStyle(fontSize: fontSizeButton),
                             backgroundColor: defaultColor,
                             minimumSize: const Size(widthButton, heightButton),
                           ),
@@ -111,7 +113,8 @@ class FindIDPW extends StatelessWidget {
                   Expanded(
                     child: Container(
                       alignment: Alignment.bottomLeft,
-                      margin: const EdgeInsets.only(left: marginHorizontalHeader),
+                      margin:
+                          const EdgeInsets.only(left: marginHorizontalHeader),
                       child: const Text("비밀번호 재설정",
                           style: TextStyle(
                               fontSize: fontSizeHeader,
@@ -143,7 +146,7 @@ class FindIDPW extends StatelessWidget {
                               right: marginHorizontalHeader),
                           child: TextFormField(
                             autovalidateMode:
-                            AutovalidateMode.onUserInteraction,
+                                AutovalidateMode.onUserInteraction,
                             validator: (value) {
                               if (!validEmail
                                   .hasMatch(emailInputController.text)) {
@@ -170,13 +173,14 @@ class FindIDPW extends StatelessWidget {
                     child: Center(
                       child: ElevatedButton(
                           style: ElevatedButton.styleFrom(
-                            textStyle: const TextStyle(fontSize: fontSizeButton),
+                            textStyle:
+                                const TextStyle(fontSize: fontSizeButton),
                             backgroundColor: defaultColor,
                             minimumSize: const Size(widthButton, heightButton),
                           ),
                           onPressed: () {
                             // 화면 전환 (이메일 존재시 비밀번호 재설정 창 출력, 이메일 부재시 Error message 출력)
-                            _showdialog_id(context);
+                            _showdialog_password(context);
                           },
                           child: const Text('비밀번호 재설정')),
                     ),
@@ -201,6 +205,45 @@ Future<dynamic> _showdialog_id(BuildContext context) {
       actions: [
         ElevatedButton(
             onPressed: () => Navigator.of(context).pop(), child: Text('확인')),
+      ],
+    ),
+  );
+}
+Future<dynamic> _showdialog_password(BuildContext context) {
+  return showDialog(
+    context: context,
+    builder: (BuildContext context) => AlertDialog(
+      title: Text('비밀번호 재설정'),
+      content: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Row(
+            children: const [
+              Spacer(),
+              Icon(Icons.lock_reset, size: 60), // Update size here
+              Spacer(),
+            ],
+          ),
+          const Text('등록된 이메일로 임시 비밀번호가 발송됩니다.'),
+        ],
+      ),
+      actions: [
+        ElevatedButton(
+            style: ElevatedButton.styleFrom(
+              foregroundColor: Colors.blue,
+              backgroundColor: Colors.white,
+              elevation: 0, // Update this line to set text color
+            ),
+            onPressed: () => Navigator.of(context).pop(),
+            child: const Text('ok')),
+        ElevatedButton(
+            style: ElevatedButton.styleFrom(
+              foregroundColor: Colors.blue,
+              backgroundColor: Colors.white,
+              elevation: 0, // Update this line to set text color
+            ),
+            onPressed: () => Navigator.of(context).pop(),
+            child: const Text('cancel')),
       ],
     ),
   );
