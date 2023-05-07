@@ -11,7 +11,7 @@ class Signin1 extends StatelessWidget {
   Signin1({Key? key}) : super(key: key);
   final formGlobalKey = GlobalKey<FormState>();
   final validPW =
-  RegExp(r'^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{6,}$');
+  RegExp(r'^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$');
       // RegExp(r'^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{6,}$');
   final validEmail = RegExp(
       r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+");
@@ -138,7 +138,7 @@ class Signin1 extends StatelessWidget {
                                 return '입력칸을 채워주세요.';
                               }
                               if (!validPW.hasMatch(pwInputController.text)) {
-                                return '영문자, 숫자를 하나 이상 포함한 최소 6자리 암호를 입력해주세요.';
+                                return '영문자, 숫자, 특수문자를 포함한 8자리 이상의 비밀번호를 입력해주세요.';
                               }
                               return null;
                             },
