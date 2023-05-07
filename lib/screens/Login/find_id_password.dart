@@ -92,7 +92,7 @@ class FindIDPW extends StatelessWidget {
                           style: ElevatedButton.styleFrom(
                             textStyle: const TextStyle(fontSize: fontSizeButton),
                             backgroundColor: defaultColor,
-                            minimumSize: const Size(WidthButton, HeightButton),
+                            minimumSize: const Size(widthButton, heightButton),
                           ),
                           onPressed: () {
                             // 화면 전환 (닉네임 존재시 이메일 출력, 닉네임 부재시 Error message 출력)
@@ -172,7 +172,7 @@ class FindIDPW extends StatelessWidget {
                           style: ElevatedButton.styleFrom(
                             textStyle: const TextStyle(fontSize: fontSizeButton),
                             backgroundColor: defaultColor,
-                            minimumSize: const Size(WidthButton, HeightButton),
+                            minimumSize: const Size(widthButton, heightButton),
                           ),
                           onPressed: () {
                             // 화면 전환 (이메일 존재시 비밀번호 재설정 창 출력, 이메일 부재시 Error message 출력)

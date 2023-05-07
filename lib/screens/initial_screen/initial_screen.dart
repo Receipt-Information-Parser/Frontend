@@ -65,7 +65,7 @@ class InitialScreen extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Container(
-                  width: WidthButton,
+                  width: widthButton,
                   alignment: Alignment.center,
                   margin: const EdgeInsets.only(
                       left: marginHorizontalHeader,
@@ -85,7 +85,7 @@ class InitialScreen extends StatelessWidget {
                     style: ElevatedButton.styleFrom(
                       textStyle: const TextStyle(fontSize: fontSizeButton),
                       backgroundColor: defaultColor,
-                      minimumSize: const Size(WidthButton, HeightButton),
+                      minimumSize: const Size(widthButton, heightButton),
                     ),
                     onPressed: () {
                       Navigator.of(context).pushReplacement(MaterialPageRoute(
@@ -102,7 +102,7 @@ class InitialScreen extends StatelessWidget {
                       textStyle: const TextStyle(
                           fontSize: fontSizeButton, color: defaultColor),
                       backgroundColor: Colors.white,
-                      minimumSize: const Size(WidthButton, HeightButton),
+                      minimumSize: const Size(widthButton, heightButton),
                       side: BorderSide(color: defaultColor, width: 1.5),
                       elevation: 0,
                     ),

@@ -211,7 +211,7 @@ class Signin1 extends StatelessWidget {
                   style: ElevatedButton.styleFrom(
                     textStyle: const TextStyle(fontSize: fontSizeButton),
                     backgroundColor: defaultColor,
-                    minimumSize: const Size(WidthButton, HeightButton),
+                    minimumSize: const Size(widthButton, heightButton),
                   ),
                   onPressed: () {
                     if (formGlobalKey.currentState!.validate()) {

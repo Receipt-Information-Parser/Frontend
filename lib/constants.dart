@@ -11,8 +11,8 @@ const double marginVerticalBetweenWidgets = 10; // 수평 최소 마진
 const double fontSizeMiddle = 20;     // header2
 const double fontSizeHeader = 30;     // header1
 const double fontSizeAppbarTitle = 25;     // Appbar의 title font
-const double WidthButton = 350;
-const double HeightButton = 50;
+const double widthButton = 350;
+const double heightButton = 50;
 
 
 const String baseUrl = "http://.../api/"; // api 주소

@@ -206,7 +206,7 @@ class LoginScreen_ extends State<LoginScreen> {
                       style: ElevatedButton.styleFrom(
                         textStyle: const TextStyle(fontSize: fontSizeButton),
                         backgroundColor: defaultColor,
-                        minimumSize: const Size(WidthButton, HeightButton),
+                        minimumSize: const Size(widthButton, heightButton),
                       ),
                       onPressed: () async {
                         Navigator.of(context).push(MaterialPageRoute(
@@ -268,7 +268,7 @@ class LoginScreen_ extends State<LoginScreen> {
                         textStyle: const TextStyle(
                             fontSize: fontSizeButton, color: defaultColor),
                         backgroundColor: Colors.white,
-                        minimumSize: const Size(WidthButton, HeightButton),
+                        minimumSize: const Size(widthButton, heightButton),
                         side: BorderSide(color: defaultColor, width: 1.0),
                         elevation: 0,
                       ),
