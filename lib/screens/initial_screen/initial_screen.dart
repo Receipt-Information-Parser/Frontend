@@ -89,7 +89,7 @@ class InitialScreen extends StatelessWidget {
                     ),
                     onPressed: () {
                       Navigator.of(context).pushReplacement(MaterialPageRoute(
-                          builder: ((context) => LoginScreen())));
+                          builder: ((context) => MyInfoScreen())));
                     },
                     child: const Text('로그인'),
                   ),
@@ -108,7 +108,7 @@ class InitialScreen extends StatelessWidget {
                     ),
                     onPressed: () async {
                       Navigator.of(context).push(
-                          MaterialPageRoute(builder: ((context) => Signin1())));
+                          MaterialPageRoute(builder: ((context) => Signin3())));
                     },
                     child: const Text('회원가입',
                         style: TextStyle(color: defaultColor)),
