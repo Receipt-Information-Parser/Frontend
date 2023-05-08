@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:rip_front/screens/signin/signin2.dart';
+import 'package:rip_front/screens/signup/signup2.dart';
 
 import '../../../constants.dart';
 import '../../../http/dto.dart';
@@ -11,8 +11,7 @@ class Signin1 extends StatelessWidget {
   Signin1({Key? key}) : super(key: key);
   final formGlobalKey = GlobalKey<FormState>();
   final validPW =
-  RegExp(r'^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{6,}$');
-      // RegExp(r'^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{6,}$');
+  RegExp(r'^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$');
   final validEmail = RegExp(
       r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+");
   TextEditingController emailInputController = TextEditingController();
@@ -71,7 +70,7 @@ class Signin1 extends StatelessWidget {
                       children: [
                         Container(
                           alignment: Alignment.centerLeft,
-                          margin: const EdgeInsets.only(left: marginHorizontalHeader),
+                          margin: const EdgeInsets.only(left: marginHorizontalHeader,bottom: marginVerticalBetweenWidgets),
                           child: const Text("이메일",
                               style: TextStyle(
                                   fontSize: fontSizeTextForm,
@@ -120,7 +119,7 @@ class Signin1 extends StatelessWidget {
                       children: [
                         Container(
                           alignment: Alignment.centerLeft,
-                          margin: const EdgeInsets.only(left: marginHorizontalHeader),
+                          margin: const EdgeInsets.only(left: marginHorizontalHeader,bottom: marginVerticalBetweenWidgets),
                           child: const Text("비밀번호",
                               style: TextStyle(
                                   fontSize: fontSizeTextForm,
@@ -138,7 +137,7 @@ class Signin1 extends StatelessWidget {
                                 return '입력칸을 채워주세요.';
                               }
                               if (!validPW.hasMatch(pwInputController.text)) {
-                                return '영문자, 숫자를 하나 이상 포함한 최소 6자리 암호를 입력해주세요.';
+                                return '영문자, 숫자, 특수문자를 포함한 8자리 이상의 비밀번호를 입력해주세요.';
                               }
                               return null;
                             },
@@ -163,7 +162,7 @@ class Signin1 extends StatelessWidget {
                       children: [
                         Container(
                           alignment: Alignment.centerLeft,
-                          margin: const EdgeInsets.only(left: marginHorizontalHeader),
+                          margin: const EdgeInsets.only(left: marginHorizontalHeader,bottom: marginVerticalBetweenWidgets),
                           child: const Text("비밀번호 재확인",
                               style: TextStyle(
                                   fontSize: fontSizeTextForm,
@@ -211,7 +210,7 @@ class Signin1 extends StatelessWidget {
                   style: ElevatedButton.styleFrom(
                     textStyle: const TextStyle(fontSize: fontSizeButton),
                     backgroundColor: defaultColor,
-                    minimumSize: const Size(350, 50),
+                    minimumSize: const Size(widthButton, heightButton),
                   ),
                   onPressed: () {
                     if (formGlobalKey.currentState!.validate()) {

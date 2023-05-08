@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import 'package:intl/intl.dart';
@@ -88,7 +89,7 @@ class Signin3_2 extends State<Signin3> {
                                 style: TextStyle(
                                     fontSize: fontSizeMiddle,
                                     color: Colors.black,
-                                    fontWeight: FontWeight.w300),
+                                    fontWeight: FontWeight.bold),
                                 textAlign: TextAlign.left),
                           ),
                         ),
@@ -100,7 +101,7 @@ class Signin3_2 extends State<Signin3> {
                                 style: TextStyle(
                                     fontSize: fontSizeMiddle,
                                     color: Colors.black,
-                                    fontWeight: FontWeight.w300),
+                                    fontWeight: FontWeight.bold),
                                 textAlign: TextAlign.left),
                           ),
                         ),
@@ -115,7 +116,28 @@ class Signin3_2 extends State<Signin3> {
                           Expanded(
                             child: Container(
                                 alignment: Alignment.centerLeft,
-                                child: const DropdownButtonExample()
+                                child: Row(
+                                  children: [
+                                    const Text("여성",
+                                        style: TextStyle(
+                                            fontSize: 15.0,
+                                            color: Colors.black,
+                                            fontWeight: FontWeight.w300),
+                                        textAlign: TextAlign.left),
+                                    CupertinoSwitch(
+                                        activeColor: Colors.blue,
+                                        thumbColor: Colors.white,
+                                        trackColor: Colors.red,
+                                        value: isSwitched,
+                                        onChanged: (value) => setState(() => isSwitched = value)),
+                                    const Text("남성",
+                                        style: TextStyle(
+                                            fontSize: 15.0,
+                                            color: Colors.black,
+                                            fontWeight: FontWeight.w300),
+                                        textAlign: TextAlign.left),
+                                  ],
+                                ),
                             ),
                           ),
                           Expanded(
@@ -165,7 +187,7 @@ class Signin3_2 extends State<Signin3> {
                   style: ElevatedButton.styleFrom(
                     textStyle: const TextStyle(fontSize: fontSizeButton),
                     backgroundColor: defaultColor,
-                    minimumSize: const Size(350, 50),
+                    minimumSize: const Size(widthButton, heightButton),
                   ),
                   onPressed: () async {
                   //   // 성별, 생년월일 전달 후

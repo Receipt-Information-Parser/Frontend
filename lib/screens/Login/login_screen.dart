@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:rip_front/screens/Login/find_id_password.dart';
+import 'package:flutter/material.dart';
 
 import '../../constants.dart';
 import '../../http/dto.dart';
 import '../../http/request.dart';
 import '../../models/user_attribute.dart';
 import '../Home/home_screen.dart';
-import '../signin/signin1.dart';
+import '../signup/signup1.dart';
 
 class LoginScreen extends StatefulWidget {
   @override
@@ -76,7 +78,8 @@ class LoginScreen_ extends State<LoginScreen> {
                       children: [
                         Container(
                           alignment: Alignment.bottomLeft,
-                          margin: const EdgeInsets.only(left: marginHorizontalHeader),
+                          margin: const EdgeInsets.only(
+                              left: marginHorizontalHeader),
                           child: const Text('이메일',
                               style: TextStyle(
                                   fontSize: fontSizeTextForm,
@@ -87,7 +90,8 @@ class LoginScreen_ extends State<LoginScreen> {
                         Container(
                           alignment: Alignment.centerLeft,
                           padding: const EdgeInsets.only(
-                              left: marginHorizontalHeader,right: marginHorizontalHeader),
+                              left: marginHorizontalHeader,
+                              right: marginHorizontalHeader),
                           child: TextFormField(
                             autovalidateMode:
                                 AutovalidateMode.onUserInteraction,
@@ -97,7 +101,7 @@ class LoginScreen_ extends State<LoginScreen> {
                               }
                               if (!validEmail
                                   .hasMatch(emailInputController.text)) {
-                                return '이메일 양식이 잘못되었습니다.';
+                                return '잘못된 이메일 형식입니다.';
                               }
                               return null;
                             },
@@ -134,7 +138,8 @@ class LoginScreen_ extends State<LoginScreen> {
                       children: [
                         Container(
                           alignment: Alignment.centerLeft,
-                          margin: const EdgeInsets.only(left: marginHorizontalHeader),
+                          margin: const EdgeInsets.only(
+                              left: marginHorizontalHeader),
                           child: const Text('비밀번호',
                               style: TextStyle(
                                   fontSize: fontSizeTextForm,
@@ -145,7 +150,8 @@ class LoginScreen_ extends State<LoginScreen> {
                         Container(
                           alignment: Alignment.centerLeft,
                           padding: const EdgeInsets.only(
-                              left: marginHorizontalHeader,right: marginHorizontalHeader),
+                              left: marginHorizontalHeader,
+                              right: marginHorizontalHeader),
                           child: TextFormField(
                             autovalidateMode:
                                 AutovalidateMode.onUserInteraction,
@@ -191,12 +197,16 @@ class LoginScreen_ extends State<LoginScreen> {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Center(
+                  Container(
+                    alignment: Alignment.center,
+                    margin: const EdgeInsets.only(
+                        left: marginHorizontalHeader,
+                        bottom: marginVerticalBetweenWidgets),
                     child: ElevatedButton(
                       style: ElevatedButton.styleFrom(
                         textStyle: const TextStyle(fontSize: fontSizeButton),
                         backgroundColor: defaultColor,
-                        minimumSize: const Size(350, 50),
+                        minimumSize: const Size(widthButton, heightButton),
                       ),
                       onPressed: () async {
                         Navigator.of(context).push(MaterialPageRoute(
@@ -248,22 +258,26 @@ class LoginScreen_ extends State<LoginScreen> {
                       child: const Text('로그인'),
                     ),
                   ),
-                  Center(
-                    child: TextButton(
-                      style: TextButton.styleFrom(
-                        padding: const EdgeInsets.all(16.0),
-                        textStyle: const TextStyle(fontSize: fontSizeSmallButton),
+                  Container(
+                    alignment: Alignment.center,
+                    margin: const EdgeInsets.only(
+                        left: marginHorizontalHeader,
+                        bottom: marginVerticalBetweenWidgets),
+                    child: ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        textStyle: const TextStyle(
+                            fontSize: fontSizeButton, color: Colors.black,fontWeight: FontWeight.bold),
+                        backgroundColor: Colors.white,
+                        minimumSize: const Size(widthButton, heightButton),
+                        side: const BorderSide(color: defaultColor, width: 1.0),
+                        elevation: 0,
                       ),
-                      onPressed: () {
+                      onPressed: () async {
                         Navigator.of(context).push(MaterialPageRoute(
-                            builder: ((context) => Signin1())));
+                            builder: ((context) => FindIDPW())));
                       },
-                      child: const Text(
-                        '가입하시겠습니까?',
-                        style: TextStyle(
-                            decoration: TextDecoration.underline,
-                            color: defaultColor),
-                      ),
+                      child: const Text('이메일 찾기·비밀번호 재설정',
+                          style: TextStyle(color: defaultColor)),
                     ),
                   ),
                 ],
