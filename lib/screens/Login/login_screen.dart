@@ -8,7 +8,7 @@ import '../../http/dto.dart';
 import '../../http/request.dart';
 import '../../models/user_attribute.dart';
 import '../Home/home_screen.dart';
-import '../signin/signin1.dart';
+import '../signup/signup1.dart';
 
 class LoginScreen extends StatefulWidget {
   @override
@@ -266,10 +266,10 @@ class LoginScreen_ extends State<LoginScreen> {
                     child: ElevatedButton(
                       style: ElevatedButton.styleFrom(
                         textStyle: const TextStyle(
-                            fontSize: fontSizeButton, color: defaultColor),
+                            fontSize: fontSizeButton, color: Colors.black,fontWeight: FontWeight.bold),
                         backgroundColor: Colors.white,
                         minimumSize: const Size(widthButton, heightButton),
-                        side: BorderSide(color: defaultColor, width: 1.0),
+                        side: const BorderSide(color: defaultColor, width: 1.0),
                         elevation: 0,
                       ),
                       onPressed: () async {

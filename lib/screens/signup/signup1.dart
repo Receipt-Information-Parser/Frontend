@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:rip_front/screens/signin/signin2.dart';
+import 'package:rip_front/screens/signup/signup2.dart';
 
 import '../../../constants.dart';
 import '../../../http/dto.dart';
@@ -12,7 +12,6 @@ class Signin1 extends StatelessWidget {
   final formGlobalKey = GlobalKey<FormState>();
   final validPW =
   RegExp(r'^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$');
-      // RegExp(r'^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{6,}$');
   final validEmail = RegExp(
       r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+");
   TextEditingController emailInputController = TextEditingController();

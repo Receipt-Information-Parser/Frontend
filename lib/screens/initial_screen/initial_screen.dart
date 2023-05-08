@@ -2,11 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:rip_front/constants.dart';
 import 'package:rip_front/screens/Home/home_screen.dart';
 import 'package:rip_front/screens/Login/kakaotalk_login_button.dart';
-import 'package:rip_front/screens/signin/signin2.dart';
-import 'package:rip_front/screens/signin/signin3.dart';
+import 'package:rip_front/screens/signup/signup2.dart';
+import 'package:rip_front/screens/signup/signup3.dart';
 
 import '../myinfo/my_info_screen.dart';
-import '../signin/signin1.dart';
+import '../signup/signup1.dart';
 import '../Login/login_screen.dart';
 
 class InitialScreen extends StatelessWidget {
@@ -89,7 +89,7 @@ class InitialScreen extends StatelessWidget {
                     ),
                     onPressed: () {
                       Navigator.of(context).pushReplacement(MaterialPageRoute(
-                          builder: ((context) => LoginScreen())));
+                          builder: ((context) => MyInfoScreen())));
                     },
                     child: const Text('로그인'),
                   ),
@@ -100,15 +100,15 @@ class InitialScreen extends StatelessWidget {
                   child: ElevatedButton(
                     style: ElevatedButton.styleFrom(
                       textStyle: const TextStyle(
-                          fontSize: fontSizeButton, color: defaultColor),
+                          fontSize: fontSizeButton, color: Colors.black,fontWeight: FontWeight.bold),
                       backgroundColor: Colors.white,
                       minimumSize: const Size(widthButton, heightButton),
-                      side: BorderSide(color: defaultColor, width: 1.5),
+                      side: const BorderSide(color: defaultColor, width: 1.5),
                       elevation: 0,
                     ),
                     onPressed: () async {
                       Navigator.of(context).push(
-                          MaterialPageRoute(builder: ((context) => Signin1())));
+                          MaterialPageRoute(builder: ((context) => Signin3())));
                     },
                     child: const Text('회원가입',
                         style: TextStyle(color: defaultColor)),

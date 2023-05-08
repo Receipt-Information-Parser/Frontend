@@ -3,7 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:rip_front/constants.dart';
 
 import '../../../providers/user_attribute_api.dart';
-import 'signin3.dart';
+import 'signup3.dart';
 
 class Signin2 extends StatelessWidget {
   Signin2({Key? key}) : super(key: key);
