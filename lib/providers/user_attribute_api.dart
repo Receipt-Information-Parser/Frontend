@@ -4,7 +4,6 @@ class UserAttributeApi {
   static UserAttribute? userAttribute;
 
   static UserAttribute? getUserAttribute() {
-    // TODO: api call get method
     userAttribute ??= UserAttribute(
         email: "email",
         nickname: "nickname",
@@ -17,7 +16,6 @@ class UserAttributeApi {
   }
 
   static void setUserAttribute(UserAttribute newUserAttribute) {
-    // TODO: api call post method
     userAttribute = newUserAttribute;
   }
 
