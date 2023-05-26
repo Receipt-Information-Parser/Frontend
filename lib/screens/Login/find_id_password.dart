@@ -26,7 +26,7 @@ class FindIDPW extends StatelessWidget {
           children: <Widget>[
             Expanded(
               child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.end,
                 children: [
                   Expanded(
                     child: Container(
@@ -45,43 +45,47 @@ class FindIDPW extends StatelessWidget {
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.end,
                       children: [
-                        Container(
-                          alignment: Alignment.centerLeft,
-                          margin: const EdgeInsets.only(
-                              left: marginHorizontalHeader,
-                              bottom: marginVerticalBetweenWidgets),
-                          child: const Text("닉네임",
-                              style: TextStyle(
-                                  fontSize: fontSizeTextForm,
-                                  color: Colors.black,
-                                  fontWeight: FontWeight.w300),
-                              textAlign: TextAlign.left),
+                        Expanded(
+                          child: Container(
+                            alignment: Alignment.centerLeft,
+                            margin: const EdgeInsets.only(
+                                left: marginHorizontalHeader,
+                                bottom: marginVerticalBetweenWidgets),
+                            child: const Text("닉네임",
+                                style: TextStyle(
+                                    fontSize: fontSizeTextForm,
+                                    color: Colors.black,
+                                    fontWeight: FontWeight.w300),
+                                textAlign: TextAlign.left),
+                          ),
                         ),
-                        Container(
-                          alignment: Alignment.centerLeft,
-                          margin: const EdgeInsets.only(
-                              left: marginHorizontalHeader,
-                              right: marginHorizontalHeader),
-                          child: TextFormField(
-                            autovalidateMode:
-                                AutovalidateMode.onUserInteraction,
-                            validator: (value) {
-                              if (!validNickname
-                                  .hasMatch(nicknameInputController.text)) {
-                                return '잘못된 닉네임 형식입니다.';
-                              }
-                              return null;
-                            },
-                            decoration: const InputDecoration(
-                              border: OutlineInputBorder(),
-                              filled: true,
-                              fillColor: Colors.white,
-                              labelText: 'Nickname',
+                        Expanded(
+                          child: Container(
+                            alignment: Alignment.centerLeft,
+                            margin: const EdgeInsets.only(
+                                left: marginHorizontalHeader,
+                                right: marginHorizontalHeader),
+                            child: TextFormField(
+                              autovalidateMode:
+                                  AutovalidateMode.onUserInteraction,
+                              validator: (value) {
+                                if (!validNickname
+                                    .hasMatch(nicknameInputController.text)) {
+                                  return '잘못된 닉네임 형식입니다.';
+                                }
+                                return null;
+                              },
+                              decoration: const InputDecoration(
+                                border: OutlineInputBorder(),
+                                filled: true,
+                                fillColor: Colors.white,
+                                labelText: 'Nickname',
+                              ),
+                              style: const TextStyle(
+                                  fontSize: fontSizeInputText,
+                                  color: Colors.black),
+                              controller: nicknameInputController,
                             ),
-                            style: const TextStyle(
-                                fontSize: fontSizeInputText,
-                                color: Colors.black),
-                            controller: nicknameInputController,
                           ),
                         ),
                       ],
@@ -127,43 +131,47 @@ class FindIDPW extends StatelessWidget {
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.end,
                       children: [
-                        Container(
-                          alignment: Alignment.centerLeft,
-                          margin: const EdgeInsets.only(
-                              left: marginHorizontalHeader,
-                              bottom: marginVerticalBetweenWidgets),
-                          child: const Text("이메일",
-                              style: TextStyle(
-                                  fontSize: fontSizeTextForm,
-                                  color: Colors.black,
-                                  fontWeight: FontWeight.w300),
-                              textAlign: TextAlign.left),
+                        Expanded(
+                          child: Container(
+                            alignment: Alignment.centerLeft,
+                            margin: const EdgeInsets.only(
+                                left: marginHorizontalHeader,
+                                bottom: marginVerticalBetweenWidgets),
+                            child: const Text("이메일",
+                                style: TextStyle(
+                                    fontSize: fontSizeTextForm,
+                                    color: Colors.black,
+                                    fontWeight: FontWeight.w300),
+                                textAlign: TextAlign.left),
+                          ),
                         ),
-                        Container(
-                          alignment: Alignment.centerLeft,
-                          margin: const EdgeInsets.only(
-                              left: marginHorizontalHeader,
-                              right: marginHorizontalHeader),
-                          child: TextFormField(
-                            autovalidateMode:
-                                AutovalidateMode.onUserInteraction,
-                            validator: (value) {
-                              if (!validEmail
-                                  .hasMatch(emailInputController.text)) {
-                                return '잘못된 이메일 형식입니다.';
-                              }
-                              return null;
-                            },
-                            decoration: const InputDecoration(
-                              border: OutlineInputBorder(),
-                              filled: true,
-                              fillColor: Colors.white,
-                              labelText: 'email',
+                        Expanded(
+                          child: Container(
+                            alignment: Alignment.centerLeft,
+                            margin: const EdgeInsets.only(
+                                left: marginHorizontalHeader,
+                                right: marginHorizontalHeader),
+                            child: TextFormField(
+                              autovalidateMode:
+                                  AutovalidateMode.onUserInteraction,
+                              validator: (value) {
+                                if (!validEmail
+                                    .hasMatch(emailInputController.text)) {
+                                  return '잘못된 이메일 형식입니다.';
+                                }
+                                return null;
+                              },
+                              decoration: const InputDecoration(
+                                border: OutlineInputBorder(),
+                                filled: true,
+                                fillColor: Colors.white,
+                                labelText: 'email',
+                              ),
+                              style: const TextStyle(
+                                  fontSize: fontSizeInputText,
+                                  color: Colors.black),
+                              controller: emailInputController,
                             ),
-                            style: const TextStyle(
-                                fontSize: fontSizeInputText,
-                                color: Colors.black),
-                            controller: emailInputController,
                           ),
                         ),
                       ],
@@ -209,6 +217,7 @@ Future<dynamic> _showdialog_id(BuildContext context) {
     ),
   );
 }
+
 Future<dynamic> _showdialog_password(BuildContext context) {
   return showDialog(
     context: context,
