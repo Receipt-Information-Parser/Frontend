@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:rip_front/constants.dart';
 
@@ -19,6 +20,39 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   bool? isChecked = false;
 
+  final List<String> datas = [
+    DateFormat('yyyy년 MM월 dd일 kk:mm').format(DateTime.now()),
+    DateFormat('yyyy년 MM월 dd일 kk:mm').format(DateTime.now()),
+    DateFormat('yyyy년 MM월 dd일 kk:mm').format(DateTime.now()),
+    DateFormat('yyyy년 MM월 dd일 kk:mm').format(DateTime.now()),
+    DateFormat('yyyy년 MM월 dd일 kk:mm').format(DateTime.now()),
+    DateFormat('yyyy년 MM월 dd일 kk:mm').format(DateTime.now()),
+    DateFormat('yyyy년 MM월 dd일 kk:mm').format(DateTime.now()),
+    DateFormat('yyyy년 MM월 dd일 kk:mm').format(DateTime.now()),
+    DateFormat('yyyy년 MM월 dd일 kk:mm').format(DateTime.now()),
+    DateFormat('yyyy년 MM월 dd일 kk:mm').format(DateTime.now()),
+    DateFormat('yyyy년 MM월 dd일 kk:mm').format(DateTime.now()),
+    DateFormat('yyyy년 MM월 dd일 kk:mm').format(DateTime.now()),
+    DateFormat('yyyy년 MM월 dd일 kk:mm').format(DateTime.now()),
+    DateFormat('yyyy년 MM월 dd일 kk:mm').format(DateTime.now()),
+    DateFormat('yyyy년 MM월 dd일 kk:mm').format(DateTime.now()),
+    DateFormat('yyyy년 MM월 dd일 kk:mm').format(DateTime.now()),
+    DateFormat('yyyy년 MM월 dd일 kk:mm').format(DateTime.now()),
+    DateFormat('yyyy년 MM월 dd일 kk:mm').format(DateTime.now()),
+    DateFormat('yyyy년 MM월 dd일 kk:mm').format(DateTime.now()),
+    DateFormat('yyyy년 MM월 dd일 kk:mm').format(DateTime.now()),
+    DateFormat('yyyy년 MM월 dd일 kk:mm').format(DateTime.now()),
+    DateFormat('yyyy년 MM월 dd일 kk:mm').format(DateTime.now()),
+    DateFormat('yyyy년 MM월 dd일 kk:mm').format(DateTime.now()),
+    DateFormat('yyyy년 MM월 dd일 kk:mm').format(DateTime.now()),
+    DateFormat('yyyy년 MM월 dd일 kk:mm').format(DateTime.now()),
+    DateFormat('yyyy년 MM월 dd일 kk:mm').format(DateTime.now()),
+    DateFormat('yyyy년 MM월 dd일 kk:mm').format(DateTime.now()),
+    DateFormat('yyyy년 MM월 dd일 kk:mm').format(DateTime.now()),
+    DateFormat('yyyy년 MM월 dd일 kk:mm').format(DateTime.now()),
+    DateFormat('yyyy년 MM월 dd일 kk:mm').format(DateTime.now()),
+  ];
+
   @override
   Widget build(BuildContext context) {
     final CurrentIndex currentIndex = Provider.of<CurrentIndex>(context);
@@ -27,21 +61,79 @@ class _HomeScreenState extends State<HomeScreen> {
     TokenResponse tokenResponse = Provider.of<TokenResponse>(context);
 
     return Scaffold(
-      appBar: AppBar(
-        title: const Text("홈",
-            style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
-        backgroundColor: defaultColor,
+      appBar: PreferredSize(
+        preferredSize: const Size.fromHeight(100.0),
+        child: Container(
+          height: 100,
+          child: AppBar(
+            title: const Text("영수증 목록",
+                style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)
+            ),
+            backgroundColor: defaultColor,
+          ),
+        ),
       ),
       body: Column(
-        children: const [
-
+        children: <Widget>[
+          Expanded(child: ListView.separated(
+              padding: const EdgeInsets.all(10),
+              itemBuilder: (BuildContext context, int index) {
+                return Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      Expanded(
+                          child: Container(
+                              padding: const EdgeInsets.only(left: 10),
+                              alignment: Alignment.centerLeft,
+                              height: 50,
+                              child: TextButton(
+                                onPressed: () {},
+                                child: Text(
+                                    datas[index],
+                                    style: const TextStyle(
+                                      fontSize: 20,
+                                      color: Colors.black
+                                    )),
+                              )
+                          ),
+                      ),
+                      Container(
+                        alignment: Alignment.centerLeft,
+                        height: 50,
+                        child: IconButton(
+                            onPressed: () {
+                              // DOWNLOAD
+                            },
+                            icon: const Icon(Icons.download)
+                        )
+                      ),
+                      Container(
+                        alignment: Alignment.centerLeft,
+                        height: 50,
+                        child: IconButton(
+                            onPressed: () {
+                              setState(() {
+                                datas.removeAt(index);
+                              });
+                            },
+                            icon: const Icon(Icons.delete)
+                        )
+                      )
+                    ]
+                );
+              },
+              separatorBuilder: (BuildContext context, int index) => const Divider(
+                thickness: 2,
+              ),
+              itemCount: datas.length
+          ))
         ],
       ),
       bottomNavigationBar: BottomNavigationBar(
         items: const <BottomNavigationBarItem>[
-          BottomNavigationBarItem(icon: Icon(Icons.list), label: "공모전"),
-          BottomNavigationBarItem(icon: Icon(Icons.home), label: "홈"),
-          BottomNavigationBarItem(icon: Icon(Icons.settings), label: "내정보"),
+          BottomNavigationBarItem(icon: Icon(Icons.list), label: "영수증 목록"),
+          BottomNavigationBarItem(icon: Icon(Icons.home), label: "영수증 추가"),
+          BottomNavigationBarItem(icon: Icon(Icons.settings), label: "설정"),
         ],
         currentIndex: currentIndex.index,
         selectedItemColor: defaultColor,
@@ -53,7 +145,7 @@ class _HomeScreenState extends State<HomeScreen> {
               case 0:
                 Navigator.of(context)
                     .pushReplacement(MaterialPageRoute(builder: ((context) {
-                  return HomeScreen();
+                  return const HomeScreen();
                 })));
                 break;
 
