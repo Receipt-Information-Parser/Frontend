@@ -13,6 +13,7 @@ import 'package:provider/provider.dart';
 import 'package:rip_front/constants.dart';
 import 'package:rip_front/http/dto/ReceiptResponse.dart';
 import 'package:rip_front/http/request/ReceiptProvider.dart';
+import 'package:rip_front/screens/Detail/detail.dart';
 
 import '../../../http/dto.dart';
 import '../../../models/current_index.dart';
@@ -103,7 +104,7 @@ class _HomeScreenState extends State<HomeScreen> {
   bool? isChecked = false;
   bool isLoading = true;
 
-  String token = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJ1aWQiOjEsInN1YiI6InJlY2VpcHRtYXRlSnd0IiwiYXRoIjpudWxsLCJlbWwiOiJjaGFuaG8wMzA5QGdtYWlsLmNvbSIsImV4cCI6MTY4NTI4OTg5MSwiaWF0IjoxNjg1Mjg4MDkxfQ.fpkLWfqRusY1SZQ-Yf2SBQ8iB192SAavEVE-csEiUPqW9q6B1SAShRyKOb9TAqLo0F39g3mj366p4IxlhGEn5Q";
+  String token = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJ1aWQiOjEsInN1YiI6InJlY2VpcHRtYXRlSnd0IiwiYXRoIjpudWxsLCJlbWwiOiJjaGFuaG8wMzA5QGdtYWlsLmNvbSIsImV4cCI6MTY4NTMxNzgwNSwiaWF0IjoxNjg1MzE2MDA1fQ.cVqCwrLcRe2QfuIUrhENVEALxGuI_tey0z9vsjqvIdqdLt-wDhcDNLdSQipE9sl92OV5R2eLGQDMvRc-NcnWFw";
   late ListReceiptResponses receipts;
   ReceiptProvider receiptProvider = ReceiptProvider('${baseUrl}receipt');
 
@@ -212,7 +213,10 @@ class _HomeScreenState extends State<HomeScreen> {
                               height: 50,
                               child: TextButton(
                                 onPressed: () {
-                                  // 상세 기록 연결
+                                  Navigator.of(context)
+                                      .pushReplacement(MaterialPageRoute(builder: ((context) {
+                                    return MyHomePage();
+                                  })));
                                 },
                                 child: Text(
                                     DateFormat('yyyy년 MM월 dd일 kk:mm').format(receipts.receipts![index].createdDate),
