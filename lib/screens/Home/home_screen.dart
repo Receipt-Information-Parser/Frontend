@@ -2,7 +2,10 @@ import 'dart:io';
 import 'dart:isolate';
 import 'dart:ui';
 
+import 'package:document_scanner_flutter/configs/configs.dart';
+import 'package:document_scanner_flutter/document_scanner_flutter.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_downloader/flutter_downloader.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
@@ -64,7 +67,7 @@ class _BottomSheetWidgetState extends State<BottomSheetWidget> {
                 ),
                 leading: const Icon(Icons.camera_alt, size: 40,),
                 onTap: () {
-                  uploadImage(ImageSource.camera);
+                  uploadImage(ScannerFileSource.CAMERA);
                 },
               ),
               ListTile(
@@ -79,7 +82,7 @@ class _BottomSheetWidgetState extends State<BottomSheetWidget> {
                 ),
                 leading: const Icon(Icons.photo, size: 40),
                 onTap: () {
-                  uploadImage(ImageSource.gallery);
+                  uploadImage(ScannerFileSource.GALLERY);
                 },
               ),
             ]
@@ -87,10 +90,10 @@ class _BottomSheetWidgetState extends State<BottomSheetWidget> {
     );
   }
 
-  void uploadImage(ImageSource source) async {
-    var image = await ImagePicker().pickImage(source: source);
+  void uploadImage(ScannerFileSource source) async {
+    File? file = await DocumentScannerFlutter.launch(context, source: source);
 
-    ReceiptResponse receiptResponse = await receiptProvider.addReceipt(token, image!.path);
+    ReceiptResponse receiptResponse = await receiptProvider.addReceipt(token, file!.path);
 
     print(receiptResponse.key);
 
@@ -102,7 +105,7 @@ class _HomeScreenState extends State<HomeScreen> {
   bool? isChecked = false;
   bool isLoading = true;
 
-  String token = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJ1aWQiOjEsInN1YiI6InJlY2VpcHRtYXRlSnd0IiwiYXRoIjpudWxsLCJlbWwiOiJjaGFuaG8wMzA5QGdtYWlsLmNvbSIsImV4cCI6MTY4NTI4NDYyMCwiaWF0IjoxNjg1MjgyODIwfQ.drXV2xJqo9UqLAPlM0KwYU7uPJofidkM2ooToNi9yQazpccUgnhNvvPEMjcwzocSESuVRG7TU7CefXp0nIdzsA";
+  String token = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJ1aWQiOjEsInN1YiI6InJlY2VpcHRtYXRlSnd0IiwiYXRoIjpudWxsLCJlbWwiOiJjaGFuaG8wMzA5QGdtYWlsLmNvbSIsImV4cCI6MTY4NTI4NjY5NiwiaWF0IjoxNjg1Mjg0ODk2fQ.o6L9m_hBe9iAZMcfvhjC0BrEQPt8OT_TBl33sVJxSVfaKDVsvVBgRtTppj9WWiUtzpHmAo5FGp_qRXyLnmpiWg";
   late ListReceiptResponses receipts;
   ReceiptProvider receiptProvider = ReceiptProvider('${baseUrl}receipt/list');
 
