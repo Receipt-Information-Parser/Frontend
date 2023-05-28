@@ -4,6 +4,7 @@ import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_downloader/flutter_downloader.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:permission_handler/permission_handler.dart';
@@ -27,14 +28,21 @@ class HomeScreen extends StatefulWidget {
 }
 
 class BottomSheetWidget extends StatefulWidget {
-  const BottomSheetWidget({super.key});
+  final String token;
+
+  const BottomSheetWidget({super.key, required this.token});
 
   @override
-  _BottomSheetWidgetState createState() => _BottomSheetWidgetState();
+  _BottomSheetWidgetState createState() => _BottomSheetWidgetState(token);
 }
 
 
 class _BottomSheetWidgetState extends State<BottomSheetWidget> {
+  ReceiptProvider receiptProvider = ReceiptProvider('${baseUrl}receipt/add');
+  final String token;
+
+  _BottomSheetWidgetState(this.token);
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -56,6 +64,7 @@ class _BottomSheetWidgetState extends State<BottomSheetWidget> {
                 ),
                 leading: const Icon(Icons.camera_alt, size: 40,),
                 onTap: () {
+                  uploadImage(ImageSource.camera);
                 },
               ),
               ListTile(
@@ -70,11 +79,22 @@ class _BottomSheetWidgetState extends State<BottomSheetWidget> {
                 ),
                 leading: const Icon(Icons.photo, size: 40),
                 onTap: () {
+                  uploadImage(ImageSource.gallery);
                 },
               ),
             ]
         ) //what you want to have inside, I suggest using a column
     );
+  }
+
+  void uploadImage(ImageSource source) async {
+    var image = await ImagePicker().pickImage(source: source);
+
+    ReceiptResponse receiptResponse = await receiptProvider.addReceipt(token, image!.path);
+
+    print(receiptResponse.key);
+
+    // 영수증 상세 화면으로 전환
   }
 }
 
@@ -82,7 +102,7 @@ class _HomeScreenState extends State<HomeScreen> {
   bool? isChecked = false;
   bool isLoading = true;
 
-  String token = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJ1aWQiOjEsInN1YiI6InJlY2VpcHRtYXRlSnd0IiwiYXRoIjpudWxsLCJlbWwiOiJjaGFuaG8wMzA5QGdtYWlsLmNvbSIsImV4cCI6MTY4NTI2NTM1MywiaWF0IjoxNjg1MjYzNTUzfQ.u9LJZgRizeWRe0xsDbVMPzE3Cl4gmnjvL1p0_dCW77WU5M5fCOXV86Nb0NEbAo3f5O9EPwa8BzFeWNGzdNKl-Q";
+  String token = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJ1aWQiOjEsInN1YiI6InJlY2VpcHRtYXRlSnd0IiwiYXRoIjpudWxsLCJlbWwiOiJjaGFuaG8wMzA5QGdtYWlsLmNvbSIsImV4cCI6MTY4NTI4NDYyMCwiaWF0IjoxNjg1MjgyODIwfQ.drXV2xJqo9UqLAPlM0KwYU7uPJofidkM2ooToNi9yQazpccUgnhNvvPEMjcwzocSESuVRG7TU7CefXp0nIdzsA";
   late ListReceiptResponses receipts;
   ReceiptProvider receiptProvider = ReceiptProvider('${baseUrl}receipt/list');
 
@@ -161,7 +181,17 @@ class _HomeScreenState extends State<HomeScreen> {
       ),
       body: isLoading ? const Center(child: CircularProgressIndicator(),) :Column(
         children: <Widget>[
-          Expanded(child: ListView.separated(
+          Expanded(child: receipts.receipts!.isEmpty ?
+            Container(
+              alignment: Alignment.center,
+              child: const Text(
+                "저장된 영수증이 없습니다.",
+                style: TextStyle(
+                  fontSize: 20
+                ),
+              )
+            )
+          : ListView.separated(
               padding: const EdgeInsets.all(10),
               itemBuilder: (BuildContext context, int index) {
                 return Row(
@@ -224,8 +254,8 @@ class _HomeScreenState extends State<HomeScreen> {
             child: FloatingActionButton(
               onPressed: () {
                 if (bottomSheetToggle == false) {
-                  _controller = scaffoldState.currentState?.showBottomSheet((context) => const BottomSheetWidget());
                   bottomSheetToggle = true;
+                  _controller = scaffoldState.currentState?.showBottomSheet((context) => BottomSheetWidget(token: token,));
                 } else {
                   _controller?.close();
                   bottomSheetToggle = false;
