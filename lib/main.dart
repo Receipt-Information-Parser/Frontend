@@ -5,7 +5,6 @@ import 'package:flutter_downloader/flutter_downloader.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:provider/provider.dart';
 import 'package:rip_front/constants.dart';
-import 'package:rip_front/models/AppPaths.dart';
 import 'package:rip_front/providers/user_attribute_api.dart';
 import 'package:rip_front/providers/user_auth_info_api.dart';
 import 'package:rip_front/screens/initial_screen/splash_screen.dart';
