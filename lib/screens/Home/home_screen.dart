@@ -39,7 +39,7 @@ class BottomSheetWidget extends StatefulWidget {
 
 
 class _BottomSheetWidgetState extends State<BottomSheetWidget> {
-  ReceiptProvider receiptProvider = ReceiptProvider('${baseUrl}receipt/add');
+  ReceiptProvider receiptProvider = ReceiptProvider('${baseUrl}receipt');
   final String token;
 
   _BottomSheetWidgetState(this.token);
@@ -103,9 +103,9 @@ class _HomeScreenState extends State<HomeScreen> {
   bool? isChecked = false;
   bool isLoading = true;
 
-  String token = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJ1aWQiOjEsInN1YiI6InJlY2VpcHRtYXRlSnd0IiwiYXRoIjpudWxsLCJlbWwiOiJjaGFuaG8wMzA5QGdtYWlsLmNvbSIsImV4cCI6MTY4NTI4NjY5NiwiaWF0IjoxNjg1Mjg0ODk2fQ.o6L9m_hBe9iAZMcfvhjC0BrEQPt8OT_TBl33sVJxSVfaKDVsvVBgRtTppj9WWiUtzpHmAo5FGp_qRXyLnmpiWg";
+  String token = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJ1aWQiOjEsInN1YiI6InJlY2VpcHRtYXRlSnd0IiwiYXRoIjpudWxsLCJlbWwiOiJjaGFuaG8wMzA5QGdtYWlsLmNvbSIsImV4cCI6MTY4NTI4OTg5MSwiaWF0IjoxNjg1Mjg4MDkxfQ.fpkLWfqRusY1SZQ-Yf2SBQ8iB192SAavEVE-csEiUPqW9q6B1SAShRyKOb9TAqLo0F39g3mj366p4IxlhGEn5Q";
   late ListReceiptResponses receipts;
-  ReceiptProvider receiptProvider = ReceiptProvider('${baseUrl}receipt/list');
+  ReceiptProvider receiptProvider = ReceiptProvider('${baseUrl}receipt');
 
   final scaffoldState = GlobalKey<ScaffoldState>();
   bool bottomSheetToggle = false;
@@ -192,7 +192,14 @@ class _HomeScreenState extends State<HomeScreen> {
                 ),
               )
             )
-          : ListView.separated(
+          : RefreshIndicator(
+              onRefresh: () async {
+                ListReceiptResponses tempReceipts = await receiptProvider.listReceipt(token);
+                setState(() {
+                  receipts = tempReceipts;
+                });
+              },
+              child: ListView.separated(
               padding: const EdgeInsets.all(10),
               itemBuilder: (BuildContext context, int index) {
                 return Row(
@@ -231,9 +238,30 @@ class _HomeScreenState extends State<HomeScreen> {
                         height: 50,
                         child: IconButton(
                             onPressed: () {
-                              setState(() {
-                                receipts.receipts!.removeAt(index);
-                              });
+                              showDialog<String>(
+                              context: context,
+                              builder: (BuildContext context) => AlertDialog(
+                                title: const Text('영수증 삭제 확인'),
+                                content: const Text('영수증을 삭제하시겠습니까?'),
+                                actions: <Widget>[
+                                  TextButton(
+                                    onPressed: () => Navigator.of(context).pop(),
+                                    child: const Text('No'),
+                                  ),
+                                  TextButton(
+                                    onPressed: () {
+                                      setState(() {
+                                        int toDelete = receipts.receipts![index].id;
+                                        receipts.receipts!.removeAt(index);
+                                        receiptProvider.deleteReceipt(token, toDelete);
+                                      });
+                                      Navigator.of(context).pop();
+                                    },
+                                    child: const Text('Yes'),
+                                  ),
+                                ],
+                              ),
+                            );
                             },
                             icon: const Icon(Icons.delete)
                         )
@@ -245,7 +273,9 @@ class _HomeScreenState extends State<HomeScreen> {
                 thickness: 2,
               ),
               itemCount: receipts.receipts!.length
-          ))
+              )
+            )
+          )
         ],
       ),
       floatingActionButton: Container(

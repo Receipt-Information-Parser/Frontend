@@ -3,6 +3,7 @@ import 'dart:io';
 
 import 'package:http/http.dart' as http;
 import 'package:rip_front/http/dto/ReceiptResponse.dart';
+import 'package:rip_front/http/dto/StringResponse.dart';
 
 class ReceiptProvider {
   final String uri;
@@ -11,7 +12,7 @@ class ReceiptProvider {
 
   Future<ListReceiptResponses> listReceipt(String token) async {
     final response = await http.get(
-      Uri.parse(uri),
+      Uri.parse('$uri/list'),
       headers: <String, String>{
         HttpHeaders.authorizationHeader: "Bearer $token"
       },
@@ -32,7 +33,7 @@ class ReceiptProvider {
   }
 
   Future<ReceiptResponse> addReceipt(String token, String image) async {
-    http.MultipartRequest multipartRequest = http.MultipartRequest('POST', Uri.parse(uri));
+    http.MultipartRequest multipartRequest = http.MultipartRequest('POST', Uri.parse('$uri/add'));
     multipartRequest.headers['authorization'] = "Bearer $token";
 
     multipartRequest.files.add(
@@ -45,6 +46,23 @@ class ReceiptProvider {
 
     if (response.statusCode == 200) {
       return ReceiptResponse.fromJson(jsonDecode(utf8.decode(response.bodyBytes)));
+    } else {
+      var body = json.decode(utf8.decode(response.bodyBytes));
+      return Future.error(
+          '${body['status']}: ${body['message']}');
+    }
+  }
+
+  Future<StringResponse> deleteReceipt(String token, int id) async {
+    final response = await http.delete(
+      Uri.parse('$uri/delete/$id'),
+      headers: <String, String>{
+        HttpHeaders.authorizationHeader: "Bearer $token"
+      },
+    );
+
+    if (response.statusCode == 200) {
+      return StringResponse.fromJson(jsonDecode(utf8.decode(response.bodyBytes)));
     } else {
       var body = json.decode(utf8.decode(response.bodyBytes));
       return Future.error(
