@@ -103,7 +103,7 @@ class _HomeScreenState extends State<HomeScreen> {
   bool? isChecked = false;
   bool isLoading = true;
 
-  String token = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJ1aWQiOjEsInN1YiI6InJlY2VpcHRtYXRlSnd0IiwiYXRoIjpudWxsLCJlbWwiOiJjaGFuaG8wMzA5QGdtYWlsLmNvbSIsImV4cCI6MTY4NTI4NjY5NiwiaWF0IjoxNjg1Mjg0ODk2fQ.o6L9m_hBe9iAZMcfvhjC0BrEQPt8OT_TBl33sVJxSVfaKDVsvVBgRtTppj9WWiUtzpHmAo5FGp_qRXyLnmpiWg";
+  String token = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJ1aWQiOjEsInN1YiI6InJlY2VpcHRtYXRlSnd0IiwiYXRoIjpudWxsLCJlbWwiOiJjaGFuaG8wMzA5QGdtYWlsLmNvbSIsImV4cCI6MTY4NTI4Nzk1OCwiaWF0IjoxNjg1Mjg2MTU4fQ.z4sp_VQrHdC1wAic_OL-BgT4Nx6z60m068iawf9qeW1rvSlgvQbnNv8ECpSgNHjW7m97nKTG4p4OMcfWrytm0w";
   late ListReceiptResponses receipts;
   ReceiptProvider receiptProvider = ReceiptProvider('${baseUrl}receipt/list');
 
@@ -192,7 +192,14 @@ class _HomeScreenState extends State<HomeScreen> {
                 ),
               )
             )
-          : ListView.separated(
+          : RefreshIndicator(
+              onRefresh: () async {
+                ListReceiptResponses tempReceipts = await receiptProvider.listReceipt(token);
+                setState(() {
+                  receipts = tempReceipts;
+                });
+              },
+              child: ListView.separated(
               padding: const EdgeInsets.all(10),
               itemBuilder: (BuildContext context, int index) {
                 return Row(
@@ -233,6 +240,7 @@ class _HomeScreenState extends State<HomeScreen> {
                             onPressed: () {
                               setState(() {
                                 receipts.receipts!.removeAt(index);
+                                // 삭제 구현 필요
                               });
                             },
                             icon: const Icon(Icons.delete)
@@ -245,7 +253,9 @@ class _HomeScreenState extends State<HomeScreen> {
                 thickness: 2,
               ),
               itemCount: receipts.receipts!.length
-          ))
+              )
+            )
+          )
         ],
       ),
       floatingActionButton: Container(
