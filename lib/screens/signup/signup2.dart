@@ -61,39 +61,43 @@ class Signin2 extends StatelessWidget {
                   Expanded(
                     child: Column(
                       children: [
-                        Container(
-                          alignment: Alignment.centerLeft,
-                          margin: const EdgeInsets.only(left: marginHorizontalHeader,bottom: marginVerticalBetweenWidgets),
-                          child: const Text("닉네임",
-                              style: TextStyle(
-                                  fontSize: fontSizeTextForm,
-                                  color: Colors.black,
-                                  fontWeight: FontWeight.w300),
-                              textAlign: TextAlign.left),
+                        Expanded(
+                          child: Container(
+                            alignment: Alignment.centerLeft,
+                            margin: const EdgeInsets.only(left: marginHorizontalHeader,bottom: marginVerticalBetweenWidgets),
+                            child: const Text("닉네임",
+                                style: TextStyle(
+                                    fontSize: fontSizeTextForm,
+                                    color: Colors.black,
+                                    fontWeight: FontWeight.w300),
+                                textAlign: TextAlign.left),
+                          ),
                         ),
-                        Container(
-                          alignment: Alignment.centerLeft,
-                          margin: const EdgeInsets.only(left: marginHorizontalHeader,right: marginHorizontalHeader),
-                          child: TextFormField(
-                            autovalidateMode: AutovalidateMode.onUserInteraction,
-                            validator: (value) {
-                              if (value == null || value.isEmpty) {
-                                return '입력칸을 채워주세요.';
-                              }
-                              if (!validNickname.hasMatch(nicknameInputController.text)) {
-                                return '잘못된 닉네임 형식입니다. 최소 4자리를 입력해주세요.';
-                              }
-                              return null;
-                            },
-                            decoration: const InputDecoration(
-                              border: OutlineInputBorder(),
-                              filled: true,
-                              fillColor: Colors.white,
-                              labelText: 'Nickname',
+                        Expanded(
+                          child: Container(
+                            alignment: Alignment.centerLeft,
+                            margin: const EdgeInsets.only(left: marginHorizontalHeader,right: marginHorizontalHeader),
+                            child: TextFormField(
+                              autovalidateMode: AutovalidateMode.onUserInteraction,
+                              validator: (value) {
+                                if (value == null || value.isEmpty) {
+                                  return '입력칸을 채워주세요.';
+                                }
+                                if (!validNickname.hasMatch(nicknameInputController.text)) {
+                                  return '잘못된 닉네임 형식입니다. 최소 4자리를 입력해주세요.';
+                                }
+                                return null;
+                              },
+                              decoration: const InputDecoration(
+                                border: OutlineInputBorder(),
+                                filled: true,
+                                fillColor: Colors.white,
+                                labelText: 'Nickname',
+                              ),
+                              style: const TextStyle(
+                                  fontSize: fontSizeInputText, color: Colors.black),
+                              controller: nicknameInputController,
                             ),
-                            style: const TextStyle(
-                                fontSize: fontSizeInputText, color: Colors.black),
-                            controller: nicknameInputController,
                           ),
                         ),
                       ],
@@ -103,43 +107,47 @@ class Signin2 extends StatelessWidget {
                   Expanded(
                     child: Column(
                       children: [
-                        Container(
-                          alignment: Alignment.centerLeft,
-                          margin: const EdgeInsets.only(left: marginHorizontalHeader,bottom: marginVerticalBetweenWidgets),
-                          child: const Text("이름",
-                              style: TextStyle(
-                                  fontSize: fontSizeTextForm,
-                                  color: Colors.black,
-                                  fontWeight: FontWeight.w300),
-                              textAlign: TextAlign.left),
+                        Expanded(
+                          child: Container(
+                            alignment: Alignment.centerLeft,
+                            margin: const EdgeInsets.only(left: marginHorizontalHeader,bottom: marginVerticalBetweenWidgets),
+                            child: const Text("이름",
+                                style: TextStyle(
+                                    fontSize: fontSizeTextForm,
+                                    color: Colors.black,
+                                    fontWeight: FontWeight.w300),
+                                textAlign: TextAlign.left),
+                          ),
                         ),
-                        Container(
-                          alignment: Alignment.centerLeft,
-                          margin: const EdgeInsets.only(left: marginHorizontalHeader,right: marginHorizontalHeader),
-                          child: TextFormField(
-                            inputFormatters: [
-                              FilteringTextInputFormatter(RegExp('[a-z A-Z ㄱ-ㅎ|가-힣|·|：]'),
-                                  allow: true)
-                            ],
-                            autovalidateMode: AutovalidateMode.onUserInteraction,
-                            validator: (value) {
-                              if (value == null || value.isEmpty) {
-                                return '입력칸을 채워주세요.';
-                              }
-                              if (!validName.hasMatch(nameInputController.text)) {
-                                return '잘못된 이름 형식입니다.';
-                              }
-                              return null;
-                            },
-                            decoration: const InputDecoration(
-                              border: OutlineInputBorder(),
-                              filled: true,
-                              fillColor: Colors.white,
-                              labelText: 'Name',
+                        Expanded(
+                          child: Container(
+                            alignment: Alignment.centerLeft,
+                            margin: const EdgeInsets.only(left: marginHorizontalHeader,right: marginHorizontalHeader),
+                            child: TextFormField(
+                              inputFormatters: [
+                                FilteringTextInputFormatter(RegExp('[a-z A-Z ㄱ-ㅎ|가-힣|·|：]'),
+                                    allow: true)
+                              ],
+                              autovalidateMode: AutovalidateMode.onUserInteraction,
+                              validator: (value) {
+                                if (value == null || value.isEmpty) {
+                                  return '입력칸을 채워주세요.';
+                                }
+                                if (!validName.hasMatch(nameInputController.text)) {
+                                  return '잘못된 이름 형식입니다.';
+                                }
+                                return null;
+                              },
+                              decoration: const InputDecoration(
+                                border: OutlineInputBorder(),
+                                filled: true,
+                                fillColor: Colors.white,
+                                labelText: 'Name',
+                              ),
+                              style: const TextStyle(
+                                  fontSize: fontSizeInputText, color: Colors.black),
+                              controller: nameInputController,
                             ),
-                            style: const TextStyle(
-                                fontSize: fontSizeInputText, color: Colors.black),
-                            controller: nameInputController,
                           ),
                         ),
                       ],
@@ -165,6 +173,7 @@ class Signin2 extends StatelessWidget {
                         UserAttributeApi.resetNickname(
                             nicknameInputController.text);
                         UserAttributeApi.resetName(nameInputController.text);
+                        UserAttributeApi.show();
                         // 화면 전환
                         Navigator.of(context).push(
                             MaterialPageRoute(builder: ((context) => Signin3())));

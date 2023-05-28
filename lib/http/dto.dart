@@ -51,6 +51,18 @@ class EmailResponse {
   }
 }
 
+class NicknameRequest {
+  String? nickname;
+
+  NicknameRequest({this.nickname});
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['nickname'] = nickname ?? "";
+    return data;
+  }
+}
+
 class UserResponse {
   String? birthday;
   String? email;
