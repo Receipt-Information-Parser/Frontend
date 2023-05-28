@@ -91,7 +91,7 @@ class _MyInfoSettingScreenState extends State<MyInfoSettingScreen> {
               String url = '${baseUrl}user/modify';
 
               // go to myinfo
-              await Modify(url, modifyRequest, tokenResponse.accessToken).then(
+              await modifyNickname(url, modifyRequest, tokenResponse.accessToken).then(
                   (value) {
                 Navigator.of(context).pushReplacement(
                     MaterialPageRoute(builder: ((context) => MyInfoScreen())));

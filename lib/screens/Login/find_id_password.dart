@@ -208,7 +208,7 @@ Future<dynamic> _showdialog_id(BuildContext context) {
   return showDialog(
     context: context,
     builder: (BuildContext context) => AlertDialog(
-      title: Text('이메일 찾기'),
+      title: Text('이메일 찾기', style: TextStyle(color: defaultColor),),
       content: Text('해당 닉네임의 이메일은 example@naver.com 입니다.'),
       actions: [
         ElevatedButton(

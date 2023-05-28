@@ -145,12 +145,12 @@ class Signin3_2 extends State<Signin3> {
                               alignment: Alignment.centerLeft,
                               child: ElevatedButton(
                                 style: ElevatedButton.styleFrom(
-                                    textStyle: const TextStyle(fontSize: fontSizeButton),
-                                    backgroundColor: Colors.white,
-                                    side: const BorderSide(
-                                      color: defaultColor,
-                                      width: 2,
-                                    )
+                                  textStyle: const TextStyle(fontSize: fontSizeButton),
+                                  backgroundColor: Colors.white,
+                                  side: const BorderSide(
+                                    color: defaultColor,
+                                    width: 2,
+                                  ),
                                 ),
                                 onPressed: () async {
                                   final selectedDate = await showDatePicker(
@@ -163,14 +163,19 @@ class Signin3_2 extends State<Signin3> {
                                   if (selectedDate != null) {
                                     setState(() {
                                       date = selectedDate;
+                                      UserAttributeApi.resetBirthdate(date);  // 선택된 날짜를 UserAttributeApi에 전달
                                     });
                                   }
-                                }, child: Text(DateFormat('yy-MM-dd').format(date),
+                                },
+                                child: Text(
+                                  DateFormat('yy-MM-dd').format(date),
                                   style: const TextStyle(
-                                      fontSize: fontSizeTextForm,
-                                      color: Colors.black,
-                                      fontWeight: FontWeight.normal),
-                                  textAlign: TextAlign.center),
+                                    fontSize: fontSizeTextForm,
+                                    color: Colors.black,
+                                    fontWeight: FontWeight.normal,
+                                  ),
+                                  textAlign: TextAlign.center,
+                                ),
                               ),
                             ),
                           ),
@@ -192,12 +197,11 @@ class Signin3_2 extends State<Signin3> {
                   onPressed: () async {
                     // 성별, 생년월일 전달 후
                     UserAttributeApi.resetGender(isSwitched);
-                    UserAttributeApi.resetBirthdate(
-                        DateTime.parse(birthInputController.text));
                     // debug
                     UserAttributeApi.show();
 
                     // 서버에 signin 요청 후
+                    print('[debug]: Signin Request start');
                     SignUpRequest signupRequest = SignUpRequest(
                       birthday: DateFormat('yyyy-MM-dd')
                           .format(UserAttributeApi.userAttribute!.birthDate),
@@ -208,7 +212,7 @@ class Signin3_2 extends State<Signin3> {
                       nickname: UserAttributeApi.userAttribute?.nickname,
                       password: UserAuthInfoApi.userAuthInfo?.password,
                     );
-
+                    print('[debug]: Signin Request end');
                     String url = '${baseUrl}user/signup';
 
                     // UserResponse로 password 변수 받을 수가 없음

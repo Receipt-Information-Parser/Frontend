@@ -18,7 +18,6 @@ class Signin1 extends StatelessWidget {
   TextEditingController pwInputController = TextEditingController();
   TextEditingController pwreInputController = TextEditingController();
   String vali = '';
-  final apiUrl = '${baseUrl}user/';
 
   @override
   Widget build(BuildContext context) {
@@ -85,13 +84,6 @@ class Signin1 extends StatelessWidget {
                             alignment: Alignment.centerLeft,
                             margin: const EdgeInsets.only(left: marginHorizontalHeader,right: marginHorizontalHeader),
                             child: TextFormField(
-                              onEditingComplete: () async {
-                                String url = '${apiUrl}exist';
-                                EmailRequest emailRequest =
-                                EmailRequest(email: emailInputController.text);
-                                EmailResponse emailResponse =
-                                await Email(url, emailRequest);
-                              },
                               autovalidateMode: AutovalidateMode.onUserInteraction,
                               validator: (value) {
                                 if (value == null || value.isEmpty) {
@@ -224,18 +216,42 @@ class Signin1 extends StatelessWidget {
                     backgroundColor: defaultColor,
                     minimumSize: const Size(widthButton, heightButton),
                   ),
-                  onPressed: () {
+                  onPressed: () async {
                     if (formGlobalKey.currentState!.validate()) {
-                      // 이메일 비밀번호 User 정보 수정 후
-                      UserAttributeApi.resetEmail(emailInputController.text);
-                      UserAuthInfoApi.resetEmail(emailInputController.text);
-                      UserAuthInfoApi.resetPW(pwInputController.text);
-                      UserAttributeApi.show();
-                      UserAuthInfoApi.show();
+                      String url = '${baseUrl}user/existsEmail';
+                      EmailRequest emailRequest =
+                      EmailRequest(email: emailInputController.text);
+                      EmailResponse emailResponse = await existsEmail(url, emailRequest);
+                      print(emailResponse.message);
+                      // "사용가능한 이메일입니다" 메시지가 아니라면 에러 다이얼로그 표시
+                      if (emailResponse.message != "사용가능한 이메일입니다") {
+                        showDialog(
+                          context: context,
+                          builder: (BuildContext context) {
+                            return AlertDialog(
+                              title: const Text("Error", style: TextStyle(color: defaultColor),),
+                              content: const Text("사용중인 계정입니다"),
+                              actions: [
+                                TextButton(
+                                  child: const Text("Close", style: TextStyle(color: defaultColor),),
+                                  onPressed: () {
+                                    Navigator.of(context).pop();
+                                  },
+                                ),
+                              ],
+                            );
+                          },
+                        );
+                      } else {
+                        // 이메일 비밀번호 User 정보 수정 후
+                        UserAttributeApi.resetEmail(emailInputController.text);
+                        UserAuthInfoApi.resetEmail(emailInputController.text);
+                        UserAuthInfoApi.resetPW(pwInputController.text);
 
-                      // 화면 전환
-                      Navigator.of(context).push(
-                          MaterialPageRoute(builder: ((context) => Signin2())));
+                        // 화면 전환
+                        Navigator.of(context).push(
+                            MaterialPageRoute(builder: ((context) => Signin2())));
+                      }
                     }
                   },
                   child: const Text('계속하기'),
