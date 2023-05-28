@@ -44,6 +44,10 @@ app.*.map.json
 /android/app/release
 
 # generated
+/windows/
+/web/
+/macos/
+/linux/
 *.cc
 *.h
 *.cmake
