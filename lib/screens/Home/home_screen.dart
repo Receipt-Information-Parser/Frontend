@@ -2,6 +2,8 @@ import 'dart:io';
 import 'dart:isolate';
 import 'dart:ui';
 
+import 'package:document_scanner_flutter/configs/configs.dart';
+import 'package:document_scanner_flutter/document_scanner_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_downloader/flutter_downloader.dart';
 import 'package:intl/intl.dart';
@@ -27,14 +29,21 @@ class HomeScreen extends StatefulWidget {
 }
 
 class BottomSheetWidget extends StatefulWidget {
-  const BottomSheetWidget({super.key});
+  final String token;
+
+  const BottomSheetWidget({super.key, required this.token});
 
   @override
-  _BottomSheetWidgetState createState() => _BottomSheetWidgetState();
+  _BottomSheetWidgetState createState() => _BottomSheetWidgetState(token);
 }
 
 
 class _BottomSheetWidgetState extends State<BottomSheetWidget> {
+  ReceiptProvider receiptProvider = ReceiptProvider('${baseUrl}receipt/add');
+  final String token;
+
+  _BottomSheetWidgetState(this.token);
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -56,6 +65,7 @@ class _BottomSheetWidgetState extends State<BottomSheetWidget> {
                 ),
                 leading: const Icon(Icons.camera_alt, size: 40,),
                 onTap: () {
+                  uploadImage(ScannerFileSource.CAMERA);
                 },
               ),
               ListTile(
@@ -70,11 +80,22 @@ class _BottomSheetWidgetState extends State<BottomSheetWidget> {
                 ),
                 leading: const Icon(Icons.photo, size: 40),
                 onTap: () {
+                  uploadImage(ScannerFileSource.GALLERY);
                 },
               ),
             ]
         ) //what you want to have inside, I suggest using a column
     );
+  }
+
+  void uploadImage(ScannerFileSource source) async {
+    File? file = await DocumentScannerFlutter.launch(context, source: source);
+
+    ReceiptResponse receiptResponse = await receiptProvider.addReceipt(token, file!.path);
+
+    print(receiptResponse.key);
+
+    // 영수증 상세 화면으로 전환
   }
 }
 
@@ -82,7 +103,7 @@ class _HomeScreenState extends State<HomeScreen> {
   bool? isChecked = false;
   bool isLoading = true;
 
-  String token = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJ1aWQiOjEsInN1YiI6InJlY2VpcHRtYXRlSnd0IiwiYXRoIjpudWxsLCJlbWwiOiJjaGFuaG8wMzA5QGdtYWlsLmNvbSIsImV4cCI6MTY4NTI2NTM1MywiaWF0IjoxNjg1MjYzNTUzfQ.u9LJZgRizeWRe0xsDbVMPzE3Cl4gmnjvL1p0_dCW77WU5M5fCOXV86Nb0NEbAo3f5O9EPwa8BzFeWNGzdNKl-Q";
+  String token = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJ1aWQiOjEsInN1YiI6InJlY2VpcHRtYXRlSnd0IiwiYXRoIjpudWxsLCJlbWwiOiJjaGFuaG8wMzA5QGdtYWlsLmNvbSIsImV4cCI6MTY4NTI4NjY5NiwiaWF0IjoxNjg1Mjg0ODk2fQ.o6L9m_hBe9iAZMcfvhjC0BrEQPt8OT_TBl33sVJxSVfaKDVsvVBgRtTppj9WWiUtzpHmAo5FGp_qRXyLnmpiWg";
   late ListReceiptResponses receipts;
   ReceiptProvider receiptProvider = ReceiptProvider('${baseUrl}receipt/list');
 
@@ -161,7 +182,17 @@ class _HomeScreenState extends State<HomeScreen> {
       ),
       body: isLoading ? const Center(child: CircularProgressIndicator(),) :Column(
         children: <Widget>[
-          Expanded(child: ListView.separated(
+          Expanded(child: receipts.receipts!.isEmpty ?
+            Container(
+              alignment: Alignment.center,
+              child: const Text(
+                "저장된 영수증이 없습니다.",
+                style: TextStyle(
+                  fontSize: 20
+                ),
+              )
+            )
+          : ListView.separated(
               padding: const EdgeInsets.all(10),
               itemBuilder: (BuildContext context, int index) {
                 return Row(
@@ -224,8 +255,8 @@ class _HomeScreenState extends State<HomeScreen> {
             child: FloatingActionButton(
               onPressed: () {
                 if (bottomSheetToggle == false) {
-                  _controller = scaffoldState.currentState?.showBottomSheet((context) => const BottomSheetWidget());
                   bottomSheetToggle = true;
+                  _controller = scaffoldState.currentState?.showBottomSheet((context) => BottomSheetWidget(token: token,));
                 } else {
                   _controller?.close();
                   bottomSheetToggle = false;
