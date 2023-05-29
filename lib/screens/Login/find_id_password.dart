@@ -28,7 +28,7 @@ class FindIDPW extends StatelessWidget {
           children: <Widget>[
             Expanded(
               child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.end,
                 children: [
                   Expanded(
                     child: Container(
@@ -248,6 +248,7 @@ Future<dynamic> _showdialog_noid(MessageResponse Message,BuildContext context) {
     ),
   );
 }
+
 Future<dynamic> _showdialog_password(BuildContext context) {
   return showDialog(
     context: context,

@@ -84,6 +84,7 @@ class Signin1 extends StatelessWidget {
                             alignment: Alignment.centerLeft,
                             margin: const EdgeInsets.only(left: marginHorizontalHeader,right: marginHorizontalHeader),
                             child: TextFormField(
+
                               autovalidateMode: AutovalidateMode.onUserInteraction,
                               validator: (value) {
                                 if (value == null || value.isEmpty) {

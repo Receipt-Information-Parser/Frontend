@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-
 const Color defaultColor = Color(0xff001454); // 앱 고유 색상
 
 const double fontSizeSmallButton = 14;// 가입하시겠습니까? 등의 작은 버튼의 fontsize
@@ -16,6 +15,8 @@ const double widthButton = 350;
 const double heightButton = 50;
 const double widthDownloadButton = 300;
 
-const String baseUrl = "http://10.0.2.2:19983/api/"; // api 주소
+
+const String baseUrl = "http://192.168.0.2:19983/api/"; // api 주소
+
 
 enum DETAIL_TYPE { APPLY, APPROVE } // 왼쪽부터 각각 신청자 등록, 신청자 확인

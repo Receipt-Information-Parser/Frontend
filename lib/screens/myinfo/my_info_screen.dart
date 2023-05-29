@@ -1,4 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:path_provider/path_provider.dart';
+import 'dart:io';
+
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:rip_front/constants.dart';
@@ -20,12 +24,65 @@ class _MyInfoScreenState extends State<MyInfoScreen> {
   String dummyName = '정우섭';
   DateTime dummyBirth = DateTime.now();
   String dummyEmail = 'example@naver.com';
-  String dummyNickname = '우끼끼맨';
 
   final validNickname = RegExp('[A-Za-z][A-Za-z0-9_]{3,29}');
   TextEditingController nicknameEditController = TextEditingController(
-      text: UserAttributeApi.getUserAttribute()?.nickname ?? "");
+      text: '우끼끼맨'
+  );
+
+  // text: UserAttributeApi.getUserAttribute()?.nickname ?? "");
   bool nicknameEditisEnable = false;
+
+  // 프로필 사진용
+  File? _imageFile;
+
+  Future<void> _chooseImage(ImageSource source) async {
+    final pickedFile = await ImagePicker().pickImage(source: source);
+    if (pickedFile != null) {
+      final appDir = await getApplicationDocumentsDirectory();
+      final fileName = pickedFile.path.split('/').last;
+      final newPath = '${appDir.path}lib/assets/profile/default_profile_icon.png';
+
+      final savedImage = await File(pickedFile.path).copy(newPath);
+
+      setState(() {
+        _imageFile = savedImage;
+      });
+    }
+  }
+
+  Future<ImageSource?> _showImageSourceDialog() async {
+    return await showDialog<ImageSource>(
+        context: context,
+        builder: (BuildContext context) {
+          return SimpleDialog(
+            title: const Text('Choose image source'),
+            children: <Widget>[
+              SimpleDialogOption(
+                onPressed: () {
+                  Navigator.pop(context, ImageSource.camera);
+                },
+                child: const Text('Camera'),
+              ),
+              SimpleDialogOption(
+                onPressed: () {
+                  Navigator.pop(context, ImageSource.gallery);
+                },
+                child: const Text('Gallery'),
+              ),
+            ],
+          );
+        });
+  }
+
+  ImageProvider _currentImageProvider() {
+    if (_imageFile != null) {
+      return FileImage(_imageFile!);
+    } else {
+      return AssetImage('lib/assets/profile/default_profile_icon.png');
+    }
+  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -89,7 +146,23 @@ class _MyInfoScreenState extends State<MyInfoScreen> {
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
-              // 프로필 이미지
+              Spacer(),
+              // Profile Picture UI
+              InkWell(
+                onTap: () async {
+                  ImageSource? selectedSource = await _showImageSourceDialog();
+                  if (selectedSource != null) {
+                    _chooseImage(selectedSource);
+                  }
+                },
+                child: CircleAvatar(
+                  radius: 50,
+                  backgroundColor: Colors.grey[200],
+                  backgroundImage: _currentImageProvider(),
+                ),
+              ),
+
+              Spacer(),
               Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -99,24 +172,23 @@ class _MyInfoScreenState extends State<MyInfoScreen> {
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
                       // 이름
-                      Text(dummyName, style: const TextStyle(fontSize: fontSizeMiddle,color: Colors.black, fontWeight: FontWeight.bold)),
+                      Container(
+                        child: Text(dummyName, style: const TextStyle(
+                            fontSize: fontSizeMiddle,
+                            color: Colors.black,
+                            fontWeight: FontWeight.bold)),
+                      ),
                       // 생년월일
-                      Text(DateFormat('yyyy/MM/dd').format(dummyBirth), style: const TextStyle(color: Colors.black)),
+                      Container(
+                        margin: EdgeInsets.only(left: marginHorizontalHeader),
+                        child: Text(DateFormat('yyyy/MM/dd').format(dummyBirth),
+                            style: const TextStyle(color: Colors.black)),
+                      ),
                     ],
                   ),
                   //이메일
-                  Text(dummyEmail, style: const TextStyle(fontSize: fontSizeSmallfont,color: Colors.black)),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      // 닉네임 text
-                      const Text('닉네임', style: TextStyle(fontSize: fontSizeInputText,color: Colors.black, fontWeight: FontWeight.bold)),
-                      // 실제 닉네임
-                      Text(dummyNickname, style: const TextStyle(fontSize: fontSizeSmallfont,color: Colors.black)),
-                      Icon(Icons.edit)
-                    ],
-                  ),
+                  Text(dummyEmail, style: const TextStyle(
+                      fontSize: fontSizeSmallfont, color: Colors.black)),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.start,
                     crossAxisAlignment: CrossAxisAlignment.center,
@@ -128,19 +200,28 @@ class _MyInfoScreenState extends State<MyInfoScreen> {
                             color: Colors.black,
                             fontWeight: FontWeight.bold),
                       ),
-                      TextFormField(
-                        autovalidateMode: AutovalidateMode.onUserInteraction,
-                        validator: (value) {
-                          if (value == null || value.isEmpty) {
-                            return '입력칸을 채워주세요.';
-                          }
-                          if (!validNickname.hasMatch(nicknameEditController.text)) {
-                            return '잘못된 닉네임 형식입니다. 최소 4자리를 입력해주세요.';
-                          }
-                          return null;
-                        },
-                        controller: nicknameEditController,
-                        enabled: nicknameEditisEnable,
+                      Container(
+                        margin: EdgeInsets.only(left: marginHorizontalHeader),
+                        child: Flexible(
+                          child: TextFormField(
+                            autovalidateMode: AutovalidateMode
+                                .onUserInteraction,
+                            validator: (value) {
+                              if (value == null || value.isEmpty) {
+                                return '입력칸을 채워주세요.';
+                              }
+                              if (!validNickname.hasMatch(
+                                  nicknameEditController.text)) {
+                                return '최소 4자리를 입력해주세요.';
+                              }
+                              // 중복확인
+                              return null;
+                            },
+                            controller: nicknameEditController,
+                            enabled: nicknameEditisEnable,
+                          ),
+                        ),
+                        width: 100,
                       ),
                       IconButton(
                           icon: const Icon(Icons.edit),
@@ -148,6 +229,7 @@ class _MyInfoScreenState extends State<MyInfoScreen> {
                             setState(() {
                               if (nicknameEditisEnable) {
                                 nicknameEditisEnable = false;
+                                // 수정된 닉네임으로 업데이트
                               } else {
                                 nicknameEditisEnable = true;
                               }
@@ -156,7 +238,8 @@ class _MyInfoScreenState extends State<MyInfoScreen> {
                     ],
                   ),
                 ],
-              )
+              ),
+              const Spacer(),
             ],
           ),
 
@@ -209,7 +292,7 @@ class _MyInfoScreenState extends State<MyInfoScreen> {
                     builder: ((context) => const HomeScreen())));
               },
               child:
-                  const Text('엑셀로 저장하기', style: TextStyle(color: defaultColor)),
+              const Text('엑셀로 저장하기', style: TextStyle(color: defaultColor)),
             ),
           ),
           // 분석 자료 사진으로 저장하기
@@ -259,10 +342,10 @@ class _MyInfoScreenState extends State<MyInfoScreen> {
                 break;
 
               case 1:
-                // Navigator.of(context)
-                //     .pushReplacement(MaterialPageRoute(builder: ((context) {
-                //       //영수증 추가화면 merge
-                // })));
+              // Navigator.of(context)
+              //     .pushReplacement(MaterialPageRoute(builder: ((context) {
+              //       //영수증 추가화면 merge
+              // })));
                 break;
 
               case 2:
