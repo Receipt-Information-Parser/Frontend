@@ -140,8 +140,8 @@ Future<MessageResponse> resetPassword(String url, EmailRequest emailRequest) asy
     body: jsonEncode(emailRequest.toJson()),
   );
 
-  if (response.statusCode == 200) {
-    return MessageResponse.fromJson(jsonDecode(response.body));
+  if (response.statusCode == 200 ||  response.statusCode == 400) {
+    return MessageResponse.fromJson(jsonDecode(utf8.decode(response.bodyBytes)));
   } else {
     throw Exception('Failed to reset password.');
   }

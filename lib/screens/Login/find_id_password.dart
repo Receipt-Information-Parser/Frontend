@@ -196,9 +196,17 @@ class FindIDPW extends StatelessWidget {
                             backgroundColor: defaultColor,
                             minimumSize: const Size(widthButton, heightButton),
                           ),
-                          onPressed: () {
-                            // 화면 전환 (이메일 존재시 비밀번호 재설정 창 출력, 이메일 부재시 Error message 출력)
-                            _showdialog_password(context);
+                          onPressed: () async{
+                            String url = '${baseUrl}user/reset';
+                            EmailRequest emailRequest = EmailRequest(email: emailInputController.text);
+                            MessageResponse resetPWresponse = await resetPassword(url, emailRequest);
+                            // "존재하지 않는 계정입니다" 메시지라면 에러 다이얼로그 표시
+                            if (resetPWresponse.message == "존재하지 않는 계정입니다") {
+                              _showdialog_noid(resetPWresponse,context);
+                            } else {
+                              // 화면 전환 (이메일 존재시 비밀번호 재설정 창 출력, 이메일 부재시 Error message 출력)
+                              _showdialog_password(context);
+                            }
                           },
                           child: const Text('비밀번호 재설정')),
                     ),
