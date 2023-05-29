@@ -1,125 +1,128 @@
 import 'package:flutter/material.dart';
 import 'package:syncfusion_flutter_datagrid/datagrid.dart';
 
-/// The home page of the application which hosts the datagrid.
-class MyHomePage extends StatefulWidget {
-  /// Creates the home page.
-  MyHomePage({Key? key}) : super(key: key);
+class DetailScreen extends StatefulWidget {
+  const DetailScreen({super.key});
 
   @override
-  _MyHomePageState createState() => _MyHomePageState();
+  _DetailScreenState createState() => _DetailScreenState();
 }
 
-class _MyHomePageState extends State<MyHomePage> {
-  List<Employee> employees = <Employee>[];
-  late EmployeeDataSource employeeDataSource;
+class _DetailScreenState extends State<DetailScreen> {
+  Map<String, dynamic> data = <String, dynamic>{};
+  late DetailDataSource detailDataSource;
 
   @override
   void initState() {
     super.initState();
-    employees = getEmployeeData();
-    employeeDataSource = EmployeeDataSource(employeeData: employees);
+    data = getDetailData();
+    detailDataSource = DetailDataSource(data: data);
   }
 
   @override
   Widget build(BuildContext context) {
+    var columns = <GridColumn>[];
+
+    for (int i = 0; i < data['columns'].length; i++) {
+      columns.add(
+        GridColumn(
+            columnName: data['columns'][i],
+            label: Container(
+                padding: const EdgeInsets.all(16.0),
+                alignment: Alignment.center,
+                child: Text(
+                  data['columns'][i],
+                )))
+      );
+    }
+
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Syncfusion Flutter DataGrid'),
+        title: const Text('상세 내역'),
       ),
       body: SfDataGrid(
-        source: employeeDataSource,
+        selectionMode: SelectionMode.singleDeselect,
+        allowEditing: true,
+        allowSwiping: true,
+        editingGestureType: EditingGestureType.doubleTap,
+        allowPullToRefresh: true,
+        source: detailDataSource,
+        gridLinesVisibility: GridLinesVisibility.both,
         columnWidthMode: ColumnWidthMode.fill,
-        columns: <GridColumn>[
-          GridColumn(
-              columnName: 'id',
-              label: Container(
-                  padding: EdgeInsets.all(16.0),
-                  alignment: Alignment.center,
-                  child: Text(
-                    'ID',
-                  ))),
-          GridColumn(
-              columnName: 'name',
-              label: Container(
-                  padding: EdgeInsets.all(8.0),
-                  alignment: Alignment.center,
-                  child: Text('Name'))),
-          GridColumn(
-              columnName: 'designation',
-              label: Container(
-                  padding: EdgeInsets.all(8.0),
-                  alignment: Alignment.center,
-                  child: Text(
-                    'Designation',
-                    overflow: TextOverflow.ellipsis,
-                  ))),
-          GridColumn(
-              columnName: 'salary',
-              label: Container(
-                  padding: EdgeInsets.all(8.0),
-                  alignment: Alignment.center,
-                  child: Text('Salary'))),
-        ],
+        columns: columns
       ),
     );
   }
 
-  List<Employee> getEmployeeData() {
-    return [
-      Employee(10001, 'James', 'Project Lead', 20000),
-      Employee(10002, 'Kathryn', 'Manager', 30000),
-      Employee(10003, 'Lara', 'Developer', 15000),
-      Employee(10004, 'Michael', 'Designer', 15000),
-      Employee(10005, 'Martin', 'Developer', 15000),
-      Employee(10006, 'Newberry', 'Developer', 15000),
-      Employee(10007, 'Balnc', 'Developer', 15000),
-      Employee(10008, 'Perry', 'Developer', 15000),
-      Employee(10009, 'Gable', 'Developer', 15000),
-      Employee(10010, 'Grimes', 'Developer', 15000)
-    ];
+  Map<String, dynamic> getDetailData() {
+    String dummyCSV = ',품 명 ,수 량 ,금 액\n0,Ice)카페라떼,1.0,1700\n1,(Size)M,,0\n2,,,1700원';
+    final lines = dummyCSV.split('\n');
+    final columns = lines[0].split(',');
+
+    var data = <String, dynamic>{};
+    data['columns'] = columns;
+
+    List<Map<String, String>> rows = <Map<String, String>>[];
+
+    for (int i = 1; i < lines.length; i++) {
+      var split = lines[i].split(',');
+      var map = <String, String>{};
+      for (int j = 0; j < split.length; j++) {
+        String columnName = columns[j].toString();
+
+        if (columnName == "") {
+          columnName = "---";
+        }
+
+        String value = split[j].toString();
+
+        if (value == "") {
+          value = "---";
+        }
+
+        map[columnName] = value;
+      }
+      rows.add(map);
+    }
+
+    data['rows'] = rows;
+
+    return data;
   }
 }
 
-/// Custom business object class which contains properties to hold the detailed
-/// information about the employee which will be rendered in datagrid.
-class Employee {
-  /// Creates the employee class with required details.
-  Employee(this.id, this.name, this.designation, this.salary);
 
-  /// Id of an employee.
-  final int id;
+class DetailDataSource extends DataGridSource {
+  DetailDataSource({required Map<String, dynamic> data}) {
+    final columns = data['columns'];
+    final rows = data['rows'];
+    var gridData = <DataGridRow>[];
+    for (int i = 0; i < rows.length; i++) {
+      var gridRow = <DataGridCell>[];
 
-  /// Name of an employee.
-  final String name;
+      for (int j = 0; j < columns.length; j++) {
 
-  /// Designation of an employee.
-  final String designation;
+        var value = rows[i][columns[j]];
 
-  /// Salary of an employee.
-  final int salary;
-}
+        value ??= "---";
 
-/// An object to set the employee collection data source to the datagrid. This
-/// is used to map the employee data to the datagrid widget.
-class EmployeeDataSource extends DataGridSource {
-  /// Creates the employee data source class with required details.
-  EmployeeDataSource({required List<Employee> employeeData}) {
-    _employeeData = employeeData
-        .map<DataGridRow>((e) => DataGridRow(cells: [
-      DataGridCell<int>(columnName: 'id', value: e.id),
-      DataGridCell<String>(columnName: 'name', value: e.name),
-      DataGridCell<String>(
-          columnName: 'designation', value: e.designation),
-      DataGridCell<int>(columnName: 'salary', value: e.salary),
-    ]))
-        .toList();
+        gridRow.add(
+          DataGridCell<String>(columnName: columns[j], value: value)
+        );
+      }
+      var dataRow = DataGridRow(
+          cells : gridRow
+      );
+      gridData.add(dataRow);
+    }
+
+    detailData = gridData;
   }
 
-  List<DataGridRow> _employeeData = [];
+  List<DataGridRow> detailData = [];
 
   @override
-  List<DataGridRow> get rows => _employeeData;
+  List<DataGridRow> get rows => detailData;
 
   @override
   DataGridRowAdapter buildRow(DataGridRow row) {
@@ -127,7 +130,7 @@ class EmployeeDataSource extends DataGridSource {
         cells: row.getCells().map<Widget>((e) {
           return Container(
             alignment: Alignment.center,
-            padding: EdgeInsets.all(8.0),
+            padding: const EdgeInsets.all(8.0),
             child: Text(e.value.toString()),
           );
         }).toList());

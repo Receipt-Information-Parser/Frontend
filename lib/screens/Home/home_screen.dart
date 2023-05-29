@@ -104,7 +104,7 @@ class _HomeScreenState extends State<HomeScreen> {
   bool? isChecked = false;
   bool isLoading = true;
 
-  String token = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJ1aWQiOjEsInN1YiI6InJlY2VpcHRtYXRlSnd0IiwiYXRoIjpudWxsLCJlbWwiOiJjaGFuaG8wMzA5QGdtYWlsLmNvbSIsImV4cCI6MTY4NTMxNzgwNSwiaWF0IjoxNjg1MzE2MDA1fQ.cVqCwrLcRe2QfuIUrhENVEALxGuI_tey0z9vsjqvIdqdLt-wDhcDNLdSQipE9sl92OV5R2eLGQDMvRc-NcnWFw";
+  String token = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJ1aWQiOjEsInN1YiI6InJlY2VpcHRtYXRlSnd0IiwiYXRoIjpudWxsLCJlbWwiOiJjaGFuaG8wMzA5QGdtYWlsLmNvbSIsImV4cCI6MTY4NTMyOTk2NiwiaWF0IjoxNjg1MzI4MTY2fQ.lqVtKUhcRH_p_iLDWreE43KbeQRS1SMAish4N2z6BNNW9iEI-Sq3dfJ997ZITI16ub4x6BGQvAEDRsoQmjg_lQ";
   late ListReceiptResponses receipts;
   ReceiptProvider receiptProvider = ReceiptProvider('${baseUrl}receipt');
 
@@ -215,7 +215,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                 onPressed: () {
                                   Navigator.of(context)
                                       .pushReplacement(MaterialPageRoute(builder: ((context) {
-                                    return MyHomePage();
+                                    return DetailScreen();
                                   })));
                                 },
                                 child: Text(
