@@ -92,24 +92,24 @@ Future<UserResponse> modifyNickname(
     body: json.encode(modifyRequest.toJson()),
   );
   if (response.statusCode == 200) {
-    return UserResponse.fromJson(jsonDecode(response.body));
+    return UserResponse.fromJson(jsonDecode(utf8.decode(response.bodyBytes)));
   } else {
     return Future.error(
         '${json.decode(utf8.decode(response.bodyBytes))['status']}: Failed to modify nickname');
   }
 }
 
-Future<EmailResponse> existsNickname(NicknameRequest nicknameRequest) async {
+Future<EmailResponse> existsNickname(String url, NicknameRequest nicknameRequest) async {
   final response = await http.post(
-    Uri.parse('http://localhost:19983/api/user/existsNickname'),
+    Uri.parse(url),
     headers: <String, String>{
       'Content-Type': 'application/json; charset=UTF-8',
     },
     body: jsonEncode(nicknameRequest.toJson()),
   );
 
-  if (response.statusCode == 200) {
-    return EmailResponse.fromJson(jsonDecode(response.body));
+  if (response.statusCode == 200 || response.statusCode == 400) {
+    return EmailResponse.fromJson(jsonDecode(utf8.decode(response.bodyBytes)));
   } else {
     throw Exception('Failed to check nickname.');
   }

@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:rip_front/constants.dart';
+import 'package:rip_front/http/dto.dart';
+import 'package:rip_front/http/request.dart';
 
 import '../../../providers/user_attribute_api.dart';
 import 'signup3.dart';
@@ -167,16 +169,41 @@ class Signin2 extends StatelessWidget {
                       backgroundColor: defaultColor,
                       minimumSize: const Size(widthButton, heightButton),
                     ),
-                    onPressed: () {
+                    onPressed: () async {
                       if (formGlobalKey.currentState!.validate()) {
-                        // 닉네임 이름 수정 후
-                        UserAttributeApi.resetNickname(
-                            nicknameInputController.text);
-                        UserAttributeApi.resetName(nameInputController.text);
-                        UserAttributeApi.show();
-                        // 화면 전환
-                        Navigator.of(context).push(
-                            MaterialPageRoute(builder: ((context) => Signin3())));
+                        String url = '${baseUrl}user/existsNickname';
+                        NicknameRequest nickNameRequest = NicknameRequest(nickname: nicknameInputController.text);
+                        EmailResponse nickNameResponse = await existsNickname(url, nickNameRequest);
+                        print(nickNameResponse.message);
+                        // "사용가능한 이메일입니다" 메시지가 아니라면 에러 다이얼로그 표시
+                        if (nickNameResponse.message != "사용가능한 닉네임입니다") {
+                          showDialog(
+                            context: context,
+                            builder: (BuildContext context) {
+                              return AlertDialog(
+                                title: const Text("Error", style: TextStyle(color: defaultColor),),
+                                content: const Text("사용중인 닉네임입니다"),
+                                actions: [
+                                  TextButton(
+                                    child: const Text("Close", style: TextStyle(color: defaultColor),),
+                                    onPressed: () {
+                                      Navigator.of(context).pop();
+                                    },
+                                  ),
+                                ],
+                              );
+                            },
+                          );
+                        } else {
+                          // 닉네임 이름 수정 후
+                              UserAttributeApi.resetNickname(
+                                  nicknameInputController.text);
+                              UserAttributeApi.resetName(nameInputController.text);
+                              UserAttributeApi.show();
+                              // 화면 전환
+                              Navigator.of(context).push(
+                                  MaterialPageRoute(builder: ((context) => Signin3())));
+                        }
                       }
                     },
                     child: const Text('계속하기')),
