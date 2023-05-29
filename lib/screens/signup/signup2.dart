@@ -11,7 +11,7 @@ class Signin2 extends StatelessWidget {
   Signin2({Key? key}) : super(key: key);
   final formGlobalKey = GlobalKey<FormState>();
   final validName = RegExp(r"^[가-힣]{2,4}|[A-Za-z\s]{2,30}$");
-  final validNickname = RegExp('[A-Za-z][A-Za-z0-9_]{3,29}');
+  final validNickname = RegExp(r"^(?=.*[a-z0-9가-힣])[a-z0-9가-힣]{2,16}$");
   TextEditingController nameInputController = TextEditingController();
   TextEditingController nicknameInputController = TextEditingController();
 
@@ -86,7 +86,7 @@ class Signin2 extends StatelessWidget {
                                   return '입력칸을 채워주세요.';
                                 }
                                 if (!validNickname.hasMatch(nicknameInputController.text)) {
-                                  return '잘못된 닉네임 형식입니다. 최소 4자리를 입력해주세요.';
+                                  return '잘못된 닉네임 형식입니다. 최소 2자리를 입력해주세요.';
                                 }
                                 return null;
                               },
