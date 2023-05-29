@@ -115,25 +115,25 @@ Future<MessageResponse> existsNickname(String url, NicknameRequest nicknameReque
   }
 }
 
-Future<MessageResponse> getNickname(NicknameRequest nicknameRequest) async {
+Future<MessageResponse> getEmail(String url, NicknameRequest nicknameRequest) async {
   final response = await http.post(
-    Uri.parse('http://localhost:19983/api/user/getNickname'),
+    Uri.parse(url),
     headers: <String, String>{
       'Content-Type': 'application/json; charset=UTF-8',
     },
     body: jsonEncode(nicknameRequest.toJson()),
   );
 
-  if (response.statusCode == 200) {
-    return MessageResponse.fromJson(jsonDecode(response.body));
+  if (response.statusCode == 200 || response.statusCode == 400) {
+    return MessageResponse.fromJson(jsonDecode(utf8.decode(response.bodyBytes)));
   } else {
     throw Exception('Failed to get email by nickname.');
   }
 }
 
-Future<MessageResponse> resetPassword(EmailRequest emailRequest) async {
+Future<MessageResponse> resetPassword(String url, EmailRequest emailRequest) async {
   final response = await http.post(
-    Uri.parse('http://localhost:19983/api/user/reset'),
+    Uri.parse(url),
     headers: <String, String>{
       'Content-Type': 'application/json; charset=UTF-8',
     },
