@@ -34,20 +34,36 @@ class EmailRequest {
 
   EmailRequest({this.email});
 
+  EmailRequest.fromJson(Map<String, dynamic> json) {
+    email = json['email'];
+  }
+
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = <String, dynamic>{};
-    data['email'] = email ?? "";
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['email'] = this.email;
     return data;
   }
 }
 
-class EmailResponse {
+class MessageResponse {
   String? message;
 
-  EmailResponse({this.message});
+  MessageResponse({this.message});
 
-  EmailResponse.fromJson(Map<String, dynamic> json) {
+  MessageResponse.fromJson(Map<String, dynamic> json) {
     message = json['message'] ?? "";
+  }
+}
+
+class NicknameRequest {
+  String? nickname;
+
+  NicknameRequest({this.nickname});
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['nickname'] = nickname ?? "";
+    return data;
   }
 }
 

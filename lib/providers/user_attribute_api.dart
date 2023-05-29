@@ -45,6 +45,6 @@ class UserAttributeApi {
 
   static void show() {
     print(
-        "[Debug]\nemail: ${userAttribute?.email}\nnickname: ${userAttribute?.nickname}\nname: ${userAttribute?.name}\ngender: ${userAttribute?.gender}\nbirthday: ${userAttribute?.birthDate}\nfield: ${userAttribute?.field}");
+        "[Debug UserAtt]\nemail: ${userAttribute?.email}\nnickname: ${userAttribute?.nickname}\nname: ${userAttribute?.name}\ngender: ${userAttribute?.gender}\nbirthday: ${userAttribute?.birthDate}\nfield: ${userAttribute?.field}");
   }
 }
