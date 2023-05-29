@@ -2,20 +2,26 @@ import 'package:flutter/material.dart';
 import 'package:syncfusion_flutter_datagrid/datagrid.dart';
 
 class DetailScreen extends StatefulWidget {
-  const DetailScreen({super.key});
+  final String csv;
+
+  const DetailScreen({super.key, required this.csv});
 
   @override
-  _DetailScreenState createState() => _DetailScreenState();
+  _DetailScreenState createState() => _DetailScreenState(csv);
 }
 
 class _DetailScreenState extends State<DetailScreen> {
+  final String csv;
+
+  _DetailScreenState(this.csv);
+
   Map<String, dynamic> data = <String, dynamic>{};
   late DetailDataSource detailDataSource;
 
   @override
   void initState() {
     super.initState();
-    data = getDetailData();
+    data = getDetailData(csv);
     detailDataSource = DetailDataSource(data: data);
   }
 
@@ -54,9 +60,8 @@ class _DetailScreenState extends State<DetailScreen> {
     );
   }
 
-  Map<String, dynamic> getDetailData() {
-    String dummyCSV = ',품 명 ,수 량 ,금 액\n0,Ice)카페라떼,1.0,1700\n1,(Size)M,,0\n2,,,1700원';
-    final lines = dummyCSV.split('\n');
+  Map<String, dynamic> getDetailData(String csv) {
+    final lines = csv.split('\n');
     final columns = lines[0].split(',');
 
     var data = <String, dynamic>{};

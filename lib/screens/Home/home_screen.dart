@@ -104,7 +104,7 @@ class _HomeScreenState extends State<HomeScreen> {
   bool? isChecked = false;
   bool isLoading = true;
 
-  String token = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJ1aWQiOjEsInN1YiI6InJlY2VpcHRtYXRlSnd0IiwiYXRoIjpudWxsLCJlbWwiOiJjaGFuaG8wMzA5QGdtYWlsLmNvbSIsImV4cCI6MTY4NTMyOTk2NiwiaWF0IjoxNjg1MzI4MTY2fQ.lqVtKUhcRH_p_iLDWreE43KbeQRS1SMAish4N2z6BNNW9iEI-Sq3dfJ997ZITI16ub4x6BGQvAEDRsoQmjg_lQ";
+  String token = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJ1aWQiOjEsInN1YiI6InJlY2VpcHRtYXRlSnd0IiwiYXRoIjpudWxsLCJlbWwiOiJjaGFuaG8wMzA5QGdtYWlsLmNvbSIsImV4cCI6MTY4NTMzMzI1MiwiaWF0IjoxNjg1MzMxNDUyfQ.ywGL7hxVtlvULUMjvxuUwICdNYJ7WR1yfxGwSK2LQ3frUI_TkNpYfT53hmGG_ACyW2gXKaDefr28jHlVCnEDEw";
   late ListReceiptResponses receipts;
   ReceiptProvider receiptProvider = ReceiptProvider('${baseUrl}receipt');
 
@@ -212,10 +212,13 @@ class _HomeScreenState extends State<HomeScreen> {
                               alignment: Alignment.centerLeft,
                               height: 50,
                               child: TextButton(
-                                onPressed: () {
+                                onPressed: () async {
+
+                                  final csv = await receiptProvider.getReceipt(token, receipts.receipts![index].key);
+
                                   Navigator.of(context)
                                       .pushReplacement(MaterialPageRoute(builder: ((context) {
-                                    return DetailScreen();
+                                    return DetailScreen(csv: csv);
                                   })));
                                 },
                                 child: Text(
