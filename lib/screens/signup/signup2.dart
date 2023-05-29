@@ -173,7 +173,7 @@ class Signin2 extends StatelessWidget {
                       if (formGlobalKey.currentState!.validate()) {
                         String url = '${baseUrl}user/existsNickname';
                         NicknameRequest nickNameRequest = NicknameRequest(nickname: nicknameInputController.text);
-                        EmailResponse nickNameResponse = await existsNickname(url, nickNameRequest);
+                        MessageResponse nickNameResponse = await existsNickname(url, nickNameRequest);
                         print(nickNameResponse.message);
                         // "사용가능한 이메일입니다" 메시지가 아니라면 에러 다이얼로그 표시
                         if (nickNameResponse.message != "사용가능한 닉네임입니다") {

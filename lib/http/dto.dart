@@ -45,12 +45,12 @@ class EmailRequest {
   }
 }
 
-class EmailResponse {
+class MessageResponse {
   String? message;
 
-  EmailResponse({this.message});
+  MessageResponse({this.message});
 
-  EmailResponse.fromJson(Map<String, dynamic> json) {
+  MessageResponse.fromJson(Map<String, dynamic> json) {
     message = json['message'] ?? "";
   }
 }

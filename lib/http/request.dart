@@ -65,7 +65,7 @@ Future<UserResponse> Login(String url, LoginRequest loginRequest) async {
 //   }
 // }
 
-Future<EmailResponse> existsEmail(String url, EmailRequest emailRequest) async {
+Future<MessageResponse> existsEmail(String url, EmailRequest emailRequest) async {
   final response = await http.post(
     Uri.parse(url),
     headers: <String, String>{
@@ -75,7 +75,7 @@ Future<EmailResponse> existsEmail(String url, EmailRequest emailRequest) async {
   );
   if (response.statusCode == 200 || response.statusCode == 400) {
     // 한글 response시 decode 방식
-    return EmailResponse.fromJson(jsonDecode(utf8.decode(response.bodyBytes)));
+    return MessageResponse.fromJson(jsonDecode(utf8.decode(response.bodyBytes)));
   } else {
     throw Exception('Failed to check email existence');
   }
@@ -99,7 +99,7 @@ Future<UserResponse> modifyNickname(
   }
 }
 
-Future<EmailResponse> existsNickname(String url, NicknameRequest nicknameRequest) async {
+Future<MessageResponse> existsNickname(String url, NicknameRequest nicknameRequest) async {
   final response = await http.post(
     Uri.parse(url),
     headers: <String, String>{
@@ -109,13 +109,13 @@ Future<EmailResponse> existsNickname(String url, NicknameRequest nicknameRequest
   );
 
   if (response.statusCode == 200 || response.statusCode == 400) {
-    return EmailResponse.fromJson(jsonDecode(utf8.decode(response.bodyBytes)));
+    return MessageResponse.fromJson(jsonDecode(utf8.decode(response.bodyBytes)));
   } else {
     throw Exception('Failed to check nickname.');
   }
 }
 
-Future<EmailResponse> getNickname(NicknameRequest nicknameRequest) async {
+Future<MessageResponse> getNickname(NicknameRequest nicknameRequest) async {
   final response = await http.post(
     Uri.parse('http://localhost:19983/api/user/getNickname'),
     headers: <String, String>{
@@ -125,13 +125,13 @@ Future<EmailResponse> getNickname(NicknameRequest nicknameRequest) async {
   );
 
   if (response.statusCode == 200) {
-    return EmailResponse.fromJson(jsonDecode(response.body));
+    return MessageResponse.fromJson(jsonDecode(response.body));
   } else {
     throw Exception('Failed to get email by nickname.');
   }
 }
 
-Future<EmailResponse> resetPassword(EmailRequest emailRequest) async {
+Future<MessageResponse> resetPassword(EmailRequest emailRequest) async {
   final response = await http.post(
     Uri.parse('http://localhost:19983/api/user/reset'),
     headers: <String, String>{
@@ -141,7 +141,7 @@ Future<EmailResponse> resetPassword(EmailRequest emailRequest) async {
   );
 
   if (response.statusCode == 200) {
-    return EmailResponse.fromJson(jsonDecode(response.body));
+    return MessageResponse.fromJson(jsonDecode(response.body));
   } else {
     throw Exception('Failed to reset password.');
   }

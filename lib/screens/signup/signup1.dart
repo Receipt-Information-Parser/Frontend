@@ -221,7 +221,7 @@ class Signin1 extends StatelessWidget {
                       String url = '${baseUrl}user/existsEmail';
                       EmailRequest emailRequest =
                       EmailRequest(email: emailInputController.text);
-                      EmailResponse emailResponse = await existsEmail(url, emailRequest);
+                      MessageResponse emailResponse = await existsEmail(url, emailRequest);
                       print(emailResponse.message);
                       // "사용가능한 이메일입니다" 메시지가 아니라면 에러 다이얼로그 표시
                       if (emailResponse.message != "사용가능한 이메일입니다") {
