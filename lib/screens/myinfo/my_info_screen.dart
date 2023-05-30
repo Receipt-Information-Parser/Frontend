@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:path_provider/path_provider.dart';
 import 'dart:io';
 
 import 'package:intl/intl.dart';
@@ -13,7 +12,6 @@ import '../../../http/dto.dart';
 import '../../../models/user_attribute.dart';
 import '../../../providers/user_attribute_api.dart';
 import '../Home/home_screen.dart';
-import 'my_info_setting_screen.dart';
 
 class MyInfoScreen extends StatefulWidget {
   @override
@@ -33,16 +31,12 @@ class _MyInfoScreenState extends State<MyInfoScreen> {
   File? _imageFile;
 
   Future<void> _chooseImage(ImageSource source) async {
-    final pickedFile = await ImagePicker().pickImage(source: source);
-    if (pickedFile != null) {
-      final appDir = await getApplicationDocumentsDirectory();
-      final fileName = pickedFile.path.split('/').last;
-      final newPath = '${appDir.path}lib/assets/profile/default_profile_icon.png';
+    final ImagePicker _picker = ImagePicker();
+    final XFile? image = await _picker.pickImage(source: source);
 
-      final savedImage = await File(pickedFile.path).copy(newPath);
-
+    if (image != null) {
       setState(() {
-        _imageFile = savedImage;
+        _imageFile = File(image.path);
       });
     }
   }
@@ -75,7 +69,7 @@ class _MyInfoScreenState extends State<MyInfoScreen> {
     if (_imageFile != null) {
       return FileImage(_imageFile!);
     } else {
-      return AssetImage('lib/assets/profile/default_profile_icon.png');
+      return AssetImage('lib/assets/profile/default_profile_icon.jpg');
     }
   }
 
