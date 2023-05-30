@@ -71,7 +71,7 @@ flutter:
   assets:
     - lib/assets/splash_logo.png
     - lib/assets/kakaotalk_logo.png
-    - lib/assets/profile/default_profile_icon.png
+    - lib/assets/profile/default_profile_icon.jpg
 
   #   - images/a_dot_burr.jpeg
   #   - images/a_dot_ham.jpeg

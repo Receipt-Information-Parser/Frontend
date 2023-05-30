@@ -1,18 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:path_provider/path_provider.dart';
 import 'dart:io';
 
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:rip_front/constants.dart';
+import 'package:rip_front/http/request.dart';
 import 'package:rip_front/models/current_index.dart';
 
 import '../../../http/dto.dart';
 import '../../../models/user_attribute.dart';
 import '../../../providers/user_attribute_api.dart';
 import '../Home/home_screen.dart';
-import 'my_info_setting_screen.dart';
 
 class MyInfoScreen extends StatefulWidget {
   @override
@@ -20,33 +19,24 @@ class MyInfoScreen extends StatefulWidget {
 }
 
 class _MyInfoScreenState extends State<MyInfoScreen> {
-  // dummy data
-  String dummyName = '정우섭';
-  DateTime dummyBirth = DateTime.now();
-  String dummyEmail = 'example@naver.com';
+  final validNickname = RegExp(r"^(?=.*[a-z0-9가-힣])[a-z0-9가-힣]{2,16}$");
 
-  final validNickname = RegExp('[A-Za-z][A-Za-z0-9_]{3,29}');
   TextEditingController nicknameEditController = TextEditingController(
-      text: '우끼끼맨'
+      text: UserAttributeApi.getUserAttribute()?.nickname ?? ""
   );
 
-  // text: UserAttributeApi.getUserAttribute()?.nickname ?? "");
   bool nicknameEditisEnable = false;
 
   // 프로필 사진용
   File? _imageFile;
 
   Future<void> _chooseImage(ImageSource source) async {
-    final pickedFile = await ImagePicker().pickImage(source: source);
-    if (pickedFile != null) {
-      final appDir = await getApplicationDocumentsDirectory();
-      final fileName = pickedFile.path.split('/').last;
-      final newPath = '${appDir.path}lib/assets/profile/default_profile_icon.png';
+    final ImagePicker _picker = ImagePicker();
+    final XFile? image = await _picker.pickImage(source: source);
 
-      final savedImage = await File(pickedFile.path).copy(newPath);
-
+    if (image != null) {
       setState(() {
-        _imageFile = savedImage;
+        _imageFile = File(image.path);
       });
     }
   }
@@ -79,7 +69,7 @@ class _MyInfoScreenState extends State<MyInfoScreen> {
     if (_imageFile != null) {
       return FileImage(_imageFile!);
     } else {
-      return AssetImage('lib/assets/profile/default_profile_icon.png');
+      return AssetImage('lib/assets/profile/default_profile_icon.jpg');
     }
   }
 
@@ -173,7 +163,7 @@ class _MyInfoScreenState extends State<MyInfoScreen> {
                     children: [
                       // 이름
                       Container(
-                        child: Text(dummyName, style: const TextStyle(
+                        child: Text((userAttribute?.name ?? ''), style: const TextStyle(
                             fontSize: fontSizeMiddle,
                             color: Colors.black,
                             fontWeight: FontWeight.bold)),
@@ -181,13 +171,13 @@ class _MyInfoScreenState extends State<MyInfoScreen> {
                       // 생년월일
                       Container(
                         margin: EdgeInsets.only(left: marginHorizontalHeader),
-                        child: Text(DateFormat('yyyy/MM/dd').format(dummyBirth),
+                        child: Text(DateFormat('yyyy/MM/dd').format((userAttribute?.birthDate??DateTime.now())),
                             style: const TextStyle(color: Colors.black)),
                       ),
                     ],
                   ),
                   //이메일
-                  Text(dummyEmail, style: const TextStyle(
+                  Text((userAttribute?.email ?? ''), style: const TextStyle(
                       fontSize: fontSizeSmallfont, color: Colors.black)),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.start,
@@ -212,7 +202,7 @@ class _MyInfoScreenState extends State<MyInfoScreen> {
                               }
                               if (!validNickname.hasMatch(
                                   nicknameEditController.text)) {
-                                return '최소 4자리를 입력해주세요.';
+                                return '최소 2자리를 입력해주세요.';
                               }
                               // 중복확인
                               return null;
@@ -225,16 +215,53 @@ class _MyInfoScreenState extends State<MyInfoScreen> {
                       ),
                       IconButton(
                           icon: const Icon(Icons.edit),
-                          onPressed: () {
-                            setState(() {
-                              if (nicknameEditisEnable) {
-                                nicknameEditisEnable = false;
-                                // 수정된 닉네임으로 업데이트
-                              } else {
-                                nicknameEditisEnable = true;
+                          onPressed: () async {
+                            if (nicknameEditisEnable) {
+                              // Check if the nickname already exists
+                              String checkUrl = '${baseUrl}user/existsNickname';
+                              NicknameRequest checkRequest = NicknameRequest(nickname: nicknameEditController.text);
+                              MessageResponse checkResponse = await existsNickname(checkUrl, checkRequest);
+                              if(checkResponse.message == '사용중인 닉네임입니다') {
+                                showDialog(
+                                  context: context,
+                                  builder: (BuildContext context) {
+                                    return AlertDialog(
+                                      title: const Text("Error", style: TextStyle(color: defaultColor),),
+                                      content: const Text("사용중인 닉네임입니다"),
+                                      actions: [
+                                        TextButton(
+                                          child: const Text("Close", style: TextStyle(color: defaultColor),),
+                                          onPressed: () {
+                                            Navigator.of(context).pop();
+                                          },
+                                        ),
+                                      ],
+                                    );
+                                  },
+                                );
+                                print('[Error]: 닉네임이 이미 존재합니다.');
+                                return; // If nickname exists, return from the function.
                               }
-                            });
-                          })
+
+                              String url = '${baseUrl}user/modifyNickname';
+                              ModifyRequest nicknameRequest = ModifyRequest(nickname: nicknameEditController.text);
+                              UserResponse nicknameResponse = await modifyNickname(url, nicknameRequest, tokenResponse.accessToken);
+                              if(nicknameResponse.nickname == nicknameEditController.text) {
+                                // 수정된 닉네임으로 업데이트
+                                UserAttributeApi.resetNickname((nicknameResponse.nickname ?? "Error"));
+                              } else {
+                                print('[Error]:닉네임이 제대로 변경되지 않았습니다.');
+                              }
+                              setState(() {
+                                nicknameEditisEnable = false;
+                              });
+                            } else {
+                              setState(() {
+                                nicknameEditisEnable = true;
+                              });
+                            }
+                          }
+                      )
                     ],
                   ),
                 ],
@@ -323,13 +350,14 @@ class _MyInfoScreenState extends State<MyInfoScreen> {
         ],
       ),
       bottomNavigationBar: BottomNavigationBar(
+        iconSize: 32,
         items: const <BottomNavigationBarItem>[
-          BottomNavigationBarItem(icon: Icon(Icons.list), label: "공모전"),
-          BottomNavigationBarItem(icon: Icon(Icons.home), label: "홈"),
-          BottomNavigationBarItem(icon: Icon(Icons.settings), label: "내정보"),
+          BottomNavigationBarItem(icon: Icon(Icons.list), label: "영수증 목록"),
+          BottomNavigationBarItem(icon: Icon(Icons.add), label: "영수증 추가"),
+          BottomNavigationBarItem(icon: Icon(Icons.settings), label: "설정"),
         ],
         currentIndex: currentIndex.index,
-        selectedItemColor: const Color(0xFF6667AB),
+        selectedItemColor: defaultColor,
         onTap: ((value) {
           setState(() {
             currentIndex.setCurrentIndex(value);
@@ -337,18 +365,18 @@ class _MyInfoScreenState extends State<MyInfoScreen> {
               case 0:
                 Navigator.of(context)
                     .pushReplacement(MaterialPageRoute(builder: ((context) {
-                  return HomeScreen();
+                  return const HomeScreen();
                 })));
                 break;
 
               case 1:
-              // Navigator.of(context)
-              //     .pushReplacement(MaterialPageRoute(builder: ((context) {
-              //       //영수증 추가화면 merge
-              // })));
                 break;
 
               case 2:
+                Navigator.of(context)
+                    .pushReplacement(MaterialPageRoute(builder: ((context) {
+                  return MyInfoScreen();
+                })));
                 break;
             }
           });

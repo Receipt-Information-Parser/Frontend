@@ -20,7 +20,7 @@ Future<UserResponse> SignUp(String url, SignUpRequest signUpRequest) async {
   );
   print('[debug] response status code : ${response.statusCode}');
   if (response.statusCode == 200) {
-    return UserResponse.fromJson(jsonDecode(response.body));
+    return UserResponse.fromJson(jsonDecode(utf8.decode(response.bodyBytes)));
   } else {
     throw Exception('Failed to create account.');
   }
@@ -37,7 +37,7 @@ Future<UserResponse> Login(String url, LoginRequest loginRequest) async {
   );
   print("[debug]: Login Post fin");
   if (response.statusCode == 200) {
-    return UserResponse.fromJson(jsonDecode(response.body));
+    return UserResponse.fromJson(jsonDecode(utf8.decode(response.bodyBytes)));
   } else {
     throw Exception('Failed to log in.');
   }
@@ -89,7 +89,7 @@ Future<UserResponse> modifyNickname(
       'Content-Type': 'application/json; charset=UTF-8',
       HttpHeaders.authorizationHeader: "Bearer ${token!}"
     },
-    body: json.encode(modifyRequest.toJson()),
+    body: modifyRequest.toJson(),
   );
   if (response.statusCode == 200) {
     return UserResponse.fromJson(jsonDecode(utf8.decode(response.bodyBytes)));

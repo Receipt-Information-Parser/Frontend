@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:rip_front/providers/user_attribute_api.dart';
 import 'package:rip_front/screens/Login/find_id_password.dart';
 import 'package:flutter/material.dart';
 
@@ -237,6 +238,8 @@ class LoginScreen_ extends State<LoginScreen> {
 
                                 userAttribute?.birthDate =
                                     DateTime.parse(value.birthday!);
+
+                                UserAttributeApi.show();
 
                                 Navigator.of(context).pushReplacement(
                                     MaterialPageRoute(
