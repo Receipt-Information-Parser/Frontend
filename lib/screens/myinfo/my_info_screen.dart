@@ -223,6 +223,32 @@ class _MyInfoScreenState extends State<MyInfoScreen> {
                           icon: const Icon(Icons.edit),
                           onPressed: () async {
                             if (nicknameEditisEnable) {
+                              // Check if the nickname already exists
+                              String checkUrl = '${baseUrl}user/existsNickname';
+                              NicknameRequest checkRequest = NicknameRequest(nickname: nicknameEditController.text);
+                              MessageResponse checkResponse = await existsNickname(checkUrl, checkRequest);
+                              if(checkResponse.message == '사용중인 닉네임입니다') {
+                                showDialog(
+                                  context: context,
+                                  builder: (BuildContext context) {
+                                    return AlertDialog(
+                                      title: const Text("Error", style: TextStyle(color: defaultColor),),
+                                      content: const Text("사용중인 닉네임입니다"),
+                                      actions: [
+                                        TextButton(
+                                          child: const Text("Close", style: TextStyle(color: defaultColor),),
+                                          onPressed: () {
+                                            Navigator.of(context).pop();
+                                          },
+                                        ),
+                                      ],
+                                    );
+                                  },
+                                );
+                                print('[Error]: 닉네임이 이미 존재합니다.');
+                                return; // If nickname exists, return from the function.
+                              }
+
                               String url = '${baseUrl}user/modifyNickname';
                               ModifyRequest nicknameRequest = ModifyRequest(nickname: nicknameEditController.text);
                               UserResponse nicknameResponse = await modifyNickname(url, nicknameRequest, tokenResponse.accessToken);
