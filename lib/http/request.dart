@@ -1,7 +1,9 @@
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
+import 'package:path_provider/path_provider.dart';
 import 'dto.dart';
 
 // 지금까지 구현된 것
@@ -27,7 +29,6 @@ Future<UserResponse> SignUp(String url, SignUpRequest signUpRequest) async {
 }
 
 Future<UserResponse> Login(String url, LoginRequest loginRequest) async {
-  print("[debug]: Login Post Start, url:${url}");
   final response = await http.post(
     Uri.parse(url),
     headers: <String, String>{
@@ -144,5 +145,60 @@ Future<MessageResponse> resetPassword(String url, EmailRequest emailRequest) asy
     return MessageResponse.fromJson(jsonDecode(utf8.decode(response.bodyBytes)));
   } else {
     throw Exception('Failed to reset password.');
+  }
+}
+// Future<UserResponse> modifyNickname(
+//     String url, ModifyRequest modifyRequest, String? token) async {
+//   final response = await http.post(
+//     Uri.parse(url),
+//     headers: <String, String>{
+//       'Content-Type': 'application/json; charset=UTF-8',
+//       HttpHeaders.authorizationHeader: "Bearer ${token!}"
+//     },
+//     body: modifyRequest.toJson(),
+//   );
+Future<List<PictureResponse>> getPictureList(String url, String? token) async {
+  final response = await http.get(
+    Uri.parse(url),
+    headers: <String, String>{
+      'Content-Type': 'application/json; charset=UTF-8',
+      HttpHeaders.authorizationHeader: "Bearer ${token!}"
+    },
+  );
+  if (response.statusCode == 200) {
+    List jsonResponse = json.decode(response.body);
+    return jsonResponse.map((item) => PictureResponse.fromJson(item)).toList();
+  } else {
+    throw Exception('Failed to load pictures, Status Code: ${response.statusCode}');
+  }
+}
+
+Future<File> getPictureObject(String url,String object) async {
+  var request = await HttpClient().getUrl(Uri.parse('$url/$object'));
+  print('[debug]url:$url/$object');
+  var response = await request.close();
+  var bytes = await consolidateHttpClientResponseBytes(response);
+  String _dir = (await getApplicationDocumentsDirectory()).path;
+  var dir = Directory('$_dir/profile');
+  if (!await dir.exists()) {
+    await dir.create(recursive: true); // recursively create all non-existent directories
+  }
+  File file = File('$dir/profile.jpg');
+  await file.writeAsBytes(bytes);
+  return file;
+}
+
+Future<PictureResponse> savePicture(String url,File file) async {
+  var request = http.MultipartRequest('POST', Uri.parse(url));
+  request.files.add(http.MultipartFile('file', file.readAsBytes().asStream(), file.lengthSync(), filename: file.path.split("/").last));
+
+  var response = await request.send();
+
+  if (response.statusCode == 200) {
+    var responseData = await response.stream.toBytes();
+    var responseString = String.fromCharCodes(responseData);
+    return PictureResponse.fromJson(json.decode(responseString));
+  } else {
+    throw Exception('Failed to save picture');
   }
 }

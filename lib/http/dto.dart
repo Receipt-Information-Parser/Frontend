@@ -136,8 +136,6 @@ class ModifyRequest {
   String toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
     data['nickname'] = nickname;
-    data['showParticipationCount'] = true;
-    data['showParticipationList'] = true;
     return jsonEncode(data);
   }
 }
@@ -180,5 +178,47 @@ class UserResponses {
       data['tokenResponse'] = this.tokenResponse!.toJson();
     }
     return data;
+  }
+}
+
+class PictureResponse {
+  final String eTag;
+  final String key;
+  final String lastModified;
+  final Owner owner;
+  final int size;
+  final String storageClass;
+
+  PictureResponse(
+      {required this.eTag,
+        required this.key,
+        required this.lastModified,
+        required this.owner,
+        required this.size,
+        required this.storageClass});
+
+  factory PictureResponse.fromJson(Map<String, dynamic> json) {
+    return PictureResponse(
+      eTag: json['ETag'] as String,
+      key: json['Key'] as String,
+      lastModified: json['LastModified'] as String,
+      owner: Owner.fromJson(json['Owner'] as Map<String, dynamic>),
+      size: json['Size'] as int,
+      storageClass: json['StorageClass'] as String,
+    );
+  }
+}
+
+class Owner {
+  final String displayName;
+  final String id;
+
+  Owner({required this.displayName, required this.id});
+
+  factory Owner.fromJson(Map<String, dynamic> json) {
+    return Owner(
+      displayName: json['DisplayName'] as String,
+      id: json['ID'] as String,
+    );
   }
 }
