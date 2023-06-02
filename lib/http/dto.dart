@@ -74,6 +74,7 @@ class UserResponse {
   String? name;
   String? nickname;
   TokenResponse? tokenResponse;
+  String? profileImage;
 
   UserResponse(
       {this.birthday,
@@ -81,7 +82,8 @@ class UserResponse {
       this.gender,
       this.name,
       this.nickname,
-      this.tokenResponse});
+      this.tokenResponse,
+      this.profileImage});
 
   UserResponse.fromJson(Map<String, dynamic> json) {
     birthday = json['birthday'] ?? "";
@@ -92,6 +94,7 @@ class UserResponse {
     tokenResponse = json['tokenResponse'] != null
         ? TokenResponse.fromJson(json['tokenResponse'])
         : null;
+    profileImage = json['profileImage'] ?? "";
   }
 }
 
@@ -147,6 +150,7 @@ class UserResponses {
   String? name;
   String? nickname;
   TokenResponse? tokenResponse;
+  String? profileImage;
 
   UserResponses(
       {this.birthday,
@@ -154,7 +158,8 @@ class UserResponses {
         this.gender,
         this.name,
         this.nickname,
-        this.tokenResponse});
+        this.tokenResponse,
+        this.profileImage});
 
   UserResponses.fromJson(Map<String, dynamic> json) {
     birthday = json['birthday'];
@@ -165,6 +170,7 @@ class UserResponses {
     tokenResponse = json['tokenResponse'] != null
         ? new TokenResponse.fromJson(json['tokenResponse'])
         : null;
+    profileImage = json['profileImage'];
   }
 
   Map<String, dynamic> toJson() {
@@ -177,49 +183,8 @@ class UserResponses {
     if (this.tokenResponse != null) {
       data['tokenResponse'] = this.tokenResponse!.toJson();
     }
+    data['profileImage'] = this.profileImage;
     return data;
-  }
-}
-
-class PictureResponse {
-  final String eTag;
-  final String key;
-  final String lastModified;
-  final Owner owner;
-  final int size;
-  final String storageClass;
-
-  PictureResponse(
-      {required this.eTag,
-        required this.key,
-        required this.lastModified,
-        required this.owner,
-        required this.size,
-        required this.storageClass});
-
-  factory PictureResponse.fromJson(Map<String, dynamic> json) {
-    return PictureResponse(
-      eTag: json['ETag'] as String,
-      key: json['Key'] as String,
-      lastModified: json['LastModified'] as String,
-      owner: Owner.fromJson(json['Owner'] as Map<String, dynamic>),
-      size: json['Size'] as int,
-      storageClass: json['StorageClass'] as String,
-    );
-  }
-}
-
-class Owner {
-  final String displayName;
-  final String id;
-
-  Owner({required this.displayName, required this.id});
-
-  factory Owner.fromJson(Map<String, dynamic> json) {
-    return Owner(
-      displayName: json['DisplayName'] as String,
-      id: json['ID'] as String,
-    );
   }
 }
 

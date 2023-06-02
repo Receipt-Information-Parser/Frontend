@@ -121,23 +121,7 @@ Future<MessageResponse> resetPassword(String url, EmailRequest emailRequest) asy
   }
 }
 
-Future<List<PictureResponse>> getPictureList(String url, String? token) async {
-  final response = await http.get(
-    Uri.parse(url),
-    headers: <String, String>{
-      'Content-Type': 'application/json; charset=UTF-8',
-      HttpHeaders.authorizationHeader: "Bearer ${token!}"
-    },
-  );
-  if (response.statusCode == 200) {
-    List jsonResponse = json.decode(response.body);
-    return jsonResponse.map((item) => PictureResponse.fromJson(item)).toList();
-  } else {
-    throw Exception('Failed to load pictures, Status Code: ${response.statusCode}');
-  }
-}
-
-Future getPictureObject(String url, String object, String? token) async {
+Future getPictureObject(String url, String? object, String? token) async {
   var httpClient = HttpClient();
   var request = await httpClient.getUrl(Uri.parse('$url/$object'));
 

@@ -12,7 +12,6 @@ import 'package:rip_front/models/current_index.dart';
 import '../../../http/dto.dart';
 import '../../../models/user_attribute.dart';
 import '../../../providers/user_attribute_api.dart';
-import '../../models/image_file_info.dart';
 import '../Home/home_screen.dart';
 
 class MyInfoScreen extends StatefulWidget {
@@ -37,7 +36,6 @@ class _MyInfoScreenState extends State<MyInfoScreen> {
     TokenResponse tokenResponse = Provider.of<TokenResponse>(context);
     UserAttribute? userAttribute = Provider.of<UserAttribute?>(context);
     CurrentIndex currentIndex = Provider.of<CurrentIndex>(context);
-    ImageFileInfo imageFileInfo = Provider.of<ImageFileInfo>(context);
 
     Future<ImageSource?> _showImageSourceDialog() async {
       return await showDialog<ImageSource>(
@@ -65,8 +63,8 @@ class _MyInfoScreenState extends State<MyInfoScreen> {
 
     Future<ImageProvider<Object>> _currentImageProvider() async {
       final dir = await getExternalStorageDirectory();
-      String filePath = '${dir!.path}/${imageFileInfo.profileIMG}';
-      print('[debug]imageFileInfo.profileIMG:${imageFileInfo.profileIMG}');
+      String filePath = '${dir!.path}/${userAttribute?.profileImage}';
+      print('[debug]userAttribute.profileIMG:${userAttribute?.profileImage}');
       print('[debug]file path exists:${await File(filePath).exists()}');
 
       if (_imageFile != null) {
@@ -79,26 +77,24 @@ class _MyInfoScreenState extends State<MyInfoScreen> {
           // TODO: 다른 화면 넘어갔다 올 때, 사진이 제대로 업데이트되지않는 문제 해결해야함
           // 선택한 사진으로 로컬 파일 저장 및 최신 경로 갱신
           final dir = await getExternalStorageDirectory();
-          final String filePath = '${dir!.path}/${keyResponse.key}';
 
+          final String filePath = '${dir!.path}/${keyResponse.key}';
+          userAttribute?.profileImage = keyResponse.key;
           // 복사하고자 하는 경로에 이미 파일이 존재하는 경우, 파일을 삭제한다.
           final File existingFile = File(filePath);
           if (await existingFile.exists()) {
             await existingFile.delete();
           }
-          // 선택한 이미지 파일을 지정한 경로로 복사한다.
+          // 선택한 이미지 파일을 지정한 경로로 저장한다.
           await _imageFile?.copy(filePath);
-          print('[debug]new profileIMG:${imageFileInfo.profileIMG}');
-          imageFileInfo.profileIMG = filePath;
-          print('[debug]old profileIMG:${imageFileInfo.profileIMG}');
         } catch (e, s) {
           print('[debug]Failed to save image: $e');
           print('Stack trace: $s');
         }
-
+        // 선택된 이미지를 출력한다.
         return FileImage(_imageFile!);
       } else {
-        if (imageFileInfo.profileIMG != "") {
+        if (userAttribute?.profileImage != "") {
           // 프로필 사진 존재 시, 기존 프로필 사진 출력
           return FileImage(File(filePath));
         } else {

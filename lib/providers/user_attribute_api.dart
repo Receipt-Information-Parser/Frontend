@@ -10,6 +10,7 @@ class UserAttributeApi {
         name: "name",
         gender: true,
         birthDate: DateTime.now(),
+        profileImage: ""
     );
     //  GetUserInfo 실행
     return userAttribute;
@@ -39,8 +40,12 @@ class UserAttributeApi {
     userAttribute?.birthDate = birthdate;
   }
 
+  static void resetProfileImage(String profileImage) {
+    userAttribute?.profileImage = profileImage;
+  }
+
   static void show() {
     print(
-        "[Debug UserAtt]\nemail: ${userAttribute?.email}\nnickname: ${userAttribute?.nickname}\nname: ${userAttribute?.name}\ngender: ${userAttribute?.gender}\nbirthday: ${userAttribute?.birthDate}");
+        "[Debug UserAtt]\nemail: ${userAttribute?.email}\nnickname: ${userAttribute?.nickname}\nname: ${userAttribute?.name}\ngender: ${userAttribute?.gender}\nbirthday: ${userAttribute?.birthDate}\nprofileImage${userAttribute?.profileImage}");
   }
 }
