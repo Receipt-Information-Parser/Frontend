@@ -74,7 +74,6 @@ class _MyInfoScreenState extends State<MyInfoScreen> {
         try {
           KeyResponse keyResponse = await savePicture(url, _imageFile!, tokenResponse.accessToken);
           print('[debug]Image saved successfully');
-          // TODO: 다른 화면 넘어갔다 올 때, 사진이 제대로 업데이트되지않는 문제 해결해야함
           // 선택한 사진으로 로컬 파일 저장 및 최신 경로 갱신
           final dir = await getExternalStorageDirectory();
 
