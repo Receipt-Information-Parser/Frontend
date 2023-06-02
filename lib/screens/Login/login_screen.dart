@@ -277,9 +277,11 @@ class LoginScreen_ extends State<LoginScreen> {
                           }
                           print('[debug]profileIMG:${imageFileInfo.profileIMG}');
                           Navigator.of(context).pushReplacement(
-                              MaterialPageRoute(
-                                  builder: ((context) =>
-                                      const HomeScreen())));
+                            MaterialPageRoute(
+                                builder: ((context) =>
+                                    HomeScreen(token: tokenResponse.accessToken))),
+                          );
+
                         }, onError: (err) {
                           showLoginErrorDialog(context);
                         });

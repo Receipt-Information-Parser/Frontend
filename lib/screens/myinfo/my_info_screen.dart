@@ -361,8 +361,11 @@ class _MyInfoScreenState extends State<MyInfoScreen> {
                 elevation: 0,
               ),
               onPressed: () async {
-                Navigator.of(context).push(MaterialPageRoute(
-                    builder: ((context) => const HomeScreen())));
+                Navigator.of(context).pushReplacement(
+                  MaterialPageRoute(
+                      builder: ((context) =>
+                          HomeScreen(token: tokenResponse.accessToken))),
+                );
               },
               child:
               const Text('엑셀로 저장하기', style: TextStyle(color: defaultColor)),
@@ -386,8 +389,11 @@ class _MyInfoScreenState extends State<MyInfoScreen> {
                 elevation: 0,
               ),
               onPressed: () async {
-                Navigator.of(context).push(MaterialPageRoute(
-                    builder: ((context) => const HomeScreen())));
+                Navigator.of(context).pushReplacement(
+                  MaterialPageRoute(
+                      builder: ((context) =>
+                          HomeScreen(token: tokenResponse.accessToken))),
+                );
               },
               child: const Text('분석 자료 사진으로 저장하기',
                   style: TextStyle(color: defaultColor)),
@@ -409,10 +415,11 @@ class _MyInfoScreenState extends State<MyInfoScreen> {
             currentIndex.setCurrentIndex(value);
             switch (currentIndex.index) {
               case 0:
-                Navigator.of(context)
-                    .pushReplacement(MaterialPageRoute(builder: ((context) {
-                  return const HomeScreen();
-                })));
+                Navigator.of(context).pushReplacement(
+                  MaterialPageRoute(
+                      builder: ((context) =>
+                          HomeScreen(token: tokenResponse.accessToken))),
+                );
                 break;
 
               case 1:
