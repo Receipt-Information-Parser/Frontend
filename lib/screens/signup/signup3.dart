@@ -145,12 +145,12 @@ class Signin3_2 extends State<Signin3> {
                               alignment: Alignment.centerLeft,
                               child: ElevatedButton(
                                 style: ElevatedButton.styleFrom(
-                                    textStyle: const TextStyle(fontSize: fontSizeButton),
-                                    backgroundColor: Colors.white,
-                                    side: const BorderSide(
-                                      color: defaultColor,
-                                      width: 2,
-                                    )
+                                  textStyle: const TextStyle(fontSize: fontSizeButton),
+                                  backgroundColor: Colors.white,
+                                  side: const BorderSide(
+                                    color: defaultColor,
+                                    width: 2,
+                                  ),
                                 ),
                                 onPressed: () async {
                                   final selectedDate = await showDatePicker(
@@ -163,14 +163,19 @@ class Signin3_2 extends State<Signin3> {
                                   if (selectedDate != null) {
                                     setState(() {
                                       date = selectedDate;
+                                      UserAttributeApi.resetBirthdate(date);  // 선택된 날짜를 UserAttributeApi에 전달
                                     });
                                   }
-                                }, child: Text(DateFormat('yy-MM-dd').format(date),
+                                },
+                                child: Text(
+                                  DateFormat('yy-MM-dd').format(date),
                                   style: const TextStyle(
-                                      fontSize: fontSizeTextForm,
-                                      color: Colors.black,
-                                      fontWeight: FontWeight.normal),
-                                  textAlign: TextAlign.center),
+                                    fontSize: fontSizeTextForm,
+                                    color: Colors.black,
+                                    fontWeight: FontWeight.normal,
+                                  ),
+                                  textAlign: TextAlign.center,
+                                ),
                               ),
                             ),
                           ),
@@ -190,75 +195,76 @@ class Signin3_2 extends State<Signin3> {
                     minimumSize: const Size(widthButton, heightButton),
                   ),
                   onPressed: () async {
-                  //   // 성별, 생년월일 전달 후
-                  //   UserAttributeApi.resetGender(isSwitched);
-                  //   UserAttributeApi.resetBirthdate(
-                  //       DateTime.parse(birthInputController.text));
-                  //
-                  //   // 서버에 signin 요청 후
-                  //   SignUpRequest signupRequest = SignUpRequest(
-                  //     birthday: DateFormat('yyyy-MM-dd')
-                  //         .format(UserAttributeApi.userAttribute!.birthDate),
-                  //     email: UserAuthInfoApi.userAuthInfo?.email,
-                  //     gender: gender_to_string(
-                  //         UserAttributeApi.userAttribute!.gender),
-                  //     name: UserAttributeApi.userAttribute?.name,
-                  //     nickname: UserAttributeApi.userAttribute?.nickname,
-                  //     password: UserAuthInfoApi.userAuthInfo?.password,
-                  //   );
-                  //
-                  //   String url = '${baseUrl}user/signup';
-                  //
-                  //   // UserResponse로 password 변수 받을 수가 없음
-                  //   await SignUp(url, signupRequest).then((value) {
-                  //     print('[debug] future successful');
-                  //
-                  //     tokenResponse.accessToken =
-                  //         value.tokenResponse?.accessToken;
-                  //     tokenResponse.refreshToken =
-                  //         value.tokenResponse?.refreshToken;
-                  //
-                  //     userAttribute?.email = value.email!;
-                  //     userAttribute?.name = value.name!;
-                  //     if (value.gender == 'MALE') {
-                  //       userAttribute?.gender = true;
-                  //     }
-                  //     if (value.gender == 'FEMALE') {
-                  //       userAttribute?.gender = false;
-                  //     }
-                  //
-                  //     userAttribute?.birthDate =
-                  //         DateTime.parse(value.birthday!);
-                  //     userAttribute?.nickname = value.nickname!;
-                  //
-                  //     Navigator.of(context).pushAndRemoveUntil(
-                  //         MaterialPageRoute(
-                  //             builder: ((context) => HomeScreen())), (_) {
-                  //       return false;
-                  //     });
-                  //   }, onError: (err) {
-                  //     print('[debug] future error: ${err.toString()}');
-                  //
-                  //     showDialog(
-                  //         context: context,
-                  //         builder: ((context) {
-                  //           return AlertDialog(
-                  //             title: const Text("회원가입"),
-                  //             content: const Text(
-                  //                 "중복되는 회원 정보가 이미 존재합니다.\n입력값을 확인 후 다시 시도해주세요."),
-                  //             actions: [
-                  //               TextButton(
-                  //                   onPressed: (() {
-                  //                     Navigator.pop(context);
-                  //                   }),
-                  //                   child: const Text("확인"))
-                  //             ],
-                  //           );
-                  //         }));
-                  //   });
-                    Navigator.of(context).push(
-                        MaterialPageRoute(builder: ((context) => HomeScreen())));
-                  },
+                    // 성별, 생년월일 전달 후
+                    UserAttributeApi.resetGender(isSwitched);
+                    // debug
+                    UserAttributeApi.show();
+
+                    // 서버에 signin 요청 후
+                    print('[debug]: Signin Request start');
+                    SignUpRequest signupRequest = SignUpRequest(
+                      birthday: DateFormat('yyyy-MM-dd')
+                          .format(UserAttributeApi.userAttribute!.birthDate),
+                      email: UserAuthInfoApi.userAuthInfo?.email,
+                      gender: gender_to_string(
+                          UserAttributeApi.userAttribute!.gender),
+                      name: UserAttributeApi.userAttribute?.name,
+                      nickname: UserAttributeApi.userAttribute?.nickname,
+                      password: UserAuthInfoApi.userAuthInfo?.password,
+                    );
+                    print('[debug]: Signin Request end');
+                    String url = '${baseUrl}user/signup';
+
+                    // UserResponse로 password 변수 받을 수가 없음
+                    await SignUp(url, signupRequest).then((value) {
+                      print('[debug] future successful');
+
+                      tokenResponse.accessToken =
+                          value.tokenResponse?.accessToken;
+                      tokenResponse.refreshToken =
+                          value.tokenResponse?.refreshToken;
+
+                      userAttribute?.email = value.email!;
+                      userAttribute?.name = value.name!;
+                      if (value.gender == 'MALE') {
+                        userAttribute?.gender = true;
+                      }
+                      if (value.gender == 'FEMALE') {
+                        userAttribute?.gender = false;
+                      }
+
+                      userAttribute?.birthDate =
+                          DateTime.parse(value.birthday!);
+                      userAttribute?.nickname = value.nickname!;
+
+                      Navigator.of(context).pushAndRemoveUntil(
+                          MaterialPageRoute(
+                              builder: ((context) => HomeScreen())), (_) {
+                        return false;
+                      });
+                    }, onError: (err) {
+                      print('[debug] future error: ${err.toString()}');
+
+                      showDialog(
+                          context: context,
+                          builder: ((context) {
+                            return AlertDialog(
+                              title: const Text("회원가입"),
+                              content: const Text(
+                                  "중복되는 회원 정보가 이미 존재합니다.\n입력값을 확인 후 다시 시도해주세요."),
+                              actions: [
+                                TextButton(
+                                    onPressed: (() {
+                                      Navigator.pop(context);
+                                    }),
+                                    child: const Text("확인"))
+                              ],
+                            );
+                          }));
+                    });},
+                  //   Navigator.of(context).push(
+                  //       MaterialPageRoute(builder: ((context) => HomeScreen())));
+                  // },
                   child: const Text('계속하기'),
                 ),
               ),

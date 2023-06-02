@@ -1,14 +1,19 @@
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
+import 'dart:io';
+
 import 'package:intl/intl.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:provider/provider.dart';
 import 'package:rip_front/constants.dart';
+import 'package:rip_front/http/request.dart';
 import 'package:rip_front/models/current_index.dart';
 
 import '../../../http/dto.dart';
 import '../../../models/user_attribute.dart';
 import '../../../providers/user_attribute_api.dart';
+import '../../models/image_file_info.dart';
 import '../Home/home_screen.dart';
-import 'my_info_setting_screen.dart';
 
 class MyInfoScreen extends StatefulWidget {
   @override
@@ -16,25 +21,103 @@ class MyInfoScreen extends StatefulWidget {
 }
 
 class _MyInfoScreenState extends State<MyInfoScreen> {
-  // dummy data
-  String dummyName = '정우섭';
-  DateTime dummyBirth = DateTime.now();
-  String dummyEmail = 'example@naver.com';
-  String dummyNickname = '우끼끼맨';
+  final validNickname = RegExp(r"^(?=.*[a-z0-9가-힣])[a-z0-9가-힣]{2,16}$");
 
-  final validNickname = RegExp('[A-Za-z][A-Za-z0-9_]{3,29}');
   TextEditingController nicknameEditController = TextEditingController(
-      text: UserAttributeApi.getUserAttribute()?.nickname ?? "");
+      text: UserAttributeApi.getUserAttribute()?.nickname ?? ""
+  );
+
   bool nicknameEditisEnable = false;
+
+  // 프로필 사진용
+  File? _imageFile;
 
   @override
   Widget build(BuildContext context) {
     TokenResponse tokenResponse = Provider.of<TokenResponse>(context);
     UserAttribute? userAttribute = Provider.of<UserAttribute?>(context);
     CurrentIndex currentIndex = Provider.of<CurrentIndex>(context);
+    ImageFileInfo imageFileInfo = Provider.of<ImageFileInfo>(context);
 
-    String temp = userAttribute?.field as String;
-    List<String> myLabelList = temp.split(' ');
+    Future<ImageSource?> _showImageSourceDialog() async {
+      return await showDialog<ImageSource>(
+          context: context,
+          builder: (BuildContext context) {
+            return SimpleDialog(
+              title: const Text('Choose image source'),
+              children: <Widget>[
+                SimpleDialogOption(
+                  onPressed: () {
+                    Navigator.pop(context, ImageSource.camera);
+                  },
+                  child: const Text('Camera'),
+                ),
+                SimpleDialogOption(
+                  onPressed: () {
+                    Navigator.pop(context, ImageSource.gallery);
+                  },
+                  child: const Text('Gallery'),
+                ),
+              ],
+            );
+          });
+    }
+
+    Future<ImageProvider<Object>> _currentImageProvider() async {
+      final dir = await getExternalStorageDirectory();
+      String filePath = '${dir!.path}/${imageFileInfo.profileIMG}';
+      print('[debug]imageFileInfo.profileIMG:${imageFileInfo.profileIMG}');
+      print('[debug]file path exists:${await File(filePath).exists()}');
+
+      if (_imageFile != null) {
+        // 사진 선택시 선택된 사진 savePicture로 서버에 저장
+        String url = '${baseUrl}picture/save';
+        print('[debug]accessToken:${tokenResponse.accessToken}');
+        try {
+          KeyResponse keyResponse = await savePicture(url, _imageFile!, tokenResponse.accessToken);
+          print('[debug]Image saved successfully');
+          // TODO: 다른 화면 넘어갔다 올 때, 사진이 제대로 업데이트되지않는 문제 해결해야함
+          // 선택한 사진으로 로컬 파일 저장 및 최신 경로 갱신
+          final dir = await getExternalStorageDirectory();
+          final String filePath = '${dir!.path}/${keyResponse.key}';
+
+          // 복사하고자 하는 경로에 이미 파일이 존재하는 경우, 파일을 삭제한다.
+          final File existingFile = File(filePath);
+          if (await existingFile.exists()) {
+            await existingFile.delete();
+          }
+          // 선택한 이미지 파일을 지정한 경로로 복사한다.
+          await _imageFile?.copy(filePath);
+          print('[debug]new profileIMG:${imageFileInfo.profileIMG}');
+          imageFileInfo.profileIMG = filePath;
+          print('[debug]old profileIMG:${imageFileInfo.profileIMG}');
+        } catch (e, s) {
+          print('[debug]Failed to save image: $e');
+          print('Stack trace: $s');
+        }
+
+        return FileImage(_imageFile!);
+      } else {
+        if (imageFileInfo.profileIMG != "") {
+          // 프로필 사진 존재 시, 기존 프로필 사진 출력
+          return FileImage(File(filePath));
+        } else {
+          // 프로필 사진 없을 시, default image 출력
+          return const AssetImage('lib/assets/profile/default_profile_icon.jpg');
+        }
+      }
+    }
+
+    Future<void> _chooseImage(ImageSource source) async {
+      final ImagePicker picker = ImagePicker();
+      final XFile? image = await picker.pickImage(source: source);
+
+      if (image != null) {
+        setState(() {
+          _imageFile = File(image.path);
+        });
+      }
+    }
 
     userAttribute = UserAttributeApi.getUserAttribute();
 
@@ -89,7 +172,33 @@ class _MyInfoScreenState extends State<MyInfoScreen> {
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
-              // 프로필 이미지
+              Spacer(),
+              // Profile Picture UI
+              InkWell(
+                onTap: () async {
+                  ImageSource? selectedSource = await _showImageSourceDialog();
+                  if (selectedSource != null) {
+                    _chooseImage(selectedSource);
+                  }
+                },
+                child: FutureBuilder<ImageProvider>(
+                  future: _currentImageProvider(),
+                  builder: (BuildContext context, AsyncSnapshot<ImageProvider> snapshot) {
+                    if (snapshot.connectionState == ConnectionState.done) {
+                      return CircleAvatar(
+                        radius: 50,
+                        backgroundColor: Colors.grey[200],
+                        backgroundImage: snapshot.data,
+                      );
+                    } else {
+                      // While the image is loading, display a spinner
+                      return const CircularProgressIndicator();
+                    }
+                  },
+                ),
+              ),
+
+              Spacer(),
               Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -99,24 +208,23 @@ class _MyInfoScreenState extends State<MyInfoScreen> {
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
                       // 이름
-                      Text(dummyName, style: const TextStyle(fontSize: fontSizeMiddle,color: Colors.black, fontWeight: FontWeight.bold)),
+                      Container(
+                        child: Text((userAttribute?.name ?? ''), style: const TextStyle(
+                            fontSize: fontSizeMiddle,
+                            color: Colors.black,
+                            fontWeight: FontWeight.bold)),
+                      ),
                       // 생년월일
-                      Text(DateFormat('yyyy/MM/dd').format(dummyBirth), style: const TextStyle(color: Colors.black)),
+                      Container(
+                        margin: EdgeInsets.only(left: marginHorizontalHeader),
+                        child: Text(DateFormat('yyyy/MM/dd').format((userAttribute?.birthDate??DateTime.now())),
+                            style: const TextStyle(color: Colors.black)),
+                      ),
                     ],
                   ),
                   //이메일
-                  Text(dummyEmail, style: const TextStyle(fontSize: fontSizeSmallfont,color: Colors.black)),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      // 닉네임 text
-                      const Text('닉네임', style: TextStyle(fontSize: fontSizeInputText,color: Colors.black, fontWeight: FontWeight.bold)),
-                      // 실제 닉네임
-                      Text(dummyNickname, style: const TextStyle(fontSize: fontSizeSmallfont,color: Colors.black)),
-                      Icon(Icons.edit)
-                    ],
-                  ),
+                  Text((userAttribute?.email ?? ''), style: const TextStyle(
+                      fontSize: fontSizeSmallfont, color: Colors.black)),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.start,
                     crossAxisAlignment: CrossAxisAlignment.center,
@@ -128,35 +236,83 @@ class _MyInfoScreenState extends State<MyInfoScreen> {
                             color: Colors.black,
                             fontWeight: FontWeight.bold),
                       ),
-                      TextFormField(
-                        autovalidateMode: AutovalidateMode.onUserInteraction,
-                        validator: (value) {
-                          if (value == null || value.isEmpty) {
-                            return '입력칸을 채워주세요.';
-                          }
-                          if (!validNickname.hasMatch(nicknameEditController.text)) {
-                            return '잘못된 닉네임 형식입니다. 최소 4자리를 입력해주세요.';
-                          }
-                          return null;
-                        },
-                        controller: nicknameEditController,
-                        enabled: nicknameEditisEnable,
+                      Container(
+                        margin: EdgeInsets.only(left: marginHorizontalHeader),
+                        child: Flexible(
+                          child: TextFormField(
+                            autovalidateMode: AutovalidateMode
+                                .onUserInteraction,
+                            validator: (value) {
+                              if (value == null || value.isEmpty) {
+                                return '입력칸을 채워주세요.';
+                              }
+                              if (!validNickname.hasMatch(
+                                  nicknameEditController.text)) {
+                                return '최소 2자리를 입력해주세요.';
+                              }
+                              // 중복확인
+                              return null;
+                            },
+                            controller: nicknameEditController,
+                            enabled: nicknameEditisEnable,
+                          ),
+                        ),
+                        width: 100,
                       ),
                       IconButton(
                           icon: const Icon(Icons.edit),
-                          onPressed: () {
-                            setState(() {
-                              if (nicknameEditisEnable) {
-                                nicknameEditisEnable = false;
-                              } else {
-                                nicknameEditisEnable = true;
+                          onPressed: () async {
+                            if (nicknameEditisEnable) {
+                              // Check if the nickname already exists
+                              String checkUrl = '${baseUrl}user/existsNickname';
+                              NicknameRequest checkRequest = NicknameRequest(nickname: nicknameEditController.text);
+                              MessageResponse checkResponse = await existsNickname(checkUrl, checkRequest);
+                              if(checkResponse.message == '사용중인 닉네임입니다') {
+                                showDialog(
+                                  context: context,
+                                  builder: (BuildContext context) {
+                                    return AlertDialog(
+                                      title: const Text("Error", style: TextStyle(color: defaultColor),),
+                                      content: const Text("사용중인 닉네임입니다"),
+                                      actions: [
+                                        TextButton(
+                                          child: const Text("Close", style: TextStyle(color: defaultColor),),
+                                          onPressed: () {
+                                            Navigator.of(context).pop();
+                                          },
+                                        ),
+                                      ],
+                                    );
+                                  },
+                                );
+                                print('[Error]: 닉네임이 이미 존재합니다.');
+                                return; // If nickname exists, return from the function.
                               }
-                            });
-                          })
+
+                              String url = '${baseUrl}user/modifyNickname';
+                              ModifyRequest nicknameRequest = ModifyRequest(nickname: nicknameEditController.text);
+                              UserResponse nicknameResponse = await modifyNickname(url, nicknameRequest, tokenResponse.accessToken);
+                              if(nicknameResponse.nickname == nicknameEditController.text) {
+                                // 수정된 닉네임으로 업데이트
+                                UserAttributeApi.resetNickname((nicknameResponse.nickname ?? "Error"));
+                              } else {
+                                print('[Error]:닉네임이 제대로 변경되지 않았습니다.');
+                              }
+                              setState(() {
+                                nicknameEditisEnable = false;
+                              });
+                            } else {
+                              setState(() {
+                                nicknameEditisEnable = true;
+                              });
+                            }
+                          }
+                      )
                     ],
                   ),
                 ],
-              )
+              ),
+              const Spacer(),
             ],
           ),
 
@@ -209,7 +365,7 @@ class _MyInfoScreenState extends State<MyInfoScreen> {
                     builder: ((context) => const HomeScreen())));
               },
               child:
-                  const Text('엑셀로 저장하기', style: TextStyle(color: defaultColor)),
+              const Text('엑셀로 저장하기', style: TextStyle(color: defaultColor)),
             ),
           ),
           // 분석 자료 사진으로 저장하기
@@ -240,13 +396,14 @@ class _MyInfoScreenState extends State<MyInfoScreen> {
         ],
       ),
       bottomNavigationBar: BottomNavigationBar(
+        iconSize: 32,
         items: const <BottomNavigationBarItem>[
-          BottomNavigationBarItem(icon: Icon(Icons.list), label: "공모전"),
-          BottomNavigationBarItem(icon: Icon(Icons.home), label: "홈"),
-          BottomNavigationBarItem(icon: Icon(Icons.settings), label: "내정보"),
+          BottomNavigationBarItem(icon: Icon(Icons.list), label: "영수증 목록"),
+          BottomNavigationBarItem(icon: Icon(Icons.add), label: "영수증 추가"),
+          BottomNavigationBarItem(icon: Icon(Icons.settings), label: "설정"),
         ],
         currentIndex: currentIndex.index,
-        selectedItemColor: const Color(0xFF6667AB),
+        selectedItemColor: defaultColor,
         onTap: ((value) {
           setState(() {
             currentIndex.setCurrentIndex(value);
@@ -254,18 +411,18 @@ class _MyInfoScreenState extends State<MyInfoScreen> {
               case 0:
                 Navigator.of(context)
                     .pushReplacement(MaterialPageRoute(builder: ((context) {
-                  return HomeScreen();
+                  return const HomeScreen();
                 })));
                 break;
 
               case 1:
-                // Navigator.of(context)
-                //     .pushReplacement(MaterialPageRoute(builder: ((context) {
-                //       //영수증 추가화면 merge
-                // })));
                 break;
 
               case 2:
+                Navigator.of(context)
+                    .pushReplacement(MaterialPageRoute(builder: ((context) {
+                  return MyInfoScreen();
+                })));
                 break;
             }
           });

@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:provider/provider.dart';
+import 'package:rip_front/models/image_file_info.dart';
+import 'package:rip_front/providers/user_attribute_api.dart';
 import 'package:rip_front/screens/Login/find_id_password.dart';
 import 'package:flutter/material.dart';
 
@@ -46,6 +49,7 @@ class LoginScreen_ extends State<LoginScreen> {
   Widget build(BuildContext context) {
     TokenResponse tokenResponse = Provider.of<TokenResponse>(context);
     UserAttribute? userAttribute = Provider.of<UserAttribute?>(context);
+    ImageFileInfo imageFileInfo = Provider.of<ImageFileInfo>(context);
 
     return MaterialApp(
         home: Scaffold(
@@ -209,51 +213,76 @@ class LoginScreen_ extends State<LoginScreen> {
                         minimumSize: const Size(widthButton, heightButton),
                       ),
                       onPressed: () async {
-                        Navigator.of(context).push(MaterialPageRoute(
-                            builder: ((context) => HomeScreen())));
-                        // if (validEmail.hasMatch(emailInputController.text)) {
-                        //   if (validPW.hasMatch(PWInputController.text)) {
-                        //     if (formGlobalKey.currentState!.validate()) {
-                        //       LoginRequest loginRequest = LoginRequest(
-                        //           email: emailInputController.text,
-                        //           password: PWInputController.text);
-                        //       String url = '${baseUrl}user/login';
-                        //
-                        //       await Login(url, loginRequest).then((value) {
-                        //         tokenResponse.accessToken =
-                        //             value.tokenResponse?.accessToken;
-                        //         tokenResponse.refreshToken =
-                        //             value.tokenResponse?.refreshToken;
-                        //
-                        //         userAttribute?.email = value.email!;
-                        //         userAttribute?.name = value.name!;
-                        //         if (value.gender == 'MALE') {
-                        //           userAttribute?.gender = true;
-                        //         }
-                        //         if (value.gender == 'FEMALE') {
-                        //           userAttribute?.gender = false;
-                        //         }
-                        //
-                        //         userAttribute?.birthDate =
-                        //             DateTime.parse(value.birthday!);
-                        //         userAttribute?.nickname = value.nickname!;
-                        //
-                        //         Navigator.of(context).pushReplacement(
-                        //             MaterialPageRoute(
-                        //                 builder: ((context) =>
-                        //                     HomeScreen())));
-                        //       }, onError: (err) {
-                        //         showLoginErrorDialog(context);
-                        //       });
-                        //     } else {
-                        //       showLoginErrorDialog(context);
-                        //     }
-                        //   } else {
-                        //     showLoginErrorDialog(context);
-                        //   }
-                        // } else {
-                        //   showLoginErrorDialog(context);
-                        // }
+                        if (!validEmail.hasMatch(emailInputController.text)) {
+                          showLoginErrorDialog(context);
+                          return;
+                        }
+
+                        if (!validPW.hasMatch(PWInputController.text)) {
+                          showLoginErrorDialog(context);
+                          return;
+                        }
+
+                        if (!formGlobalKey.currentState!.validate()) {
+                          showLoginErrorDialog(context);
+                          return;
+                        }
+
+                        print("[debug]: LoginRequest Start");
+                        LoginRequest loginRequest = LoginRequest(
+                            email: emailInputController.text,
+                            password: PWInputController.text);
+                        String url = '${baseUrl}user/login';
+                        print("[debug]: LoginRequest fin");
+                        print("[debug]: Login Start");
+                        await Login(url, loginRequest).then((value) async {
+                          tokenResponse.accessToken =
+                              value.tokenResponse?.accessToken;
+                          tokenResponse.refreshToken =
+                              value.tokenResponse?.refreshToken;
+
+                          userAttribute?.email = value.email!;
+                          userAttribute?.name = value.name!;
+                          userAttribute?.nickname = value.nickname!;
+                          if (value.gender == 'MALE') {
+                            userAttribute?.gender = true;
+                          }
+                          if (value.gender == 'FEMALE') {
+                            userAttribute?.gender = false;
+                          }
+
+                          userAttribute?.birthDate =
+                              DateTime.parse(value.birthday!);
+
+                          // getPictureList
+                          url = '${baseUrl}picture/list';
+
+                          try {
+                            List<PictureResponse> picList = await getPictureList(url, tokenResponse.accessToken);
+                            imageFileInfo.profileIMG = picList.last.key!;
+                            print('Success loading picture list: ${imageFileInfo.profileIMG}');
+                            // If profileIMG is not an empty string
+                            if (imageFileInfo.profileIMG != "") {
+                              // Make the asynchronous call to getPictureObject
+                              url = '${baseUrl}picture';
+                              try {
+                                await getPictureObject(url, imageFileInfo.profileIMG, tokenResponse.accessToken);
+                                print('Success loading picture object.');
+                              } catch (e) {
+                                print('Failed to load picture object: $e');
+                              }
+                            }
+                          } catch (e) {
+                            print('Failed to load picture list: $e');
+                          }
+                          print('[debug]profileIMG:${imageFileInfo.profileIMG}');
+                          Navigator.of(context).pushReplacement(
+                              MaterialPageRoute(
+                                  builder: ((context) =>
+                                      const HomeScreen())));
+                        }, onError: (err) {
+                          showLoginErrorDialog(context);
+                        });
                       },
                       child: const Text('로그인'),
                     ),

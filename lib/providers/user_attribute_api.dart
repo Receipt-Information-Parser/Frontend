@@ -4,20 +4,18 @@ class UserAttributeApi {
   static UserAttribute? userAttribute;
 
   static UserAttribute? getUserAttribute() {
-    // TODO: api call get method
     userAttribute ??= UserAttribute(
         email: "email",
         nickname: "nickname",
         name: "name",
         gender: true,
         birthDate: DateTime.now(),
-        field: "");
+    );
     //  GetUserInfo 실행
     return userAttribute;
   }
 
   static void setUserAttribute(UserAttribute newUserAttribute) {
-    // TODO: api call post method
     userAttribute = newUserAttribute;
   }
 
@@ -41,12 +39,8 @@ class UserAttributeApi {
     userAttribute?.birthDate = birthdate;
   }
 
-  static void resetField(String field) {
-    userAttribute?.field = field;
-  }
-
   static void show() {
     print(
-        "[Debug]\nemail: ${userAttribute?.email}\nnickname: ${userAttribute?.nickname}\nname: ${userAttribute?.name}\ngender: ${userAttribute?.gender}\nbirthday: ${userAttribute?.birthDate}\nfield: ${userAttribute?.field}");
+        "[Debug UserAtt]\nemail: ${userAttribute?.email}\nnickname: ${userAttribute?.nickname}\nname: ${userAttribute?.name}\ngender: ${userAttribute?.gender}\nbirthday: ${userAttribute?.birthDate}");
   }
 }

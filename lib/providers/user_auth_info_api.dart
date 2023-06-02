@@ -25,6 +25,6 @@ class UserAuthInfoApi {
 
   static void show() {
     print(
-        "[Debug]\nemail: ${userAuthInfo?.email}\npassword: ${userAuthInfo?.password}");
+        "[Debug UserAuth]\nemail: ${userAuthInfo?.email}\npassword: ${userAuthInfo?.password}");
   }
 }

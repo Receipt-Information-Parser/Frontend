@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:rip_front/constants.dart';
+import 'package:rip_front/http/request.dart';
 
 import '../../../providers/user_attribute_api.dart';
+import '../../http/dto.dart';
 
 class FindIDPW extends StatelessWidget {
   FindIDPW({Key? key}) : super(key: key);
@@ -26,7 +28,7 @@ class FindIDPW extends StatelessWidget {
           children: <Widget>[
             Expanded(
               child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.end,
                 children: [
                   Expanded(
                     child: Container(
@@ -45,43 +47,47 @@ class FindIDPW extends StatelessWidget {
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.end,
                       children: [
-                        Container(
-                          alignment: Alignment.centerLeft,
-                          margin: const EdgeInsets.only(
-                              left: marginHorizontalHeader,
-                              bottom: marginVerticalBetweenWidgets),
-                          child: const Text("닉네임",
-                              style: TextStyle(
-                                  fontSize: fontSizeTextForm,
-                                  color: Colors.black,
-                                  fontWeight: FontWeight.w300),
-                              textAlign: TextAlign.left),
+                        Expanded(
+                          child: Container(
+                            alignment: Alignment.centerLeft,
+                            margin: const EdgeInsets.only(
+                                left: marginHorizontalHeader,
+                                bottom: marginVerticalBetweenWidgets),
+                            child: const Text("닉네임",
+                                style: TextStyle(
+                                    fontSize: fontSizeTextForm,
+                                    color: Colors.black,
+                                    fontWeight: FontWeight.w300),
+                                textAlign: TextAlign.left),
+                          ),
                         ),
-                        Container(
-                          alignment: Alignment.centerLeft,
-                          margin: const EdgeInsets.only(
-                              left: marginHorizontalHeader,
-                              right: marginHorizontalHeader),
-                          child: TextFormField(
-                            autovalidateMode:
-                                AutovalidateMode.onUserInteraction,
-                            validator: (value) {
-                              if (!validNickname
-                                  .hasMatch(nicknameInputController.text)) {
-                                return '잘못된 닉네임 형식입니다.';
-                              }
-                              return null;
-                            },
-                            decoration: const InputDecoration(
-                              border: OutlineInputBorder(),
-                              filled: true,
-                              fillColor: Colors.white,
-                              labelText: 'Nickname',
+                        Expanded(
+                          child: Container(
+                            alignment: Alignment.centerLeft,
+                            margin: const EdgeInsets.only(
+                                left: marginHorizontalHeader,
+                                right: marginHorizontalHeader),
+                            child: TextFormField(
+                              autovalidateMode:
+                                  AutovalidateMode.onUserInteraction,
+                              validator: (value) {
+                                if (!validNickname
+                                    .hasMatch(nicknameInputController.text)) {
+                                  return '잘못된 닉네임 형식입니다.';
+                                }
+                                return null;
+                              },
+                              decoration: const InputDecoration(
+                                border: OutlineInputBorder(),
+                                filled: true,
+                                fillColor: Colors.white,
+                                labelText: 'Nickname',
+                              ),
+                              style: const TextStyle(
+                                  fontSize: fontSizeInputText,
+                                  color: Colors.black),
+                              controller: nicknameInputController,
                             ),
-                            style: const TextStyle(
-                                fontSize: fontSizeInputText,
-                                color: Colors.black),
-                            controller: nicknameInputController,
                           ),
                         ),
                       ],
@@ -96,9 +102,17 @@ class FindIDPW extends StatelessWidget {
                             backgroundColor: defaultColor,
                             minimumSize: const Size(widthButton, heightButton),
                           ),
-                          onPressed: () {
-                            // 화면 전환 (닉네임 존재시 이메일 출력, 닉네임 부재시 Error message 출력)
-                            _showdialog_id(context);
+                          onPressed: () async{
+                            String url = '${baseUrl}user/getNickname';
+                            NicknameRequest nickNameRequest = NicknameRequest(nickname: nicknameInputController.text);
+                            MessageResponse getEmailResponse = await getEmail(url, nickNameRequest);
+                            // "존재하지 않는 계정입니다" 메시지라면 에러 다이얼로그 표시
+                            if (getEmailResponse.message == "존재하지 않는 계정입니다") {
+                              _showdialog_noid(getEmailResponse,context);
+                            } else {
+                              // 화면 전환 (이메일이 존재한다는 메세지 출력)
+                              _showdialog_id(nicknameInputController.text,getEmailResponse,context);
+                            }
                           },
                           child: const Text('계속하기')),
                     ),
@@ -127,43 +141,47 @@ class FindIDPW extends StatelessWidget {
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.end,
                       children: [
-                        Container(
-                          alignment: Alignment.centerLeft,
-                          margin: const EdgeInsets.only(
-                              left: marginHorizontalHeader,
-                              bottom: marginVerticalBetweenWidgets),
-                          child: const Text("이메일",
-                              style: TextStyle(
-                                  fontSize: fontSizeTextForm,
-                                  color: Colors.black,
-                                  fontWeight: FontWeight.w300),
-                              textAlign: TextAlign.left),
+                        Expanded(
+                          child: Container(
+                            alignment: Alignment.centerLeft,
+                            margin: const EdgeInsets.only(
+                                left: marginHorizontalHeader,
+                                bottom: marginVerticalBetweenWidgets),
+                            child: const Text("이메일",
+                                style: TextStyle(
+                                    fontSize: fontSizeTextForm,
+                                    color: Colors.black,
+                                    fontWeight: FontWeight.w300),
+                                textAlign: TextAlign.left),
+                          ),
                         ),
-                        Container(
-                          alignment: Alignment.centerLeft,
-                          margin: const EdgeInsets.only(
-                              left: marginHorizontalHeader,
-                              right: marginHorizontalHeader),
-                          child: TextFormField(
-                            autovalidateMode:
-                                AutovalidateMode.onUserInteraction,
-                            validator: (value) {
-                              if (!validEmail
-                                  .hasMatch(emailInputController.text)) {
-                                return '잘못된 이메일 형식입니다.';
-                              }
-                              return null;
-                            },
-                            decoration: const InputDecoration(
-                              border: OutlineInputBorder(),
-                              filled: true,
-                              fillColor: Colors.white,
-                              labelText: 'email',
+                        Expanded(
+                          child: Container(
+                            alignment: Alignment.centerLeft,
+                            margin: const EdgeInsets.only(
+                                left: marginHorizontalHeader,
+                                right: marginHorizontalHeader),
+                            child: TextFormField(
+                              autovalidateMode:
+                                  AutovalidateMode.onUserInteraction,
+                              validator: (value) {
+                                if (!validEmail
+                                    .hasMatch(emailInputController.text)) {
+                                  return '잘못된 이메일 형식입니다.';
+                                }
+                                return null;
+                              },
+                              decoration: const InputDecoration(
+                                border: OutlineInputBorder(),
+                                filled: true,
+                                fillColor: Colors.white,
+                                labelText: 'email',
+                              ),
+                              style: const TextStyle(
+                                  fontSize: fontSizeInputText,
+                                  color: Colors.black),
+                              controller: emailInputController,
                             ),
-                            style: const TextStyle(
-                                fontSize: fontSizeInputText,
-                                color: Colors.black),
-                            controller: emailInputController,
                           ),
                         ),
                       ],
@@ -178,9 +196,17 @@ class FindIDPW extends StatelessWidget {
                             backgroundColor: defaultColor,
                             minimumSize: const Size(widthButton, heightButton),
                           ),
-                          onPressed: () {
-                            // 화면 전환 (이메일 존재시 비밀번호 재설정 창 출력, 이메일 부재시 Error message 출력)
-                            _showdialog_password(context);
+                          onPressed: () async{
+                            String url = '${baseUrl}user/reset';
+                            EmailRequest emailRequest = EmailRequest(email: emailInputController.text);
+                            MessageResponse resetPWresponse = await resetPassword(url, emailRequest);
+                            // "존재하지 않는 계정입니다" 메시지라면 에러 다이얼로그 표시
+                            if (resetPWresponse.message == "존재하지 않는 계정입니다") {
+                              _showdialog_noid(resetPWresponse,context);
+                            } else {
+                              // 화면 전환 (이메일 존재시 비밀번호 재설정 창 출력, 이메일 부재시 Error message 출력)
+                              _showdialog_password(context);
+                            }
                           },
                           child: const Text('비밀번호 재설정')),
                     ),
@@ -196,12 +222,12 @@ class FindIDPW extends StatelessWidget {
 }
 
 // 팝업창 class
-Future<dynamic> _showdialog_id(BuildContext context) {
+Future<dynamic> _showdialog_id(String nickname,MessageResponse Message,BuildContext context) {
   return showDialog(
     context: context,
     builder: (BuildContext context) => AlertDialog(
-      title: Text('이메일 찾기'),
-      content: Text('해당 닉네임의 이메일은 example@naver.com 입니다.'),
+      title: Text('이메일 찾기', style: TextStyle(color: defaultColor),),
+      content: Text(nickname + '의 아이디는' + (Message.message ?? 'Server Error') + '입니다.'),
       actions: [
         ElevatedButton(
             onPressed: () => Navigator.of(context).pop(), child: Text('확인')),
@@ -209,6 +235,20 @@ Future<dynamic> _showdialog_id(BuildContext context) {
     ),
   );
 }
+Future<dynamic> _showdialog_noid(MessageResponse Message,BuildContext context) {
+  return showDialog(
+    context: context,
+    builder: (BuildContext context) => AlertDialog(
+      title: Text('이메일 찾기', style: TextStyle(color: defaultColor),),
+      content: Text(Message.message ?? '서버 응답에 에러가 있습니다.'),
+      actions: [
+        ElevatedButton(
+            onPressed: () => Navigator.of(context).pop(), child: Text('확인')),
+      ],
+    ),
+  );
+}
+
 Future<dynamic> _showdialog_password(BuildContext context) {
   return showDialog(
     context: context,

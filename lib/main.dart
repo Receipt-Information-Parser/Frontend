@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_downloader/flutter_downloader.dart';
 import 'package:provider/provider.dart';
 import 'package:rip_front/constants.dart';
+import 'package:rip_front/models/image_file_info.dart';
 import 'package:rip_front/providers/user_attribute_api.dart';
 import 'package:rip_front/providers/user_auth_info_api.dart';
 import 'package:rip_front/screens/initial_screen/splash_screen.dart';
@@ -31,7 +33,16 @@ MaterialColor createMaterialColor(Color color) {
   return MaterialColor(color.value, swatch);
 }
 
+class DownloadClass {
+  static void callback(String id, DownloadTaskStatus status, int progress) {
+    // print("Download Status : $status");
+    // print("Download Progress : $progress");
+  }
+}
+
 void main() {
+  WidgetsFlutterBinding.ensureInitialized();
+  FlutterDownloader.initialize(ignoreSsl: true);
   runApp(const MyApp());
 }
 
@@ -52,6 +63,7 @@ class MyApp extends StatelessWidget {
             value: TokenResponse("", accessToken: "", refreshToken: "")),
         Provider<CurrentIndex>.value(
             value: CurrentIndex(index: 1)), // for BottomNavigationBar
+        Provider<ImageFileInfo>.value(value: ImageFileInfo(profileIMG: "")),
       ],
       child: MaterialApp(
         title: 'Flutter Demo',

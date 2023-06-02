@@ -42,3 +42,12 @@ app.*.map.json
 /android/app/debug
 /android/app/profile
 /android/app/release
+
+# generated
+/windows/
+/web/
+/macos/
+/linux/
+*.cc
+*.h
+*.cmake
