@@ -3,6 +3,7 @@ import 'package:image_picker/image_picker.dart';
 import 'dart:io';
 
 import 'package:intl/intl.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:provider/provider.dart';
 import 'package:rip_front/constants.dart';
 import 'package:rip_front/http/request.dart';
@@ -11,6 +12,7 @@ import 'package:rip_front/models/current_index.dart';
 import '../../../http/dto.dart';
 import '../../../models/user_attribute.dart';
 import '../../../providers/user_attribute_api.dart';
+import '../../models/image_file_info.dart';
 import '../Home/home_screen.dart';
 
 class MyInfoScreen extends StatefulWidget {
@@ -30,58 +32,60 @@ class _MyInfoScreenState extends State<MyInfoScreen> {
   // 프로필 사진용
   File? _imageFile;
 
-  Future<void> _chooseImage(ImageSource source) async {
-    final ImagePicker _picker = ImagePicker();
-    final XFile? image = await _picker.pickImage(source: source);
-
-    if (image != null) {
-      setState(() {
-        _imageFile = File(image.path);
-      });
-    }
-  }
-
-  Future<ImageSource?> _showImageSourceDialog() async {
-    return await showDialog<ImageSource>(
-        context: context,
-        builder: (BuildContext context) {
-          return SimpleDialog(
-            title: const Text('Choose image source'),
-            children: <Widget>[
-              SimpleDialogOption(
-                onPressed: () {
-                  Navigator.pop(context, ImageSource.camera);
-                },
-                child: const Text('Camera'),
-              ),
-              SimpleDialogOption(
-                onPressed: () {
-                  Navigator.pop(context, ImageSource.gallery);
-                },
-                child: const Text('Gallery'),
-              ),
-            ],
-          );
-        });
-  }
-
-  ImageProvider _currentImageProvider() {
-    if (_imageFile != null) {
-      return FileImage(_imageFile!);
-    } else {
-      return AssetImage('lib/assets/profile/default_profile_icon.jpg');
-    }
-  }
-
-
   @override
   Widget build(BuildContext context) {
     TokenResponse tokenResponse = Provider.of<TokenResponse>(context);
     UserAttribute? userAttribute = Provider.of<UserAttribute?>(context);
     CurrentIndex currentIndex = Provider.of<CurrentIndex>(context);
+    ImageFileInfo imageFileInfo = Provider.of<ImageFileInfo>(context);
 
-    String temp = userAttribute?.field as String;
-    List<String> myLabelList = temp.split(' ');
+    Future<ImageSource?> _showImageSourceDialog() async {
+      return await showDialog<ImageSource>(
+          context: context,
+          builder: (BuildContext context) {
+            return SimpleDialog(
+              title: const Text('Choose image source'),
+              children: <Widget>[
+                SimpleDialogOption(
+                  onPressed: () {
+                    Navigator.pop(context, ImageSource.camera);
+                  },
+                  child: const Text('Camera'),
+                ),
+                SimpleDialogOption(
+                  onPressed: () {
+                    Navigator.pop(context, ImageSource.gallery);
+                  },
+                  child: const Text('Gallery'),
+                ),
+              ],
+            );
+          });
+    }
+
+    Future<ImageProvider<Object>> _currentImageProvider() async {
+      String dir = (await getApplicationDocumentsDirectory()).path;
+      String filePath = '$dir/${imageFileInfo.profileIMG}';
+      print('[debug]imageFileInfo.profileIMG:${imageFileInfo.profileIMG}');
+      print('[debug]file path exists:${await File(filePath).exists()}');
+      if (imageFileInfo.profileIMG != "") {
+        return FileImage(File(filePath));
+      } else {
+        // If the profileIMG is an empty string, load the default image
+        return const AssetImage('lib/assets/profile/default_profile_icon.jpg');
+      }
+    }
+
+    Future<void> _chooseImage(ImageSource source) async {
+      final ImagePicker picker = ImagePicker();
+      final XFile? image = await picker.pickImage(source: source);
+
+      if (image != null) {
+        setState(() {
+          _imageFile = File(image.path);
+        });
+      }
+    }
 
     userAttribute = UserAttributeApi.getUserAttribute();
 
@@ -145,10 +149,20 @@ class _MyInfoScreenState extends State<MyInfoScreen> {
                     _chooseImage(selectedSource);
                   }
                 },
-                child: CircleAvatar(
-                  radius: 50,
-                  backgroundColor: Colors.grey[200],
-                  backgroundImage: _currentImageProvider(),
+                child: FutureBuilder<ImageProvider>(
+                  future: _currentImageProvider(),
+                  builder: (BuildContext context, AsyncSnapshot<ImageProvider> snapshot) {
+                    if (snapshot.connectionState == ConnectionState.done) {
+                      return CircleAvatar(
+                        radius: 50,
+                        backgroundColor: Colors.grey[200],
+                        backgroundImage: snapshot.data,
+                      );
+                    } else {
+                      // While the image is loading, display a spinner
+                      return const CircularProgressIndicator();
+                    }
+                  },
                 ),
               ),
 

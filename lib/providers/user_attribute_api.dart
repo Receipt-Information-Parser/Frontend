@@ -10,7 +10,7 @@ class UserAttributeApi {
         name: "name",
         gender: true,
         birthDate: DateTime.now(),
-        field: "");
+    );
     //  GetUserInfo 실행
     return userAttribute;
   }
@@ -39,12 +39,8 @@ class UserAttributeApi {
     userAttribute?.birthDate = birthdate;
   }
 
-  static void resetField(String field) {
-    userAttribute?.field = field;
-  }
-
   static void show() {
     print(
-        "[Debug UserAtt]\nemail: ${userAttribute?.email}\nnickname: ${userAttribute?.nickname}\nname: ${userAttribute?.name}\ngender: ${userAttribute?.gender}\nbirthday: ${userAttribute?.birthDate}\nfield: ${userAttribute?.field}");
+        "[Debug UserAtt]\nemail: ${userAttribute?.email}\nnickname: ${userAttribute?.nickname}\nname: ${userAttribute?.name}\ngender: ${userAttribute?.gender}\nbirthday: ${userAttribute?.birthDate}");
   }
 }
