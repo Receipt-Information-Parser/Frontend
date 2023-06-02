@@ -13,6 +13,7 @@ import 'package:provider/provider.dart';
 import 'package:rip_front/constants.dart';
 import 'package:rip_front/http/dto/ReceiptResponse.dart';
 import 'package:rip_front/http/request/ReceiptProvider.dart';
+import 'package:rip_front/screens/Detail/detail.dart';
 
 import '../../../http/dto.dart';
 import '../../../models/current_index.dart';
@@ -103,7 +104,7 @@ class _HomeScreenState extends State<HomeScreen> {
   bool? isChecked = false;
   bool isLoading = true;
 
-  String token = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJ1aWQiOjEsInN1YiI6InJlY2VpcHRtYXRlSnd0IiwiYXRoIjpudWxsLCJlbWwiOiJjaGFuaG8wMzA5QGdtYWlsLmNvbSIsImV4cCI6MTY4NTI4OTg5MSwiaWF0IjoxNjg1Mjg4MDkxfQ.fpkLWfqRusY1SZQ-Yf2SBQ8iB192SAavEVE-csEiUPqW9q6B1SAShRyKOb9TAqLo0F39g3mj366p4IxlhGEn5Q";
+  String token = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJ1aWQiOjEsInN1YiI6InJlY2VpcHRtYXRlSnd0IiwiYXRoIjpudWxsLCJlbWwiOiJjaGFuaG8wMzA5QGdtYWlsLmNvbSIsImV4cCI6MTY4NTMzMzI1MiwiaWF0IjoxNjg1MzMxNDUyfQ.ywGL7hxVtlvULUMjvxuUwICdNYJ7WR1yfxGwSK2LQ3frUI_TkNpYfT53hmGG_ACyW2gXKaDefr28jHlVCnEDEw";
   late ListReceiptResponses receipts;
   ReceiptProvider receiptProvider = ReceiptProvider('${baseUrl}receipt');
 
@@ -211,8 +212,14 @@ class _HomeScreenState extends State<HomeScreen> {
                               alignment: Alignment.centerLeft,
                               height: 50,
                               child: TextButton(
-                                onPressed: () {
-                                  // 상세 기록 연결
+                                onPressed: () async {
+
+                                  final csv = await receiptProvider.getReceipt(token, receipts.receipts![index].key);
+
+                                  Navigator.of(context)
+                                      .pushReplacement(MaterialPageRoute(builder: ((context) {
+                                    return DetailScreen(csv: csv);
+                                  })));
                                 },
                                 child: Text(
                                     DateFormat('yyyy년 MM월 dd일 kk:mm').format(receipts.receipts![index].createdDate),

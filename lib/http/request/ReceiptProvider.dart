@@ -69,4 +69,28 @@ class ReceiptProvider {
           '${body['status']}: ${body['message']}');
     }
   }
+
+  Future<String> getReceipt(String token, String filename) async {
+    final response = await http.get(
+      Uri.parse('$uri/$filename'),
+      headers: <String, String>{
+        HttpHeaders.authorizationHeader: "Bearer $token"
+      },
+    );
+
+    return utf8.decode(response.bodyBytes);
+
+    // if (response.statusCode == 200) {
+    //   return ListReceiptResponses.fromJson(jsonDecode());
+    // } else {
+    //   var body = utf8.decode(response.bodyBytes);
+    //   if (body['message'] == "현재 유저가 영수증을 가지고 있지 않습니다.") {
+    //     return ListReceiptResponses(receipts: <ReceiptResponse>[]);
+    //   }
+    //   else {
+    //     return Future.error(
+    //         '${body['status']}: ${body['message']}');
+    //   }
+    // }
+  }
 }
