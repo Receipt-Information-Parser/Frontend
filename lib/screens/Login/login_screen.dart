@@ -266,7 +266,7 @@ class LoginScreen_ extends State<LoginScreen> {
                               // Make the asynchronous call to getPictureObject
                               url = '${baseUrl}picture';
                               try {
-                                await getPictureObject(url, imageFileInfo.profileIMG);
+                                await getPictureObject(url, imageFileInfo.profileIMG, tokenResponse.accessToken);
                                 print('Success loading picture object.');
                               } catch (e) {
                                 print('Failed to load picture object: $e');

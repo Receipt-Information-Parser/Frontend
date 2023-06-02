@@ -64,15 +64,47 @@ class _MyInfoScreenState extends State<MyInfoScreen> {
     }
 
     Future<ImageProvider<Object>> _currentImageProvider() async {
-      String dir = (await getApplicationDocumentsDirectory()).path;
-      String filePath = '$dir/${imageFileInfo.profileIMG}';
+      final dir = await getExternalStorageDirectory();
+      String filePath = '${dir!.path}/${imageFileInfo.profileIMG}';
       print('[debug]imageFileInfo.profileIMG:${imageFileInfo.profileIMG}');
       print('[debug]file path exists:${await File(filePath).exists()}');
-      if (imageFileInfo.profileIMG != "") {
-        return FileImage(File(filePath));
+
+      if (_imageFile != null) {
+        // 사진 선택시 선택된 사진 savePicture로 서버에 저장
+        String url = '${baseUrl}picture/save';
+        print('[debug]accessToken:${tokenResponse.accessToken}');
+        try {
+          KeyResponse keyResponse = await savePicture(url, _imageFile!, tokenResponse.accessToken);
+          print('[debug]Image saved successfully');
+          // TODO: 다른 화면 넘어갔다 올 때, 사진이 제대로 업데이트되지않는 문제 해결해야함
+          // 선택한 사진으로 로컬 파일 저장 및 최신 경로 갱신
+          final dir = await getExternalStorageDirectory();
+          final String filePath = '${dir!.path}/${keyResponse.key}';
+
+          // 복사하고자 하는 경로에 이미 파일이 존재하는 경우, 파일을 삭제한다.
+          final File existingFile = File(filePath);
+          if (await existingFile.exists()) {
+            await existingFile.delete();
+          }
+          // 선택한 이미지 파일을 지정한 경로로 복사한다.
+          await _imageFile?.copy(filePath);
+          print('[debug]new profileIMG:${imageFileInfo.profileIMG}');
+          imageFileInfo.profileIMG = filePath;
+          print('[debug]old profileIMG:${imageFileInfo.profileIMG}');
+        } catch (e, s) {
+          print('[debug]Failed to save image: $e');
+          print('Stack trace: $s');
+        }
+
+        return FileImage(_imageFile!);
       } else {
-        // If the profileIMG is an empty string, load the default image
-        return const AssetImage('lib/assets/profile/default_profile_icon.jpg');
+        if (imageFileInfo.profileIMG != "") {
+          // 프로필 사진 존재 시, 기존 프로필 사진 출력
+          return FileImage(File(filePath));
+        } else {
+          // 프로필 사진 없을 시, default image 출력
+          return const AssetImage('lib/assets/profile/default_profile_icon.jpg');
+        }
       }
     }
 

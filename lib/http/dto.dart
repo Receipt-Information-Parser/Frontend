@@ -222,3 +222,15 @@ class Owner {
     );
   }
 }
+
+class KeyResponse {
+  final String key;
+
+  KeyResponse({required this.key});
+
+  factory KeyResponse.fromJson(Map<String, dynamic> json) {
+    return KeyResponse(
+      key: json['key'] as String? ?? '',
+    );
+  }
+}
