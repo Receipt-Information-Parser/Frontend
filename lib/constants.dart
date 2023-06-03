@@ -14,6 +14,7 @@ const double fontSizeAppbarTitle = 25;     // Appbar의 title font
 const double widthButton = 350;
 const double heightButton = 50;
 const double widthDownloadButton = 300;
+const double iconSizeSmall = 20;
 
 
 const String baseUrl = "http://10.0.2.2:19983/api/"; // api 주소

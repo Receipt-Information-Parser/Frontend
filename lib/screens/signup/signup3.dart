@@ -238,10 +238,10 @@ class Signin3_2 extends State<Signin3> {
                       userAttribute?.nickname = value.nickname!;
 
                       Navigator.of(context).pushAndRemoveUntil(
-                          MaterialPageRoute(
-                              builder: ((context) => HomeScreen())), (_) {
-                        return false;
-                      });
+                        MaterialPageRoute(
+                            builder: ((context) => HomeScreen(token: tokenResponse.accessToken))),
+                            (_) => false,
+                      );
                     }, onError: (err) {
                       print('[debug] future error: ${err.toString()}');
 

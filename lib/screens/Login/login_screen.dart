@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:provider/provider.dart';
-import 'package:rip_front/models/image_file_info.dart';
 import 'package:rip_front/providers/user_attribute_api.dart';
 import 'package:rip_front/screens/Login/find_id_password.dart';
 import 'package:flutter/material.dart';
@@ -49,7 +48,6 @@ class LoginScreen_ extends State<LoginScreen> {
   Widget build(BuildContext context) {
     TokenResponse tokenResponse = Provider.of<TokenResponse>(context);
     UserAttribute? userAttribute = Provider.of<UserAttribute?>(context);
-    ImageFileInfo imageFileInfo = Provider.of<ImageFileInfo>(context);
 
     return MaterialApp(
         home: Scaffold(
@@ -254,19 +252,18 @@ class LoginScreen_ extends State<LoginScreen> {
                           userAttribute?.birthDate =
                               DateTime.parse(value.birthday!);
 
+                          userAttribute?.profileImage = value.profileImage!;
                           // getPictureList
                           url = '${baseUrl}picture/list';
 
                           try {
-                            List<PictureResponse> picList = await getPictureList(url, tokenResponse.accessToken);
-                            imageFileInfo.profileIMG = picList.last.key!;
-                            print('Success loading picture list: ${imageFileInfo.profileIMG}');
+                            print('Success loading picture list: ${userAttribute?.profileImage}');
                             // If profileIMG is not an empty string
-                            if (imageFileInfo.profileIMG != "") {
+                            if (userAttribute?.profileImage != "") {
                               // Make the asynchronous call to getPictureObject
                               url = '${baseUrl}picture';
                               try {
-                                await getPictureObject(url, imageFileInfo.profileIMG, tokenResponse.accessToken);
+                                await getPictureObject(url, userAttribute?.profileImage, tokenResponse.accessToken);
                                 print('Success loading picture object.');
                               } catch (e) {
                                 print('Failed to load picture object: $e');
@@ -275,11 +272,13 @@ class LoginScreen_ extends State<LoginScreen> {
                           } catch (e) {
                             print('Failed to load picture list: $e');
                           }
-                          print('[debug]profileIMG:${imageFileInfo.profileIMG}');
+                          print('[debug]profileIMG:${userAttribute?.profileImage}');
                           Navigator.of(context).pushReplacement(
-                              MaterialPageRoute(
-                                  builder: ((context) =>
-                                      const HomeScreen())));
+                            MaterialPageRoute(
+                                builder: ((context) =>
+                                    HomeScreen(token: tokenResponse.accessToken))),
+                          );
+
                         }, onError: (err) {
                           showLoginErrorDialog(context);
                         });

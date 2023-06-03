@@ -21,21 +21,22 @@ import '../../../models/user_id.dart';
 import '../myinfo/my_info_screen.dart';
 
 class HomeScreen extends StatefulWidget {
-  const HomeScreen({super.key});
+  final String? token;
+
+  const HomeScreen({Key? key, required this.token}) : super(key: key);
 
   @override
-  _HomeScreenState createState() {
-    return _HomeScreenState();
-  }
+  _HomeScreenState createState() => _HomeScreenState(token!);
 }
 
+
 class BottomSheetWidget extends StatefulWidget {
-  final String token;
+  final String? token;
 
   const BottomSheetWidget({super.key, required this.token});
 
   @override
-  _BottomSheetWidgetState createState() => _BottomSheetWidgetState(token);
+  _BottomSheetWidgetState createState() => _BottomSheetWidgetState(token!);
 }
 
 
@@ -104,7 +105,10 @@ class _HomeScreenState extends State<HomeScreen> {
   bool? isChecked = false;
   bool isLoading = true;
 
-  String token = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJ1aWQiOjEsInN1YiI6InJlY2VpcHRtYXRlSnd0IiwiYXRoIjpudWxsLCJlbWwiOiJjaGFuaG8wMzA5QGdtYWlsLmNvbSIsImV4cCI6MTY4NTMzMzI1MiwiaWF0IjoxNjg1MzMxNDUyfQ.ywGL7hxVtlvULUMjvxuUwICdNYJ7WR1yfxGwSK2LQ3frUI_TkNpYfT53hmGG_ACyW2gXKaDefr28jHlVCnEDEw";
+  final String token;
+
+  _HomeScreenState(this.token);
+
   late ListReceiptResponses receipts;
   ReceiptProvider receiptProvider = ReceiptProvider('${baseUrl}receipt');
 
@@ -318,10 +322,11 @@ class _HomeScreenState extends State<HomeScreen> {
             currentIndex.setCurrentIndex(value);
             switch (currentIndex.index) {
               case 0:
-                Navigator.of(context)
-                    .pushReplacement(MaterialPageRoute(builder: ((context) {
-                  return const HomeScreen();
-                })));
+                Navigator.of(context).pushReplacement(
+                  MaterialPageRoute(
+                      builder: ((context) =>
+                          HomeScreen(token: tokenResponse.accessToken))),
+                );
                 break;
 
               case 1:
