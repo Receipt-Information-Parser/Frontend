@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:kakao_flutter_sdk_user/kakao_flutter_sdk_user.dart';
 import '../../constants.dart';
 
 class KakaoLoginButton extends StatelessWidget {
@@ -10,36 +12,61 @@ class KakaoLoginButton extends StatelessWidget {
     this.buttonHeight = heightButton,
   });
 
+  Future<void> kakaoLogin() async {
+    var REDIRECT_URI = 'url';// 서버에서 token값을 받을 kakao oauth API 주소
+    // 카카오톡 실행 가능 여부 확인
+    // 카카오톡 실행이 가능하면 카카오톡으로 로그인, 아니면 카카오계정으로 로그인
+    if (await isKakaoTalkInstalled()) {
+      try {
+        print('[debug]oauth:success');
+        await AuthCodeClient.instance.authorizeWithTalk(
+          redirectUri: '${REDIRECT_URI}',
+        );
+      } catch (error) {
+        print('카카오톡으로 로그인 실패 $error');
+      }
+    } else {
+      try {
+        await AuthCodeClient.instance.authorize(
+          redirectUri: '${REDIRECT_URI}',
+        );
+      } catch (error) {
+        print('카카오계정으로 로그인 실패 $error');
+      }
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return ElevatedButton(
-      onPressed: onPressed,
-      style: ElevatedButton.styleFrom(
-        backgroundColor: const Color(0xFFFFE812),
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(4.0),
+      style: ButtonStyle(
+        backgroundColor: MaterialStateProperty.all<Color>(Color(0xFFFEE500)),
+        shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+          RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(12.0),
+          ),
         ),
-        minimumSize: Size(double.infinity, buttonHeight),
       ),
+      onPressed: () async {
+        await kakaoLogin();
+      },
       child: Row(
-        mainAxisAlignment: MainAxisAlignment.start,
-        children: [
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: <Widget>[
           Image.asset(
             'lib/assets/kakaotalk_logo.png',
-            width: MediaQuery.of(context).size.width * 0.06,
-            height: MediaQuery.of(context).size.height * 0.06,
+            height: 24.0,
           ),
-          Spacer(),
-          const Text(
-            '카카오계정으로 로그인',
-            style: TextStyle(
-              fontSize: fontSizeButton,
-              color: Color(0xFF381E1F),
-              fontWeight: FontWeight.bold,
+          Padding(
+            padding: const EdgeInsets.only(left: 8.0),
+            child: Text(
+              '카카오 로그인',
+              style: TextStyle(
+                color: Colors.black.withOpacity(0.85),
+                fontSize: 16.0,
+              ),
             ),
           ),
-          Spacer(),
-          Spacer(),
         ],
       ),
     );

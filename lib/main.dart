@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_downloader/flutter_downloader.dart';
+import 'package:kakao_flutter_sdk_user/kakao_flutter_sdk_user.dart';
 import 'package:provider/provider.dart';
 import 'package:rip_front/constants.dart';
 import 'package:rip_front/providers/user_attribute_api.dart';
@@ -42,6 +43,7 @@ class DownloadClass {
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
   FlutterDownloader.initialize(ignoreSsl: true);
+  KakaoSdk.init(nativeAppKey: YOUR_NATIVE_APP_KEY);
   runApp(const MyApp());
 }
 
