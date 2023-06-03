@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:syncfusion_flutter_datagrid/datagrid.dart';
+
+import '../../http/dto.dart';
+import '../Home/home_screen.dart';
 
 class DetailScreen extends StatefulWidget {
   final String csv;
@@ -31,6 +35,7 @@ class _DetailScreenState extends State<DetailScreen> {
 
   @override
   Widget build(BuildContext context) {
+    TokenResponse tokenResponse = Provider.of<TokenResponse>(context);
     var columns = <GridColumn>[];
 
     for (int i = 0; i < data['columns'].length; i++) {
@@ -48,7 +53,16 @@ class _DetailScreenState extends State<DetailScreen> {
 
     return Scaffold(
       appBar: AppBar(
+        centerTitle: true, // 제목을 가운데 정렬
         title: const Text('상세 내역'),
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back),
+          onPressed: () {
+            Navigator.of(context).pushReplacement(MaterialPageRoute(
+                builder: ((context) => HomeScreen(token: tokenResponse.accessToken,))
+            ));
+          },
+        ),
         actions: <Widget>[
           IconButton(
             icon: Icon(_isEditing ? Icons.check : Icons.edit),
@@ -57,7 +71,7 @@ class _DetailScreenState extends State<DetailScreen> {
                 _showConfirmationDialog();
               } else {
                 setState(() {
-                  _isEditing = true;
+                  _isEditing = !_isEditing;
                 });
               }
             },
@@ -71,7 +85,7 @@ class _DetailScreenState extends State<DetailScreen> {
                 selectionMode: SelectionMode.singleDeselect,
                 allowEditing: _isEditing,
                 allowSwiping: true,
-                editingGestureType: EditingGestureType.doubleTap,
+                editingGestureType: EditingGestureType.tap,
                 allowPullToRefresh: true,
                 source: detailDataSource,
                 gridLinesVisibility: GridLinesVisibility.both,
@@ -82,7 +96,7 @@ class _DetailScreenState extends State<DetailScreen> {
           Container(
             alignment: Alignment.centerRight,
             padding: EdgeInsets.all(16.0),
-            child: Text('총액: $_totalAmount'),
+            child: Text('총액: ${_totalAmount.toInt()}원')
           ),
         ],
       ),
