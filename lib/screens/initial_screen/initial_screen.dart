@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:rip_front/constants.dart';
 import 'package:rip_front/screens/Home/home_screen.dart';
 import 'package:rip_front/screens/Login/kakaotalk_login_button.dart';
 import 'package:rip_front/screens/signup/signup2.dart';
 import 'package:rip_front/screens/signup/signup3.dart';
 
+import '../../http/dto.dart';
 import '../myinfo/my_info_screen.dart';
 import '../signup/signup1.dart';
 import '../Login/login_screen.dart';
@@ -14,6 +16,7 @@ class InitialScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    TokenResponse tokenResponse = Provider.of<TokenResponse>(context);
     return Scaffold(
         backgroundColor: Colors.white,
         body: Column(mainAxisAlignment: MainAxisAlignment.center, children: <
@@ -73,6 +76,8 @@ class InitialScreen extends StatelessWidget {
                   child: KakaoLoginButton(
                     onPressed: () {
                       // TODO: 카카오 로그인 처리를 구현
+                      // Navigator.of(context).pushReplacement(MaterialPageRoute(
+                      //     builder: ((context) => DataAnalysisScreen(token: tokenResponse.accessToken))));
                     },
                   ),
                 ),

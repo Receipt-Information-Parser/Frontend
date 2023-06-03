@@ -356,11 +356,7 @@ class _MyInfoScreenState extends State<MyInfoScreen> {
                 elevation: 0,
               ),
               onPressed: () async {
-                Navigator.of(context).pushReplacement(
-                  MaterialPageRoute(
-                      builder: ((context) =>
-                          HomeScreen(token: tokenResponse.accessToken))),
-                );
+                // TODO: 엑셀로 저장하는 API 호출
               },
               child:
               const Text('엑셀로 저장하기', style: TextStyle(color: defaultColor)),
@@ -384,13 +380,13 @@ class _MyInfoScreenState extends State<MyInfoScreen> {
                 elevation: 0,
               ),
               onPressed: () async {
-                Navigator.of(context).pushReplacement(
-                  MaterialPageRoute(
-                      builder: ((context) =>
-                          HomeScreen(token: tokenResponse.accessToken))),
-                );
+                // Navigator.of(context).pushReplacement(
+                //   MaterialPageRoute(
+                //       builder: ((context) =>
+                //           DataAnalysisScreen(token: tokenResponse.accessToken))),
+                // );
               },
-              child: const Text('분석 자료 사진으로 저장하기',
+              child: const Text('기록 분석 차트 & 저장하기',
                   style: TextStyle(color: defaultColor)),
             ),
           ),
