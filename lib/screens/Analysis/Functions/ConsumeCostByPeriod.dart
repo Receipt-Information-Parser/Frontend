@@ -1,15 +1,20 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 
+import '../../../http/dto.dart';
+import '../../../http/request.dart';
 import '../AnalysisChart2.dart';
 import '../DataAnalysis.dart';
 
 import '../../../constants.dart';
 import 'ExportChartToImage.dart';
 
-List<Widget> consumeCostByPeriod(String sectionTitle, List<String> sectionItems, BuildContext context,{GlobalKey<SfCartesianChartState>? chartKey}) {
+List<Widget> consumeCostByPeriod(String sectionTitle, BuildContext context,{GlobalKey<SfCartesianChartState>? chartKey}) {
+  TokenResponse tokenResponse = Provider.of<TokenResponse>(context);
   List<Widget> widgets = [];
+  List<String> sectionItems = ['연도별', '월별'];
   widgets.add(Divider(
     color: Colors.grey,
     height: 30,
@@ -86,10 +91,14 @@ List<Widget> consumeCostByPeriod(String sectionTitle, List<String> sectionItems,
               else { // 화면 넘김용일때
                 List<ByPeriod>? ApiResponse;
                 if (item == '연도별') {
-                  ApiResponse = await getByYear();
+                  String url = '${baseUrl}analysis/year';
+                  print('[debug]연도별 clicked:$url');
+                  ApiResponse = await getByYear(url,tokenResponse.accessToken);
                 }
                 if (item == '월별') {
-                  ApiResponse = await getByMonth();
+                  String url = '${baseUrl}analysis/month';
+                  print('[debug]월별 clicked:$url');
+                  ApiResponse = await getByMonth(url,tokenResponse.accessToken);
                 }
                 // TODO: Navigator 결과와 같이 넘기기(response 형태에 따라 다르게 구현)
                 Navigator.of(context).pushReplacement(MaterialPageRoute(

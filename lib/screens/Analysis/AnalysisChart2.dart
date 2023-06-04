@@ -88,7 +88,7 @@ class _AnalysisChart2ScreenState extends State<AnalysisChart2Screen> {
               child: Container(
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.start,
-                  children: consumeCostByPeriod('기간별 소비 금액', ['$periodType'],context,chartKey:chartKey),
+                  children: consumeCostByPeriod('기간별 소비 금액',context,chartKey:chartKey),
                 ),
               ),
             ),
@@ -110,7 +110,7 @@ class _AnalysisChart2ScreenState extends State<AnalysisChart2Screen> {
                     ColumnSeries<ByPeriod, String>(
                       dataSource: data,
                       xValueMapper: (ByPeriod byPeriod, _) =>
-                      periodType == 'Year'
+                      periodType == '연도별'
                           ? DateFormat('yyyy').format(byPeriod.date)
                           : DateFormat('yyyy-MM').format(byPeriod.date),
                       yValueMapper: (ByPeriod byPeriod, _) => byPeriod.amount,

@@ -1,7 +1,10 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 
+import '../../../http/dto.dart';
+import '../../../http/request.dart';
 import '../AnalysisChart1.dart';
 import '../DataAnalysis.dart';
 
@@ -9,6 +12,7 @@ import '../../../constants.dart';
 import 'ExportChartToImage.dart';
 
 List<Widget> consumeOfitem(String sectionTitle, List<String> sectionItems, BuildContext context,{GlobalKey<SfCartesianChartState>? chartKey}) {
+  TokenResponse tokenResponse = Provider.of<TokenResponse>(context);
   List<Widget> widgets = [];
   widgets.add(Divider(
     color: Colors.grey,
@@ -86,7 +90,8 @@ List<Widget> consumeOfitem(String sectionTitle, List<String> sectionItems, Build
               }
               else{ // 화면 넘김용일때
                 //TODO: getByName API 호출 및 Navigater에 결과 pass
-                List<ByProduct>? ApiResponse = await getByName(Item);
+                String url = '${baseUrl}analysis/product';
+                List<ByProduct>? ApiResponse = await getByName(url,Item,tokenResponse.accessToken);
                 //TODO: apiResponse 결과 pass
                 Navigator.of(context).pushReplacement(MaterialPageRoute(
                     builder: ((context) => AnalysisChart1Screen(apiResponse: ApiResponse,item: Item,))

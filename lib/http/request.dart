@@ -155,3 +155,110 @@ Future<KeyResponse> savePicture(String url, File file, String? token) async {
     throw Exception('Failed to save picture');
   }
 }
+
+Future<List<ByPeriod>> getByMonth(String url ,String? token) async {
+  final response = await http.get(
+    Uri.parse(url),
+    headers: <String, String>{
+      'Content-Type': 'application/json; charset=UTF-8',
+      'Authorization': 'Bearer $token',
+    },
+  );
+  print('[debug] response status code : ${response.statusCode}');
+  if (response.statusCode == 200) {
+    // If the server returns a 200 OK response,
+    // then parse the JSON.
+    List<dynamic> body = jsonDecode(utf8.decode(response.bodyBytes))["byPeriods"];
+    List<ByPeriod> byPeriods = body
+        .map(
+          (dynamic item) => ByPeriod.fromJson(item),
+    )
+        .toList();
+
+    return byPeriods;
+  } else {
+    // If the server did not return a 200 OK response,
+    // then throw an exception.
+    throw Exception('Failed to load ByPeriod');
+  }
+}
+
+Future<List<ByPeriod>> getByYear(String url ,String? token) async {
+  final response = await http.get(
+    Uri.parse(url),
+    headers: <String, String>{
+      'Content-Type': 'application/json; charset=UTF-8',
+      'Authorization': 'Bearer $token',
+    },
+  );
+  print('[debug] response status code : ${response.statusCode}');
+  if (response.statusCode == 200) {
+    // If the server returns a 200 OK response,
+    // then parse the JSON.
+    List<dynamic> body = jsonDecode(utf8.decode(response.bodyBytes))["byPeriods"];
+    List<ByPeriod> byPeriods = body
+        .map(
+          (dynamic item) => ByPeriod.fromJson(item),
+    )
+        .toList();
+
+    return byPeriods;
+  } else {
+    // If the server did not return a 200 OK response,
+    // then throw an exception.
+    throw Exception('Failed to load ByPeriod');
+  }
+}
+
+Future<List<String>> getNames(String url, String? token) async {
+  final response = await http.get(
+    Uri.parse(url),
+    headers: <String, String>{
+      'Content-Type': 'application/json; charset=UTF-8',
+      'Authorization': 'Bearer $token',
+    },
+  );
+  print('[debug] response status code : ${response.statusCode}');
+  if (response.statusCode == 200) {
+    // If the server returns a 200 OK response,
+    // then parse the JSON.
+    List<dynamic> body = jsonDecode(utf8.decode(response.bodyBytes))["names"];
+    List<String> names = body.cast<String>();
+
+    return names;
+  } else {
+    // If the server did not return a 200 OK response,
+    // then throw an exception.
+    throw Exception('Failed to load names');
+  }
+}
+
+Future<List<ByProduct>> getByName(String url,String name, String? token) async {
+  final response = await http.post(
+    Uri.parse(url),
+    headers: <String, String>{
+      'Content-Type': 'application/json; charset=UTF-8',
+      'Authorization': 'Bearer $token',
+    },
+    body: jsonEncode(<String, String>{
+      'name': name,
+    }),
+  );
+  print('[debug] response status code : ${response.statusCode}');
+  if (response.statusCode == 200) {
+    // If the server returns a 200 OK response,
+    // then parse the JSON.
+    List<dynamic> body = jsonDecode(utf8.decode(response.bodyBytes))["byProducts"];
+    List<ByProduct> byProducts = body
+        .map(
+          (dynamic item) => ByProduct.fromJson(item),
+    )
+        .toList();
+
+    return byProducts;
+  } else {
+    // If the server did not return a 200 OK response,
+    // then throw an exception.
+    throw Exception('Failed to load ByProduct');
+  }
+}

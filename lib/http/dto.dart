@@ -199,3 +199,47 @@ class KeyResponse {
     );
   }
 }
+
+class ByPeriod {
+
+  final DateTime date;
+  final int amount;
+  final int analysisId;
+
+  ByPeriod({
+    required this.date,
+    required this.amount,
+    required this.analysisId,
+  });
+
+  factory ByPeriod.fromJson(Map<String, dynamic> json) {
+    return ByPeriod(
+      date: DateTime.parse(json['date']),
+      amount: json['amount'],
+      analysisId: json['analysisId'],
+    );
+  }
+}
+
+class ByProduct {
+  final String name;
+  final int amount;
+  final int analysisId;
+  final DateTime date;
+
+  ByProduct({
+    required this.name,
+    required this.amount,
+    required this.analysisId,
+    required this.date,
+  });
+
+  factory ByProduct.fromJson(Map<String, dynamic> json) {
+    return ByProduct(
+      name: json['name'],
+      amount: json['amount'],
+      analysisId: json['analysisId'],
+      date: DateTime.parse(json['date']),
+    );
+  }
+}
