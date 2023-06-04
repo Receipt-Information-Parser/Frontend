@@ -18,77 +18,11 @@ import 'package:rip_front/screens/Detail/detail.dart';
 import '../../../http/dto.dart';
 import '../../../models/current_index.dart';
 import '../../../models/user_id.dart';
+import '../../http/request.dart';
 import '../Home/home_screen.dart';
 import '../myinfo/my_info_screen.dart';
 import 'Functions/ConsumeCostByPeriod.dart';
 import 'Functions/ConsumeOfitem.dart';
-
-/// //////////////////////////////////////////////////////////////////////////
-/// Dummy APIs ///////////////////////////////////////////////////////////////
-
-class ByPeriod {
-
-  final DateTime date;
-  final int amount;
-  final int analysisId;
-
-  ByPeriod({
-    required this.date,
-    required this.amount,
-    required this.analysisId,
-  });
-
-  factory ByPeriod.fromJson(Map<String, dynamic> json) {
-    return ByPeriod(
-      date: json['date'],
-      amount: json['amount'],
-      analysisId: json['analysisId'],
-    );
-  }
-}
-
-class ByProduct {
-  final String name;
-  final int amount;
-  final int analysisId;
-  final DateTime date;
-
-  ByProduct({
-    required this.name,
-    required this.amount,
-    required this.analysisId,
-    required this.date,
-  });
-
-  factory ByProduct.fromJson(Map<String, dynamic> json) {
-    return ByProduct(
-      name: json['name'],
-      amount: json['amount'],
-      analysisId: json['analysisId'],
-      date: json['date'],
-    );
-  }
-}
-
-
-Future<List<ByProduct>?> getByName(String name) async {
-  // Call API and get data by name
-  // return data as String or any other format you want
-}
-
-Future<List<ByPeriod>?> getByYear() async {
-  // Call API and get data by year
-  // return data as String or any other format you want
-}
-
-Future<List<ByPeriod>?> getByMonth() async {
-  // Call API and get data by month
-  // return data as String or any other format you want
-}
-
-
-/// Dummy APIs ///////////////////////////////////////////////////////////////
-/// //////////////////////////////////////////////////////////////////////////
 
 class DataAnalysisScreen extends StatefulWidget {
   final String? token;
@@ -102,7 +36,7 @@ class DataAnalysisScreen extends StatefulWidget {
 class _DataAnalysisScreenState extends State<DataAnalysisScreen> {
   // token을 받아 사용자별 품목리스트 API 호출
   final String token;
-
+  final String getNamesUrl = '${baseUrl}analysis/names';
   _DataAnalysisScreenState(this.token);
 
   final scaffoldState = GlobalKey<ScaffoldState>();
@@ -112,7 +46,7 @@ class _DataAnalysisScreenState extends State<DataAnalysisScreen> {
   Widget build(BuildContext context) {
     PersistentBottomSheetController? _controller;
 
-   final CurrentIndex currentIndex = Provider.of<CurrentIndex>(context);
+    final CurrentIndex currentIndex = Provider.of<CurrentIndex>(context);
     UserId userId = Provider.of<UserId>(context);
 
     TokenResponse tokenResponse = Provider.of<TokenResponse>(context);
@@ -126,9 +60,8 @@ class _DataAnalysisScreenState extends State<DataAnalysisScreen> {
         leading: IconButton(
           icon: const Icon(Icons.arrow_back),
           onPressed: () {
-            Navigator.of(context).pushReplacement(MaterialPageRoute(
-                builder: ((context) => MyInfoScreen())
-            ));
+            Navigator.of(context).pushReplacement(
+                MaterialPageRoute(builder: ((context) => MyInfoScreen())));
           },
         ),
       ),
@@ -138,35 +71,48 @@ class _DataAnalysisScreenState extends State<DataAnalysisScreen> {
             Container(
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.start,
-                children: consumeCostByPeriod('기간별 소비 금액', ['연도별', '월별'],context),
+                children: consumeCostByPeriod('기간별 소비 금액', context),
               ),
             ),
-            Container(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.start,
-                // 품목리스트은 실제 사용되는 품목리스트로 변경
-                children: consumeOfitem('품목별 소비 추이', ['품목1', '품목2'],context),
-              ),
-            )
+            FutureBuilder<List<String>>(
+              future: getNames(getNamesUrl,tokenResponse.accessToken),
+              builder:
+                  (BuildContext context, AsyncSnapshot<List<String>> snapshot) {
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return CircularProgressIndicator(); // while data is loading
+                } else {
+                  if (snapshot.hasError)
+                    return Text('Error: ${snapshot.error}');
+                  else
+                    return Column(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: consumeOfitem('품목별 소비 추이', snapshot.data!, context),
+                    ); // data loaded
+                }
+              },
+            ),
           ],
         ),
       ),
       floatingActionButton: Container(
           height: 70,
-          width: 70,//Floating action button on Scaffold
+          width: 70, //Floating action button on Scaffold
           child: FittedBox(
               child: FloatingActionButton(
-                onPressed: () {
-                  if (bottomSheetToggle == false) {
-                    bottomSheetToggle = true;
-                    _controller = scaffoldState.currentState?.showBottomSheet((context) => BottomSheetWidget(token: token,));
-                  } else {
-                    _controller?.close();
-                    bottomSheetToggle = false;
-                  }
-                },
-                child: Icon(Icons.add, size: 40), //icon inside button
-              ))),
+            onPressed: () {
+              if (bottomSheetToggle == false) {
+                bottomSheetToggle = true;
+                _controller = scaffoldState.currentState
+                    ?.showBottomSheet((context) => BottomSheetWidget(
+                          token: token,
+                        ));
+              } else {
+                _controller?.close();
+                bottomSheetToggle = false;
+              }
+            },
+            child: Icon(Icons.add, size: 40), //icon inside button
+          ))),
 
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       //floating action button position to center

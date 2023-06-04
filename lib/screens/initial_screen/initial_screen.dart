@@ -14,7 +14,6 @@ import '../Login/login_screen.dart';
 
 class InitialScreen extends StatelessWidget {
   const InitialScreen({super.key});
-  final token = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJ1aWQiOjEsInN1YiI6InJlY2VpcHRtYXRlSnd0IiwiYXRoIjpudWxsLCJlbWwiOiJ0ZXN0QGdtYWlsLmNvbSIsImV4cCI6MTY4NTg2NDg2MCwiaWF0IjoxNjg1ODYzMDYwfQ.VKlXC8unlzFn5yiHMHLaVpzb_T_1TCoUObbGumxYc9Fm-Fy8jCDfEW31LJy2-9zFTlYix4mPAkRXhmQPiNsafA';
   @override
   Widget build(BuildContext context) {
     TokenResponse tokenResponse = Provider.of<TokenResponse>(context);
@@ -95,9 +94,7 @@ class InitialScreen extends StatelessWidget {
                     ),
                     onPressed: () {
                       Navigator.of(context).pushReplacement(MaterialPageRoute(
-                          builder: ((context) => DataAnalysisScreen(token: token))));
-                      // Navigator.of(context).pushReplacement(MaterialPageRoute(
-                      //     builder: ((context) => LoginScreen())));
+                          builder: ((context) => LoginScreen())));
                     },
                     child: const Text('로그인'),
                   ),
