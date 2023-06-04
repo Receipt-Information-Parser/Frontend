@@ -18,7 +18,7 @@ const double widthDownloadButton = 300;
 const double iconSizeSmall = 20;
 
 
-const String baseUrl = "http://10.0.2.2:19983/api/"; // api 주소
+const String baseUrl = "http://3.34.124.43:19983/api/"; // api 주소
 
 
 enum DETAIL_TYPE { APPLY, APPROVE } // 왼쪽부터 각각 신청자 등록, 신청자 확인

@@ -25,20 +25,68 @@ import 'Functions/ConsumeOfitem.dart';
 
 /// //////////////////////////////////////////////////////////////////////////
 /// Dummy APIs ///////////////////////////////////////////////////////////////
-Future<String?> getByName(String name) async {
+
+class ByPeriod {
+
+  final DateTime date;
+  final int amount;
+  final int analysisId;
+
+  ByPeriod({
+    required this.date,
+    required this.amount,
+    required this.analysisId,
+  });
+
+  factory ByPeriod.fromJson(Map<String, dynamic> json) {
+    return ByPeriod(
+      date: json['date'],
+      amount: json['amount'],
+      analysisId: json['analysisId'],
+    );
+  }
+}
+
+class ByProduct {
+  final String name;
+  final int amount;
+  final int analysisId;
+  final DateTime date;
+
+  ByProduct({
+    required this.name,
+    required this.amount,
+    required this.analysisId,
+    required this.date,
+  });
+
+  factory ByProduct.fromJson(Map<String, dynamic> json) {
+    return ByProduct(
+      name: json['name'],
+      amount: json['amount'],
+      analysisId: json['analysisId'],
+      date: json['date'],
+    );
+  }
+}
+
+
+Future<List<ByProduct>?> getByName(String name) async {
   // Call API and get data by name
   // return data as String or any other format you want
 }
 
-Future<String?> getByMonth() async {
+Future<List<ByPeriod>?> getByYear() async {
+  // Call API and get data by year
+  // return data as String or any other format you want
+}
+
+Future<List<ByPeriod>?> getByMonth() async {
   // Call API and get data by month
   // return data as String or any other format you want
 }
 
-Future<String?> getByWeek() async {
-  // Call API and get data by week
-  // return data as String or any other format you want
-}
+
 /// Dummy APIs ///////////////////////////////////////////////////////////////
 /// //////////////////////////////////////////////////////////////////////////
 
@@ -64,7 +112,7 @@ class _DataAnalysisScreenState extends State<DataAnalysisScreen> {
   Widget build(BuildContext context) {
     PersistentBottomSheetController? _controller;
 
-    final CurrentIndex currentIndex = Provider.of<CurrentIndex>(context);
+   final CurrentIndex currentIndex = Provider.of<CurrentIndex>(context);
     UserId userId = Provider.of<UserId>(context);
 
     TokenResponse tokenResponse = Provider.of<TokenResponse>(context);
@@ -74,7 +122,7 @@ class _DataAnalysisScreenState extends State<DataAnalysisScreen> {
       key: scaffoldState,
       appBar: AppBar(
         centerTitle: true, // 제목을 가운데 정렬
-        title: const Text('상세 내역'),
+        title: const Text('기록 분석'),
         leading: IconButton(
           icon: const Icon(Icons.arrow_back),
           onPressed: () {
@@ -90,7 +138,7 @@ class _DataAnalysisScreenState extends State<DataAnalysisScreen> {
             Container(
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.start,
-                children: consumeCostByPeriod('기간별 소비 금액', ['월별', '주별'],context),
+                children: consumeCostByPeriod('기간별 소비 금액', ['연도별', '월별'],context),
               ),
             ),
             Container(

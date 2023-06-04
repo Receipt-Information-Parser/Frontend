@@ -1,12 +1,14 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:syncfusion_flutter_charts/charts.dart';
 
 import '../AnalysisChart2.dart';
 import '../DataAnalysis.dart';
 
 import '../../../constants.dart';
+import 'ExportChartToImage.dart';
 
-List<Widget> consumeCostByPeriod(String sectionTitle, List<String> sectionItems, BuildContext context) {
+List<Widget> consumeCostByPeriod(String sectionTitle, List<String> sectionItems, BuildContext context,{GlobalKey<SfCartesianChartState>? chartKey}) {
   List<Widget> widgets = [];
   widgets.add(Divider(
     color: Colors.grey,
@@ -60,19 +62,38 @@ List<Widget> consumeCostByPeriod(String sectionTitle, List<String> sectionItems,
             icon: Icon(Icons.download),
             iconSize: iconSizeSmall,
             onPressed: () async {
-              String? apiResponse;
-              if (item == '월별') {
-                // apiResponse = await getByMonth();
-                // TODO: Navigator 결과와 같이 넘기기(response 형태에 따라 다르게 구현)
-                Navigator.of(context).pushReplacement(MaterialPageRoute(
-                    builder: ((context) => AnalysisChart2Screen())
-                ));
+              if (chartKey != null) { // 다운로드 창일 때,
+                // csv 다운로드 함수 호출
+                await exportChartToImage(chartKey);
+                showDialog(
+                  context: context,
+                  builder: (BuildContext context) {
+                    return AlertDialog(
+                      title: const Text("Download", style: TextStyle(color: defaultColor),),
+                      content: const Text("다운로드가 완료되었습니다."),
+                      actions: [
+                        TextButton(
+                          child: const Text("Close", style: TextStyle(color: defaultColor),),
+                          onPressed: () {
+                            Navigator.of(context).pop();
+                          },
+                        ),
+                      ],
+                    );
+                  },
+                );
               }
-              if (item == '주별') {
-                // apiResponse = await getByWeek();
+              else { // 화면 넘김용일때
+                List<ByPeriod>? ApiResponse;
+                if (item == '연도별') {
+                  ApiResponse = await getByYear();
+                }
+                if (item == '월별') {
+                  ApiResponse = await getByMonth();
+                }
                 // TODO: Navigator 결과와 같이 넘기기(response 형태에 따라 다르게 구현)
                 Navigator.of(context).pushReplacement(MaterialPageRoute(
-                    builder: ((context) => AnalysisChart2Screen())
+                    builder: ((context) => AnalysisChart2Screen(apiResponse:ApiResponse,periodType:'$item'))
                 ));
               }
             },

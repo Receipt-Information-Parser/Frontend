@@ -45,6 +45,7 @@ dependencies:
   path: ^1.8.2
   document_scanner_flutter: ^0.2.3
   syncfusion_flutter_datagrid: ^21.2.6
+  syncfusion_flutter_charts: ^21.2.4
 
 dev_dependencies:
   flutter_test:
