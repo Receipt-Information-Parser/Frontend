@@ -17,13 +17,17 @@ class SplashScreen extends StatelessWidget {
           alignment: Alignment.center,
           width: MediaQuery.of(context).size.width,
           height: MediaQuery.of(context).size.height,
-          child: Center(
-            child: Image.asset(
-              'lib/assets/splash_logo.png',
-              width: MediaQuery.of(context).size.width * 0.8,
-              height: MediaQuery.of(context).size.height * 0.8,
-            ),
-          )),
+          child: Container(
+            color: Colors.white,
+            child: Center(
+              child: Image.asset(
+                'lib/assets/splash_logo.png',
+                width: MediaQuery.of(context).size.width * 0.8,
+                height: MediaQuery.of(context).size.height * 0.8,
+              ),
+            )),
+          )
+
     );
   }
 }

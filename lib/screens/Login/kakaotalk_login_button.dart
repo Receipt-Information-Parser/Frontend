@@ -39,13 +39,14 @@ class KakaoLoginButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ElevatedButton(
-      style: ButtonStyle(
-        backgroundColor: MaterialStateProperty.all<Color>(Color(0xFFFEE500)),
-        shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-          RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(12.0),
-          ),
+        style: ElevatedButton.styleFrom(
+        textStyle: const TextStyle(
+            fontSize: fontSizeButton, fontWeight: FontWeight.bold
         ),
+        backgroundColor: Color(0xFFFEE500),
+        minimumSize: const Size(widthButton, heightButton),
+        side: const BorderSide(color: Color(0xFFFEE500), width: 1.5),
+        elevation: 0,
       ),
       onPressed: () async {
         await kakaoLogin();
@@ -57,13 +58,12 @@ class KakaoLoginButton extends StatelessWidget {
             'lib/assets/kakaotalk_logo.png',
             height: 24.0,
           ),
-          Padding(
-            padding: const EdgeInsets.only(left: 8.0),
+          const Padding(
+            padding: EdgeInsets.only(left: 8.0),
             child: Text(
-              '카카오 로그인',
+              '카카오로 로그인하기',
               style: TextStyle(
-                color: Colors.black.withOpacity(0.85),
-                fontSize: 16.0,
+                color: Colors.black,
               ),
             ),
           ),

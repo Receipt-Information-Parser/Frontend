@@ -70,8 +70,8 @@ class InitialScreen extends StatelessWidget {
                 child: Center(
                   child: Image.asset(
                     'lib/assets/splash_logo.png',
-                    width: MediaQuery.of(context).size.width * 0.6,
-                    height: MediaQuery.of(context).size.height * 0.6,
+                    width: MediaQuery.of(context).size.width,
+                    height: MediaQuery.of(context).size.height,
                   ),
                 )),
           ),

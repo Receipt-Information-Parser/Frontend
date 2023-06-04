@@ -43,7 +43,7 @@ class DownloadClass {
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
   FlutterDownloader.initialize(ignoreSsl: true);
-  KakaoSdk.init(nativeAppKey: YOUR_NATIVE_APP_KEY);
+  KakaoSdk.init(nativeAppKey: "f8b2890ef114ab577be86cf48c097cda");
   runApp(const MyApp());
 }
 
