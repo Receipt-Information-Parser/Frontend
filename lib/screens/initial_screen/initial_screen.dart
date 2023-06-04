@@ -40,13 +40,25 @@ class InitialScreen extends StatelessWidget {
                 Container(
                   alignment: Alignment.centerLeft,
                   margin: const EdgeInsets.only(left: marginHorizontalHeader),
-                  child: const Text(
-                    'RIP에 오신 것을 환영합니다!',
-                    style: TextStyle(
-                        fontSize: fontSizeHeader,
-                        color: defaultColor,
-                        fontWeight: FontWeight.bold),
-                  ),
+                  child: Row(
+                    children: const [
+                      Text(
+                        'Receipt Mate',
+                        style: TextStyle(
+                            fontSize: fontSizeHeader,
+                            color: defaultColor,
+                            fontWeight: FontWeight.bold),
+                      ),
+                      Text(
+                        ' 에 오신 것을 환영합니다!',
+                        style: TextStyle(
+                            fontSize: fontSizeMiddle,
+                            color: defaultColor,
+                            fontWeight: FontWeight.bold),
+                      ),
+                    ],
+                  )
+
                 ),
               ],
             ),
