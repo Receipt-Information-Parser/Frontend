@@ -52,7 +52,7 @@ class _AnalysisChart2ScreenState extends State<AnalysisChart2Screen> {
       key: scaffoldState,
       appBar: AppBar(
         centerTitle: true, // 제목을 가운데 정렬
-        title: const Text('상세 내역'),
+        title: const Text('기록 분석'),
         leading: IconButton(
           icon: const Icon(Icons.arrow_back),
           onPressed: () {
