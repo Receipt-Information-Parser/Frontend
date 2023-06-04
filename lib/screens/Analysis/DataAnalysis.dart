@@ -25,20 +25,43 @@ import 'Functions/ConsumeOfitem.dart';
 
 /// //////////////////////////////////////////////////////////////////////////
 /// Dummy APIs ///////////////////////////////////////////////////////////////
+
+class ByPeriod {
+  ByPeriod({
+    required this.date,
+    required this.amount,
+    required this.analysisId,
+  });
+
+  final DateTime date;
+  final int amount;
+  final int analysisId;
+
+  factory ByPeriod.fromJson(Map<String, dynamic> json) {
+    return ByPeriod(
+      date: json['date'],
+      amount: json['amount'],
+      analysisId: json['analysisId'],
+    );
+  }
+}
+
 Future<String?> getByName(String name) async {
   // Call API and get data by name
   // return data as String or any other format you want
 }
 
-Future<String?> getByYear() async {
+Future<List<ByPeriod>?> getByYear() async {
   // Call API and get data by year
   // return data as String or any other format you want
 }
 
-Future<String?> getByMonth() async {
+Future<List<ByPeriod>?> getByMonth() async {
   // Call API and get data by month
   // return data as String or any other format you want
 }
+
+
 /// Dummy APIs ///////////////////////////////////////////////////////////////
 /// //////////////////////////////////////////////////////////////////////////
 

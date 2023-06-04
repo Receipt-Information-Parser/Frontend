@@ -1,6 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
+import 'package:syncfusion_flutter_charts/charts.dart';
 
 import '../../constants.dart';
 import '../../http/dto.dart';
@@ -25,6 +27,17 @@ class _AnalysisChart2ScreenState extends State<AnalysisChart2Screen> {
   final scaffoldState = GlobalKey<ScaffoldState>();
   bool bottomSheetToggle = false;
 
+  List<ByPeriod> data = [
+    ByPeriod(date: DateTime.parse('2011-01-01'), amount: 113440, analysisId: 2),
+    ByPeriod(date: DateTime.parse("2012-01-01"), amount: 200360, analysisId: 2),
+    ByPeriod(date: DateTime.parse("2013-01-01"), amount: 265520, analysisId: 2),
+    ByPeriod(date: DateTime.parse("2014-01-01"), amount: 113440, analysisId: 2),
+    ByPeriod(date: DateTime.parse("2015-01-01"), amount: 200360, analysisId: 2),
+    ByPeriod(date: DateTime.parse("2016-01-01"), amount: 265520, analysisId: 2),
+    ByPeriod(date: DateTime.parse("2017-01-01"), amount: 113440, analysisId: 2),
+    ByPeriod(date: DateTime.parse("2018-01-01"), amount: 200360, analysisId: 2),
+    ByPeriod(date: DateTime.parse("2019-01-01"), amount: 265520, analysisId: 2),
+  ];
   @override
   Widget build(BuildContext context) {
     PersistentBottomSheetController? _controller;
@@ -49,7 +62,28 @@ class _AnalysisChart2ScreenState extends State<AnalysisChart2Screen> {
           },
         ),
       ),
-      body: Container(color: Colors.green,),
+      body: SingleChildScrollView(
+        scrollDirection: Axis.horizontal,
+        child: Container(
+          margin: const EdgeInsets.symmetric(vertical: 50),
+          width: data.length * 60.0,  // or another size
+          child: SfCartesianChart(
+            // Initialize category axis
+            primaryXAxis: CategoryAxis(
+              interval: 1,
+            ),
+            series: <ChartSeries>[
+              ColumnSeries<ByPeriod, String>(
+                dataSource: data,
+                xValueMapper: (ByPeriod byPeriod, _) =>
+                    DateFormat('yyyy').format(byPeriod.date),
+                yValueMapper: (ByPeriod byPeriod, _) => byPeriod.amount,
+                spacing: 0.5, // bar 간격설정
+              )
+            ],
+          ),
+        ),
+      ),
       floatingActionButton: Container(
           height: 70,
           width: 70,//Floating action button on Scaffold
