@@ -45,6 +45,7 @@ android {
     defaultConfig {
         // TODO: Specify your own unique Application ID (https://developer.android.com/studio/build/application-id.html).
         applicationId "com.example.rip_front"
+        manifestPlaceholders = [YOUR_NATIVE_APP_KEY: "237d624d2adb2edf8e9e637e00f2494a"]
         // You can update the following values to match your application needs.
         // For more information, see: https://docs.flutter.dev/deployment/android#reviewing-the-build-configuration.
         minSdkVersion 21

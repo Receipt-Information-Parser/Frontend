@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 const Color defaultColor = Color(0xff001454); // 앱 고유 색상
+const String YOUR_NATIVE_APP_KEY = '237d624d2adb2edf8e9e637e00f2494a';
 
 const double fontSizeSmallButton = 14;// 가입하시겠습니까? 등의 작은 버튼의 fontsize
 const double fontSizeButton = 20;     // 로그인, 계속하기 등의 일반 버튼의 fontsize

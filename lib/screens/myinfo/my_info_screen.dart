@@ -12,6 +12,7 @@ import 'package:rip_front/models/current_index.dart';
 import '../../../http/dto.dart';
 import '../../../models/user_attribute.dart';
 import '../../../providers/user_attribute_api.dart';
+import '../Analysis/DataAnalysis.dart';
 import '../Home/home_screen.dart';
 
 class MyInfoScreen extends StatefulWidget {
@@ -380,11 +381,11 @@ class _MyInfoScreenState extends State<MyInfoScreen> {
                 elevation: 0,
               ),
               onPressed: () async {
-                // Navigator.of(context).pushReplacement(
-                //   MaterialPageRoute(
-                //       builder: ((context) =>
-                //           DataAnalysisScreen(token: tokenResponse.accessToken))),
-                // );
+                Navigator.of(context).pushReplacement(
+                  MaterialPageRoute(
+                      builder: ((context) =>
+                          DataAnalysisScreen(token: tokenResponse.accessToken))),
+                );
               },
               child: const Text('기록 분석 차트 & 저장하기',
                   style: TextStyle(color: defaultColor)),
