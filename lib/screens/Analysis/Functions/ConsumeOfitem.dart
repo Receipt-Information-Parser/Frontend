@@ -1,12 +1,14 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:syncfusion_flutter_charts/charts.dart';
 
 import '../AnalysisChart1.dart';
 import '../DataAnalysis.dart';
 
 import '../../../constants.dart';
+import 'ExportChartToImage.dart';
 
-List<Widget> consumeOfitem(String sectionTitle, List<String> sectionItems, BuildContext context) {
+List<Widget> consumeOfitem(String sectionTitle, List<String> sectionItems, BuildContext context,{GlobalKey<SfCartesianChartState>? chartKey}) {
   List<Widget> widgets = [];
   widgets.add(Divider(
     color: Colors.grey,
@@ -35,7 +37,7 @@ List<Widget> consumeOfitem(String sectionTitle, List<String> sectionItems, Build
     endIndent: 1,
   ));
 
-  for (String item in sectionItems) {
+  for (String Item in sectionItems) {
     widgets.add(Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
@@ -44,7 +46,7 @@ List<Widget> consumeOfitem(String sectionTitle, List<String> sectionItems, Build
           margin: const EdgeInsets.only(
             left: marginHorizontalHeader,
           ),
-          child: Text(item,
+          child: Text(Item,
               style: TextStyle(
                 color: defaultColor,
                 fontSize: fontSizeMiddle,
@@ -60,12 +62,36 @@ List<Widget> consumeOfitem(String sectionTitle, List<String> sectionItems, Build
             icon: Icon(Icons.download),
             iconSize: iconSizeSmall,
             onPressed: () async {
-              //TODO: getByName API 호출 및 Navigater에 결과 pass
-              // String? apiResponse = await getByName(item);
-              //TODO: apiResponse 결과 pass
-              Navigator.of(context).pushReplacement(MaterialPageRoute(
-                  builder: ((context) => AnalysisChart1Screen())
-              ));
+              if (chartKey != null) { // 다운로드 창일 때,
+                // csv 다운로드 함수 호출
+                await exportChartToImage(chartKey);
+                // 다운로드 완료 Dialog 출력
+                showDialog(
+                  context: context,
+                  builder: (BuildContext context) {
+                    return AlertDialog(
+                      title: const Text("Download", style: TextStyle(color: defaultColor),),
+                      content: const Text("다운로드가 완료되었습니다."),
+                      actions: [
+                        TextButton(
+                          child: const Text("Close", style: TextStyle(color: defaultColor),),
+                          onPressed: () {
+                            Navigator.of(context).pop();
+                          },
+                        ),
+                      ],
+                    );
+                  },
+                );
+              }
+              else{ // 화면 넘김용일때
+                //TODO: getByName API 호출 및 Navigater에 결과 pass
+                List<ByProduct>? ApiResponse = await getByName(Item);
+                //TODO: apiResponse 결과 pass
+                Navigator.of(context).pushReplacement(MaterialPageRoute(
+                    builder: ((context) => AnalysisChart1Screen(apiResponse: ApiResponse,item: Item,))
+                ));
+              }
             },
           ),
         ),

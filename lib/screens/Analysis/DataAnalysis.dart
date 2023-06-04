@@ -27,15 +27,16 @@ import 'Functions/ConsumeOfitem.dart';
 /// Dummy APIs ///////////////////////////////////////////////////////////////
 
 class ByPeriod {
+
+  final DateTime date;
+  final int amount;
+  final int analysisId;
+
   ByPeriod({
     required this.date,
     required this.amount,
     required this.analysisId,
   });
-
-  final DateTime date;
-  final int amount;
-  final int analysisId;
 
   factory ByPeriod.fromJson(Map<String, dynamic> json) {
     return ByPeriod(
@@ -46,7 +47,31 @@ class ByPeriod {
   }
 }
 
-Future<String?> getByName(String name) async {
+class ByProduct {
+  final String name;
+  final int amount;
+  final int analysisId;
+  final DateTime date;
+
+  ByProduct({
+    required this.name,
+    required this.amount,
+    required this.analysisId,
+    required this.date,
+  });
+
+  factory ByProduct.fromJson(Map<String, dynamic> json) {
+    return ByProduct(
+      name: json['name'],
+      amount: json['amount'],
+      analysisId: json['analysisId'],
+      date: json['date'],
+    );
+  }
+}
+
+
+Future<List<ByProduct>?> getByName(String name) async {
   // Call API and get data by name
   // return data as String or any other format you want
 }
@@ -87,7 +112,7 @@ class _DataAnalysisScreenState extends State<DataAnalysisScreen> {
   Widget build(BuildContext context) {
     PersistentBottomSheetController? _controller;
 
-    final CurrentIndex currentIndex = Provider.of<CurrentIndex>(context);
+   final CurrentIndex currentIndex = Provider.of<CurrentIndex>(context);
     UserId userId = Provider.of<UserId>(context);
 
     TokenResponse tokenResponse = Provider.of<TokenResponse>(context);

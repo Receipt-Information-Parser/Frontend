@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
+import 'package:rip_front/screens/Analysis/Functions/ConsumeCostByPeriod.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 
 import '../../constants.dart';
@@ -13,8 +14,10 @@ import '../myinfo/my_info_screen.dart';
 import 'DataAnalysis.dart';
 
 class AnalysisChart2Screen extends StatefulWidget {
+  final List<ByPeriod>? apiResponse;
+  final String? periodType;
 
-  const AnalysisChart2Screen({Key? key}) : super(key: key);
+  const AnalysisChart2Screen({Key? key, this.apiResponse, this.periodType}) : super(key: key);
 
   @override
   _AnalysisChart2ScreenState createState() => _AnalysisChart2ScreenState();
@@ -25,7 +28,20 @@ class _AnalysisChart2ScreenState extends State<AnalysisChart2Screen> {
   _AnalysisChart2ScreenState();
 
   final scaffoldState = GlobalKey<ScaffoldState>();
+  final GlobalKey<SfCartesianChartState>? chartKey = GlobalKey();
+
   bool bottomSheetToggle = false;
+
+  /// API 호출 시 주석 해제
+  // List<ByPeriod>? data;
+  String? periodType;
+
+  @override
+  void initState() {
+    super.initState();
+    // data = widget.apiResponse;
+    periodType = widget.periodType;
+  }
 
   List<ByPeriod> data = [
     ByPeriod(date: DateTime.parse('2011-01-01'), amount: 113440, analysisId: 2),
@@ -38,6 +54,8 @@ class _AnalysisChart2ScreenState extends State<AnalysisChart2Screen> {
     ByPeriod(date: DateTime.parse("2018-01-01"), amount: 200360, analysisId: 2),
     ByPeriod(date: DateTime.parse("2019-01-01"), amount: 265520, analysisId: 2),
   ];
+
+
   @override
   Widget build(BuildContext context) {
     PersistentBottomSheetController? _controller;
@@ -62,27 +80,48 @@ class _AnalysisChart2ScreenState extends State<AnalysisChart2Screen> {
           },
         ),
       ),
-      body: SingleChildScrollView(
-        scrollDirection: Axis.horizontal,
-        child: Container(
-          margin: const EdgeInsets.symmetric(vertical: 50),
-          width: data.length * 60.0,  // or another size
-          child: SfCartesianChart(
-            // Initialize category axis
-            primaryXAxis: CategoryAxis(
-              interval: 1,
+      body: Column(
+        children: [
+          Expanded(
+            flex: 1,
+            child: SingleChildScrollView(
+              child: Container(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: consumeCostByPeriod('기간별 소비 금액', ['$periodType'],context,chartKey:chartKey),
+                ),
+              ),
             ),
-            series: <ChartSeries>[
-              ColumnSeries<ByPeriod, String>(
-                dataSource: data,
-                xValueMapper: (ByPeriod byPeriod, _) =>
-                    DateFormat('yyyy').format(byPeriod.date),
-                yValueMapper: (ByPeriod byPeriod, _) => byPeriod.amount,
-                spacing: 0.5, // bar 간격설정
-              )
-            ],
           ),
-        ),
+          Expanded(
+            flex: 3,
+            child: SingleChildScrollView(
+              scrollDirection: Axis.horizontal,
+              child: Container(
+                margin: const EdgeInsets.symmetric(vertical: 50),
+                width: data.length * 60.0,  // or another size
+                child: SfCartesianChart(
+                  key: chartKey,
+                  // Initialize category axis
+                  primaryXAxis: CategoryAxis(
+                    interval: 1,
+                  ),
+                  series: <ChartSeries>[
+                    ColumnSeries<ByPeriod, String>(
+                      dataSource: data,
+                      xValueMapper: (ByPeriod byPeriod, _) =>
+                      periodType == 'Year'
+                          ? DateFormat('yyyy').format(byPeriod.date)
+                          : DateFormat('yyyy-MM').format(byPeriod.date),
+                      yValueMapper: (ByPeriod byPeriod, _) => byPeriod.amount,
+                      spacing: 0.5, // bar 간격설정
+                    )
+                  ],
+                ),
+              ),
+            ),
+          ),
+        ],
       ),
       floatingActionButton: Container(
           height: 70,
