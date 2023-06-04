@@ -30,13 +30,13 @@ Future<String?> getByName(String name) async {
   // return data as String or any other format you want
 }
 
-Future<String?> getByMonth() async {
-  // Call API and get data by month
+Future<String?> getByYear() async {
+  // Call API and get data by year
   // return data as String or any other format you want
 }
 
-Future<String?> getByWeek() async {
-  // Call API and get data by week
+Future<String?> getByMonth() async {
+  // Call API and get data by month
   // return data as String or any other format you want
 }
 /// Dummy APIs ///////////////////////////////////////////////////////////////
@@ -90,7 +90,7 @@ class _DataAnalysisScreenState extends State<DataAnalysisScreen> {
             Container(
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.start,
-                children: consumeCostByPeriod('기간별 소비 금액', ['월별', '주별'],context),
+                children: consumeCostByPeriod('기간별 소비 금액', ['연도별', '월별'],context),
               ),
             ),
             Container(

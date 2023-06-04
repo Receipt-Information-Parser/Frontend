@@ -61,15 +61,15 @@ List<Widget> consumeCostByPeriod(String sectionTitle, List<String> sectionItems,
             iconSize: iconSizeSmall,
             onPressed: () async {
               String? apiResponse;
-              if (item == '월별') {
-                // apiResponse = await getByMonth();
+              if (item == '연도별') {
+                // apiResponse = await getByYear();
                 // TODO: Navigator 결과와 같이 넘기기(response 형태에 따라 다르게 구현)
                 Navigator.of(context).pushReplacement(MaterialPageRoute(
                     builder: ((context) => AnalysisChart2Screen())
                 ));
               }
-              if (item == '주별') {
-                // apiResponse = await getByWeek();
+              if (item == '월별') {
+                // apiResponse = await getByMonth();
                 // TODO: Navigator 결과와 같이 넘기기(response 형태에 따라 다르게 구현)
                 Navigator.of(context).pushReplacement(MaterialPageRoute(
                     builder: ((context) => AnalysisChart2Screen())
