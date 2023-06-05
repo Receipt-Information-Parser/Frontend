@@ -1,19 +1,7 @@
-import 'dart:io';
-import 'dart:isolate';
-import 'dart:ui';
 
-import 'package:document_scanner_flutter/configs/configs.dart';
-import 'package:document_scanner_flutter/document_scanner_flutter.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_downloader/flutter_downloader.dart';
-import 'package:intl/intl.dart';
-import 'package:path_provider/path_provider.dart';
-import 'package:permission_handler/permission_handler.dart';
 import 'package:provider/provider.dart';
 import 'package:rip_front/constants.dart';
-import 'package:rip_front/http/dto/ReceiptResponse.dart';
-import 'package:rip_front/http/request/ReceiptProvider.dart';
-import 'package:rip_front/screens/Detail/detail.dart';
 
 import '../../../http/dto.dart';
 import '../../../models/current_index.dart';
@@ -44,7 +32,7 @@ class _DataAnalysisScreenState extends State<DataAnalysisScreen> {
 
   @override
   Widget build(BuildContext context) {
-    PersistentBottomSheetController? _controller;
+    PersistentBottomSheetController? controller;
 
     final CurrentIndex currentIndex = Provider.of<CurrentIndex>(context);
     UserId userId = Provider.of<UserId>(context);
@@ -61,7 +49,7 @@ class _DataAnalysisScreenState extends State<DataAnalysisScreen> {
           icon: const Icon(Icons.arrow_back),
           onPressed: () {
             Navigator.of(context).pushReplacement(
-                MaterialPageRoute(builder: ((context) => MyInfoScreen())));
+                MaterialPageRoute(builder: ((context) => const MyInfoScreen())));
           },
         ),
       ),
@@ -79,22 +67,23 @@ class _DataAnalysisScreenState extends State<DataAnalysisScreen> {
               builder:
                   (BuildContext context, AsyncSnapshot<List<String>> snapshot) {
                 if (snapshot.connectionState == ConnectionState.waiting) {
-                  return CircularProgressIndicator(); // while data is loading
+                  return const CircularProgressIndicator(); // while data is loading
                 } else {
-                  if (snapshot.hasError)
+                  if (snapshot.hasError) {
                     return Text('Error: ${snapshot.error}');
-                  else
+                  } else {
                     return Column(
                       mainAxisAlignment: MainAxisAlignment.start,
                       children: consumeOfitem('품목별 소비 추이', snapshot.data!, context),
                     ); // data loaded
+                  }
                 }
               },
             ),
           ],
         ),
       ),
-      floatingActionButton: Container(
+      floatingActionButton: SizedBox(
           height: 70,
           width: 70, //Floating action button on Scaffold
           child: FittedBox(
@@ -102,16 +91,16 @@ class _DataAnalysisScreenState extends State<DataAnalysisScreen> {
             onPressed: () {
               if (bottomSheetToggle == false) {
                 bottomSheetToggle = true;
-                _controller = scaffoldState.currentState
+                controller = scaffoldState.currentState
                     ?.showBottomSheet((context) => BottomSheetWidget(
                           token: token,
                         ));
               } else {
-                _controller?.close();
+                controller?.close();
                 bottomSheetToggle = false;
               }
             },
-            child: Icon(Icons.add, size: 40), //icon inside button
+            child: const Icon(Icons.add, size: 40), //icon inside button
           ))),
 
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
@@ -143,7 +132,7 @@ class _DataAnalysisScreenState extends State<DataAnalysisScreen> {
               case 2:
                 Navigator.of(context)
                     .pushReplacement(MaterialPageRoute(builder: ((context) {
-                  return MyInfoScreen();
+                  return const MyInfoScreen();
                 })));
                 break;
             }

@@ -50,7 +50,7 @@ class _BottomSheetWidgetState extends State<BottomSheetWidget> {
   Widget build(BuildContext context) {
     return Container(
         height: 175,
-        color: Color.fromRGBO(239, 243, 255, 100),
+        color: const Color.fromRGBO(239, 243, 255, 100),
         //specify height, so that it does not fill the entire screen
         child: Column(
             children: [
@@ -132,7 +132,7 @@ class _HomeScreenState extends State<HomeScreen> {
         savedDir: externalDir!.path,
         showNotification: true,
         openFileFromNotification: true,
-        headers: {'authorization': 'Bearer ${token}'},
+        headers: {'authorization': 'Bearer $token'},
       );
     } else {
       print('Permission Denied');
@@ -163,7 +163,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
-    PersistentBottomSheetController? _controller;
+    PersistentBottomSheetController? controller;
 
     final CurrentIndex currentIndex = Provider.of<CurrentIndex>(context);
     UserId userId = Provider.of<UserId>(context);
@@ -289,7 +289,7 @@ class _HomeScreenState extends State<HomeScreen> {
           )
         ],
       ),
-      floatingActionButton: Container(
+      floatingActionButton: SizedBox(
         height: 70,
         width: 70,//Floating action button on Scaffold
         child: FittedBox(
@@ -297,13 +297,13 @@ class _HomeScreenState extends State<HomeScreen> {
               onPressed: () {
                 if (bottomSheetToggle == false) {
                   bottomSheetToggle = true;
-                  _controller = scaffoldState.currentState?.showBottomSheet((context) => BottomSheetWidget(token: token,));
+                  controller = scaffoldState.currentState?.showBottomSheet((context) => BottomSheetWidget(token: token,));
                 } else {
-                  _controller?.close();
+                  controller?.close();
                   bottomSheetToggle = false;
                 }
               },
-              child: Icon(Icons.add, size: 40), //icon inside button
+              child: const Icon(Icons.add, size: 40), //icon inside button
       ))),
 
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
@@ -335,7 +335,7 @@ class _HomeScreenState extends State<HomeScreen> {
               case 2:
                 Navigator.of(context)
                     .pushReplacement(MaterialPageRoute(builder: ((context) {
-                  return MyInfoScreen();
+                  return const MyInfoScreen();
                 })));
                 break;
             }

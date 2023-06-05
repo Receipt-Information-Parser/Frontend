@@ -1,18 +1,16 @@
 import 'package:flutter/material.dart';
-import 'package:path_provider/path_provider.dart';
 import 'package:provider/provider.dart';
-import 'package:rip_front/providers/user_attribute_api.dart';
 import 'package:rip_front/screens/Login/find_id_password.dart';
-import 'package:flutter/material.dart';
 
 import '../../constants.dart';
 import '../../http/dto.dart';
 import '../../http/request.dart';
 import '../../models/user_attribute.dart';
 import '../Home/home_screen.dart';
-import '../signup/signup1.dart';
 
 class LoginScreen extends StatefulWidget {
+  const LoginScreen({super.key});
+
   @override
   LoginScreen_ createState() => LoginScreen_();
 }

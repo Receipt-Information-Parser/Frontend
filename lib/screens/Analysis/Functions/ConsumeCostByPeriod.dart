@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
@@ -6,7 +5,6 @@ import 'package:syncfusion_flutter_charts/charts.dart';
 import '../../../http/dto.dart';
 import '../../../http/request.dart';
 import '../AnalysisChart2.dart';
-import '../DataAnalysis.dart';
 
 import '../../../constants.dart';
 import 'ExportChartToImage.dart';
@@ -15,7 +13,7 @@ List<Widget> consumeCostByPeriod(String sectionTitle, BuildContext context,{Glob
   TokenResponse tokenResponse = Provider.of<TokenResponse>(context);
   List<Widget> widgets = [];
   List<String> sectionItems = ['연도별', '월별'];
-  widgets.add(Divider(
+  widgets.add(const Divider(
     color: Colors.grey,
     height: 30,
     thickness: 1,
@@ -28,13 +26,13 @@ List<Widget> consumeCostByPeriod(String sectionTitle, BuildContext context,{Glob
       left: marginHorizontalHeader,
     ),
     child: Text(sectionTitle,
-        style: TextStyle(
+        style: const TextStyle(
           color: defaultColor,
           fontSize: fontSizeMiddle,
           fontWeight: FontWeight.bold,
         )),
   ));
-  widgets.add(Divider(
+  widgets.add(const Divider(
     color: Colors.grey,
     height: 30,
     thickness: 1,
@@ -52,7 +50,7 @@ List<Widget> consumeCostByPeriod(String sectionTitle, BuildContext context,{Glob
             left: marginHorizontalHeader,
           ),
           child: Text(item,
-              style: TextStyle(
+              style: const TextStyle(
                 color: defaultColor,
                 fontSize: fontSizeMiddle,
                 fontWeight: FontWeight.normal,
@@ -64,7 +62,7 @@ List<Widget> consumeCostByPeriod(String sectionTitle, BuildContext context,{Glob
             right: marginHorizontalHeader,
           ),
           child: IconButton(
-            icon: Icon(Icons.download),
+            icon: const Icon(Icons.download),
             iconSize: iconSizeSmall,
             onPressed: () async {
               if (chartKey != null) { // 다운로드 창일 때,
@@ -102,7 +100,7 @@ List<Widget> consumeCostByPeriod(String sectionTitle, BuildContext context,{Glob
                 }
                 // TODO: Navigator 결과와 같이 넘기기(response 형태에 따라 다르게 구현)
                 Navigator.of(context).pushReplacement(MaterialPageRoute(
-                    builder: ((context) => AnalysisChart2Screen(apiResponse:ApiResponse,periodType:'$item'))
+                    builder: ((context) => AnalysisChart2Screen(apiResponse:ApiResponse,periodType:item))
                 ));
               }
             },
@@ -110,7 +108,7 @@ List<Widget> consumeCostByPeriod(String sectionTitle, BuildContext context,{Glob
         ),
       ],
     ));
-    widgets.add(Divider(
+    widgets.add(const Divider(
       color: Colors.grey,
       height: 30,
       thickness: 1,

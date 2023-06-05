@@ -48,7 +48,7 @@ class Signin1 extends StatelessWidget {
                   Container(
                     alignment: Alignment.centerLeft,
                     margin: const EdgeInsets.only(left: marginHorizontalHeader),
-                    child: const Text("함께 해주시겠어요?",
+                    child: const Text("함께 해 주시겠어요?",
                         style: TextStyle(
                             fontSize: fontSizeHeader,
                             color: defaultColor,
@@ -67,8 +67,7 @@ class Signin1 extends StatelessWidget {
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.end,
                       children: [
-                        Expanded(
-                          child: Container(
+                        Container(
                             alignment: Alignment.centerLeft,
                             margin: const EdgeInsets.only(left: marginHorizontalHeader,bottom: marginVerticalBetweenWidgets),
                             child: const Text("이메일",
@@ -78,9 +77,9 @@ class Signin1 extends StatelessWidget {
                                     fontWeight: FontWeight.w300),
                                 textAlign: TextAlign.left),
                           ),
-                        ),
                         Expanded(
                           child: Container(
+                            height: 100,
                             alignment: Alignment.centerLeft,
                             margin: const EdgeInsets.only(left: marginHorizontalHeader,right: marginHorizontalHeader),
                             child: TextFormField(
@@ -114,8 +113,7 @@ class Signin1 extends StatelessWidget {
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        Expanded(
-                          child: Container(
+                        Container(
                             alignment: Alignment.centerLeft,
                             margin: const EdgeInsets.only(left: marginHorizontalHeader,bottom: marginVerticalBetweenWidgets),
                             child: const Text("비밀번호",
@@ -125,9 +123,9 @@ class Signin1 extends StatelessWidget {
                                     fontWeight: FontWeight.w300),
                                 textAlign: TextAlign.left),
                           ),
-                        ),
                         Expanded(
                           child: Container(
+                            height: 100,
                             alignment: Alignment.centerLeft,
                             margin: const EdgeInsets.only(left: marginHorizontalHeader, right: marginHorizontalHeader),
                             child: TextFormField(
@@ -161,8 +159,7 @@ class Signin1 extends StatelessWidget {
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.start,
                       children: [
-                        Expanded(
-                          child: Container(
+                        Container(
                             alignment: Alignment.centerLeft,
                             margin: const EdgeInsets.only(left: marginHorizontalHeader,bottom: marginVerticalBetweenWidgets),
                             child: const Text("비밀번호 재확인",
@@ -172,9 +169,9 @@ class Signin1 extends StatelessWidget {
                                     fontWeight: FontWeight.w300),
                                 textAlign: TextAlign.left),
                           ),
-                        ),
                         Expanded(
                           child: Container(
+                            height: 100,
                             alignment: Alignment.centerLeft,
                             margin: const EdgeInsets.only(left: marginHorizontalHeader, right: marginHorizontalHeader),
                             child: TextFormField(
@@ -228,7 +225,7 @@ class Signin1 extends StatelessWidget {
                       if (emailResponse.message != "사용가능한 이메일입니다") {
                         showDialog(
                           context: context,
-                          builder: (BuildContext context) {
+                          builder: (context) {
                             return AlertDialog(
                               title: const Text("Error", style: TextStyle(color: defaultColor),),
                               content: const Text("사용중인 계정입니다"),
@@ -236,7 +233,7 @@ class Signin1 extends StatelessWidget {
                                 TextButton(
                                   child: const Text("Close", style: TextStyle(color: defaultColor),),
                                   onPressed: () {
-                                    Navigator.of(context).pop();
+                                      Navigator.of(context).pop();
                                   },
                                 ),
                               ],
@@ -250,8 +247,10 @@ class Signin1 extends StatelessWidget {
                         UserAuthInfoApi.resetPW(pwInputController.text);
 
                         // 화면 전환
-                        Navigator.of(context).push(
+                        if (context!.mounted) {
+                          Navigator.of(context).push(
                             MaterialPageRoute(builder: ((context) => Signin2())));
+                        }
                       }
                     }
                   },

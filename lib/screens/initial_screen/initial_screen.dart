@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:rip_front/constants.dart';
+import 'package:rip_front/models/kakao_token.dart';
 import 'package:rip_front/screens/Home/home_screen.dart';
 import 'package:rip_front/screens/Login/kakaotalk_login_button.dart';
-import 'package:rip_front/screens/signup/signup2.dart';
-import 'package:rip_front/screens/signup/signup3.dart';
+import 'package:rip_front/screens/signup/KakaoSignUp.dart';
 
 import '../../http/dto.dart';
-import '../Analysis/DataAnalysis.dart';
-import '../myinfo/my_info_screen.dart';
+import '../../http/dto/KakaoRequest.dart';
+import '../../http/request/KakaoProvider.dart';
 import '../signup/signup1.dart';
 import '../Login/login_screen.dart';
 
@@ -17,6 +17,7 @@ class InitialScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     TokenResponse tokenResponse = Provider.of<TokenResponse>(context);
+    KakaoToken kakaoToken = Provider.of<KakaoToken>(context);
     return Scaffold(
         backgroundColor: Colors.white,
         body: Column(mainAxisAlignment: MainAxisAlignment.center, children: <
@@ -50,7 +51,7 @@ class InitialScreen extends StatelessWidget {
                             fontWeight: FontWeight.bold),
                       ),
                       Text(
-                        ' 에 오신 것을 환영합니다!',
+                        ' 입니다. 환영합니다!',
                         style: TextStyle(
                             fontSize: fontSizeMiddle,
                             color: defaultColor,
@@ -70,8 +71,8 @@ class InitialScreen extends StatelessWidget {
                 child: Center(
                   child: Image.asset(
                     'lib/assets/splash_logo.png',
-                    width: MediaQuery.of(context).size.width * 0.6,
-                    height: MediaQuery.of(context).size.height * 0.6,
+                    width: MediaQuery.of(context).size.width,
+                    height: MediaQuery.of(context).size.height,
                   ),
                 )),
           ),
@@ -86,11 +87,7 @@ class InitialScreen extends StatelessWidget {
                       left: marginHorizontalHeader,
                       bottom: marginVerticalBetweenWidgets),
                   child: KakaoLoginButton(
-                    onPressed: () {
-                      // TODO: 카카오 로그인 처리를 구현
-                      Navigator.of(context).pushReplacement(MaterialPageRoute(
-                          builder: ((context) => HomeScreen(token: tokenResponse.accessToken))));
-                    },
+                    onPressed: () {},
                   ),
                 ),
                 Container(
@@ -106,7 +103,7 @@ class InitialScreen extends StatelessWidget {
                     ),
                     onPressed: () {
                       Navigator.of(context).pushReplacement(MaterialPageRoute(
-                          builder: ((context) => LoginScreen())));
+                          builder: ((context) => const LoginScreen())));
                     },
                     child: const Text('로그인'),
                   ),
