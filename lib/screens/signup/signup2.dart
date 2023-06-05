@@ -63,17 +63,15 @@ class Signin2 extends StatelessWidget {
                   Expanded(
                     child: Column(
                       children: [
-                        Expanded(
-                          child: Container(
-                            alignment: Alignment.centerLeft,
-                            margin: const EdgeInsets.only(left: marginHorizontalHeader,bottom: marginVerticalBetweenWidgets),
-                            child: const Text("닉네임",
-                                style: TextStyle(
-                                    fontSize: fontSizeTextForm,
-                                    color: Colors.black,
-                                    fontWeight: FontWeight.w300),
-                                textAlign: TextAlign.left),
-                          ),
+                        Container(
+                          alignment: Alignment.centerLeft,
+                          margin: const EdgeInsets.only(left: marginHorizontalHeader,bottom: marginVerticalBetweenWidgets),
+                          child: const Text("닉네임",
+                              style: TextStyle(
+                                  fontSize: fontSizeTextForm,
+                                  color: Colors.black,
+                                  fontWeight: FontWeight.w300),
+                              textAlign: TextAlign.left),
                         ),
                         Expanded(
                           child: Container(
@@ -109,17 +107,15 @@ class Signin2 extends StatelessWidget {
                   Expanded(
                     child: Column(
                       children: [
-                        Expanded(
-                          child: Container(
-                            alignment: Alignment.centerLeft,
-                            margin: const EdgeInsets.only(left: marginHorizontalHeader,bottom: marginVerticalBetweenWidgets),
-                            child: const Text("이름",
-                                style: TextStyle(
-                                    fontSize: fontSizeTextForm,
-                                    color: Colors.black,
-                                    fontWeight: FontWeight.w300),
-                                textAlign: TextAlign.left),
-                          ),
+                        Container(
+                          alignment: Alignment.centerLeft,
+                          margin: const EdgeInsets.only(left: marginHorizontalHeader,bottom: marginVerticalBetweenWidgets),
+                          child: const Text("이름",
+                              style: TextStyle(
+                                  fontSize: fontSizeTextForm,
+                                  color: Colors.black,
+                                  fontWeight: FontWeight.w300),
+                              textAlign: TextAlign.left),
                         ),
                         Expanded(
                           child: Container(

@@ -28,7 +28,7 @@ class InitialScreen extends StatelessWidget {
               children: [
                 Container(
                   alignment: Alignment.centerLeft,
-                  margin: const EdgeInsets.only(left: marginHorizontalHeader),
+                  margin: const EdgeInsets.symmetric(horizontal: marginHorizontalHeader),
                   child: const Text(
                     '영수증을 한번에 정리하는',
                     textAlign: TextAlign.left,
@@ -40,7 +40,7 @@ class InitialScreen extends StatelessWidget {
                 ),
                 Container(
                   alignment: Alignment.centerLeft,
-                  margin: const EdgeInsets.only(left: marginHorizontalHeader),
+                  margin: const EdgeInsets.symmetric(horizontal: marginHorizontalHeader),
                   child: Row(
                     children: const [
                       Text(
@@ -67,7 +67,7 @@ class InitialScreen extends StatelessWidget {
           Expanded(
             child: Container(
                 alignment: Alignment.center,
-                margin: const EdgeInsets.only(left: marginHorizontalHeader),
+                margin: const EdgeInsets.symmetric(horizontal: marginHorizontalHeader),
                 child: Center(
                   child: Image.asset(
                     'lib/assets/splash_logo.png',
@@ -85,7 +85,8 @@ class InitialScreen extends StatelessWidget {
                   alignment: Alignment.center,
                   margin: const EdgeInsets.only(
                       left: marginHorizontalHeader,
-                      bottom: marginVerticalBetweenWidgets),
+                      bottom: marginVerticalBetweenWidgets,
+                      right: marginHorizontalHeader),
                   child: KakaoLoginButton(
                     onPressed: () {},
                   ),
@@ -94,7 +95,8 @@ class InitialScreen extends StatelessWidget {
                   alignment: Alignment.center,
                   margin: const EdgeInsets.only(
                       left: marginHorizontalHeader,
-                      bottom: marginVerticalBetweenWidgets),
+                      bottom: marginVerticalBetweenWidgets,
+                      right: marginHorizontalHeader),
                   child: ElevatedButton(
                     style: ElevatedButton.styleFrom(
                       textStyle: const TextStyle(fontSize: fontSizeButton),
@@ -110,7 +112,7 @@ class InitialScreen extends StatelessWidget {
                 ),
                 Container(
                   alignment: Alignment.center,
-                  margin: const EdgeInsets.only(left: marginHorizontalHeader),
+                  margin: const EdgeInsets.symmetric(horizontal: marginHorizontalHeader),
                   child: ElevatedButton(
                     style: ElevatedButton.styleFrom(
                       textStyle: const TextStyle(
