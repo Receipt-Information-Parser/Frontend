@@ -39,8 +39,8 @@ class EmailRequest {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['email'] = this.email;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['email'] = email;
     return data;
   }
 }
@@ -168,22 +168,22 @@ class UserResponses {
     name = json['name'];
     nickname = json['nickname'];
     tokenResponse = json['tokenResponse'] != null
-        ? new TokenResponse.fromJson(json['tokenResponse'])
+        ? TokenResponse.fromJson(json['tokenResponse'])
         : null;
     profileImage = json['profileImage'];
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['birthday'] = this.birthday;
-    data['email'] = this.email;
-    data['gender'] = this.gender;
-    data['name'] = this.name;
-    data['nickname'] = this.nickname;
-    if (this.tokenResponse != null) {
-      data['tokenResponse'] = this.tokenResponse!.toJson();
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['birthday'] = birthday;
+    data['email'] = email;
+    data['gender'] = gender;
+    data['name'] = name;
+    data['nickname'] = nickname;
+    if (tokenResponse != null) {
+      data['tokenResponse'] = tokenResponse!.toJson();
     }
-    data['profileImage'] = this.profileImage;
+    data['profileImage'] = profileImage;
     return data;
   }
 }

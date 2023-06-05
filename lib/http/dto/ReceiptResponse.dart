@@ -1,4 +1,3 @@
-import 'dart:ffi';
 
 class ReceiptResponse {
   final int id;
@@ -33,7 +32,7 @@ class ListReceiptResponses {
     if (json['receipts'] != null) {
       receipts = <ReceiptResponse>[];
       json['receipts'].forEach((v) {
-        receipts!.add(new ReceiptResponse.fromJson(v));
+        receipts!.add(ReceiptResponse.fromJson(v));
       });
     }
   }

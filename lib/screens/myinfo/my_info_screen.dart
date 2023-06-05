@@ -16,6 +16,8 @@ import '../Analysis/DataAnalysis.dart';
 import '../Home/home_screen.dart';
 
 class MyInfoScreen extends StatefulWidget {
+  const MyInfoScreen({super.key});
+
   @override
   _MyInfoScreenState createState() => _MyInfoScreenState();
 }
@@ -121,7 +123,7 @@ class _MyInfoScreenState extends State<MyInfoScreen> {
       resizeToAvoidBottomInset: false,
       appBar: PreferredSize(
         preferredSize: const Size.fromHeight(100.0),
-        child: Container(
+        child: SizedBox(
           height: 100,
           child: AppBar(
             centerTitle: true,
@@ -168,7 +170,7 @@ class _MyInfoScreenState extends State<MyInfoScreen> {
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
-              Spacer(),
+              const Spacer(),
               // Profile Picture UI
               InkWell(
                 onTap: () async {
@@ -194,7 +196,7 @@ class _MyInfoScreenState extends State<MyInfoScreen> {
                 ),
               ),
 
-              Spacer(),
+              const Spacer(),
               Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -212,7 +214,7 @@ class _MyInfoScreenState extends State<MyInfoScreen> {
                       ),
                       // 생년월일
                       Container(
-                        margin: EdgeInsets.only(left: marginHorizontalHeader),
+                        margin: const EdgeInsets.only(left: marginHorizontalHeader),
                         child: Text(DateFormat('yyyy/MM/dd').format((userAttribute?.birthDate??DateTime.now())),
                             style: const TextStyle(color: Colors.black)),
                       ),
@@ -233,7 +235,8 @@ class _MyInfoScreenState extends State<MyInfoScreen> {
                             fontWeight: FontWeight.bold),
                       ),
                       Container(
-                        margin: EdgeInsets.only(left: marginHorizontalHeader),
+                        margin: const EdgeInsets.only(left: marginHorizontalHeader),
+                        width: 100,
                         child: Flexible(
                           child: TextFormField(
                             autovalidateMode: AutovalidateMode
@@ -253,7 +256,6 @@ class _MyInfoScreenState extends State<MyInfoScreen> {
                             enabled: nicknameEditisEnable,
                           ),
                         ),
-                        width: 100,
                       ),
                       IconButton(
                           icon: const Icon(Icons.edit),
@@ -420,7 +422,7 @@ class _MyInfoScreenState extends State<MyInfoScreen> {
               case 2:
                 Navigator.of(context)
                     .pushReplacement(MaterialPageRoute(builder: ((context) {
-                  return MyInfoScreen();
+                  return const MyInfoScreen();
                 })));
                 break;
             }

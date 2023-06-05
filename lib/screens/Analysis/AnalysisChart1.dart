@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
@@ -53,7 +52,7 @@ class _AnalysisChart1ScreenState extends State<AnalysisChart1Screen> {
 
   @override
   Widget build(BuildContext context) {
-    PersistentBottomSheetController? _controller;
+    PersistentBottomSheetController? controller;
 
     final CurrentIndex currentIndex = Provider.of<CurrentIndex>(context);
     UserId userId = Provider.of<UserId>(context);
@@ -94,7 +93,7 @@ class _AnalysisChart1ScreenState extends State<AnalysisChart1Screen> {
               scrollDirection: Axis.horizontal,
               child: Container(
                 margin: const EdgeInsets.symmetric(vertical: 50),
-                width: data!.length * 60.0,  // or another size
+                width: data.length * 60.0,  // or another size
                 child: SfCartesianChart(
                   key: chartKey,
                   primaryXAxis: CategoryAxis(
@@ -102,7 +101,7 @@ class _AnalysisChart1ScreenState extends State<AnalysisChart1Screen> {
                   ),
                   series: <ChartSeries>[
                     LineSeries<ByProduct, String>(
-                      dataSource: data!,
+                      dataSource: data,
                       xValueMapper: (ByProduct byProduct, _) => DateFormat('yyyy-MM-DD').format(byProduct.date),
                       yValueMapper: (ByProduct byProduct, _) => byProduct.amount,
                     )
@@ -113,7 +112,7 @@ class _AnalysisChart1ScreenState extends State<AnalysisChart1Screen> {
           ),
         ],
       ),
-      floatingActionButton: Container(
+      floatingActionButton: SizedBox(
           height: 70,
           width: 70,//Floating action button on Scaffold
           child: FittedBox(
@@ -121,13 +120,13 @@ class _AnalysisChart1ScreenState extends State<AnalysisChart1Screen> {
                 onPressed: () {
                   if (bottomSheetToggle == false) {
                     bottomSheetToggle = true;
-                    _controller = scaffoldState.currentState?.showBottomSheet((context) => BottomSheetWidget(token: tokenResponse.accessToken,));
+                    controller = scaffoldState.currentState?.showBottomSheet((context) => BottomSheetWidget(token: tokenResponse.accessToken,));
                   } else {
-                    _controller?.close();
+                    controller?.close();
                     bottomSheetToggle = false;
                   }
                 },
-                child: Icon(Icons.add, size: 40), //icon inside button
+                child: const Icon(Icons.add, size: 40), //icon inside button
               ))),
 
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
@@ -159,7 +158,7 @@ class _AnalysisChart1ScreenState extends State<AnalysisChart1Screen> {
               case 2:
                 Navigator.of(context)
                     .pushReplacement(MaterialPageRoute(builder: ((context) {
-                  return MyInfoScreen();
+                  return const MyInfoScreen();
                 })));
                 break;
             }

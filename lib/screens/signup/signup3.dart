@@ -15,6 +15,8 @@ import '../Home/home_screen.dart';
 const List<String> list = <String>['남자', '여자'];
 
 class Signin3 extends StatefulWidget {
+  const Signin3({super.key});
+
   @override
   Signin3_2 createState() => Signin3_2();
 }

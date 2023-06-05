@@ -1,22 +1,42 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:intl/intl.dart';
+import 'package:provider/provider.dart';
 import 'package:rip_front/constants.dart';
 import 'package:rip_front/http/dto.dart';
+import 'package:rip_front/http/dto/KakaoRequest.dart';
 import 'package:rip_front/http/request.dart';
+import 'package:rip_front/http/request/KakaoProvider.dart';
+import 'package:rip_front/models/kakao_token.dart';
 
 import '../../../providers/user_attribute_api.dart';
+import '../Home/home_screen.dart';
 import 'signup3.dart';
 
-class Signin2 extends StatelessWidget {
-  Signin2({Key? key}) : super(key: key);
+class KakaoSignUp extends StatefulWidget {
+
+  const KakaoSignUp({super.key});
+
+  @override
+  KakaoSignUpState createState() => KakaoSignUpState();
+}
+
+class KakaoSignUpState extends State<KakaoSignUp> {
+
   final formGlobalKey = GlobalKey<FormState>();
-  final validName = RegExp(r"^[가-힣]{2,4}|[A-Za-z\s]{2,30}$");
   final validNickname = RegExp(r"^(?=.*[a-z0-9가-힣])[a-z0-9가-힣]{2,16}$");
-  TextEditingController nameInputController = TextEditingController();
   TextEditingController nicknameInputController = TextEditingController();
+
+  DateTime date = DateTime.now();
+  final validBirth =
+  RegExp('[0-9]{4}-(1[0-2]|0[1-9])-(3[01]|[12][0-9]|0[1-9])');
+  TextEditingController birthInputController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
+    TokenResponse tokenResponse = Provider.of<TokenResponse>(context);
+    KakaoToken kakaoToken = Provider.of<KakaoToken>(context);
+    String token = kakaoToken.token;
     return MaterialApp(
         home: Scaffold(
       resizeToAvoidBottomInset: false,
@@ -27,16 +47,15 @@ class Signin2 extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
             Expanded(
-              flex: 1,
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Container(
                     alignment: Alignment.centerLeft,
                     margin: const EdgeInsets.only(left: marginHorizontalHeader),
-                    child: const Text("닉네임과 이름을",
+                    child: const Text("가입을 위해\n간단한 추가정보가 필요합니다",
                         style: TextStyle(
-                            fontSize: fontSizeHeader,
+                            fontSize:28,
                             color: defaultColor,
                             fontWeight: FontWeight.bold),
                         textAlign: TextAlign.left),
@@ -44,9 +63,9 @@ class Signin2 extends StatelessWidget {
                   Container(
                     alignment: Alignment.centerLeft,
                     margin: const EdgeInsets.only(left: marginHorizontalHeader),
-                    child: const Text("입력해주세요.",
+                    child: const Text("\n닉네임과 생일을 입력해주세요.",
                         style: TextStyle(
-                            fontSize: fontSizeHeader,
+                            fontSize: 25,
                             color: defaultColor,
                             fontWeight: FontWeight.bold),
                         textAlign: TextAlign.left),
@@ -56,15 +75,12 @@ class Signin2 extends StatelessWidget {
             ),
 
             Expanded(
-              flex: 1,
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Expanded(
                     child: Column(
-                      children: [
-                        Expanded(
-                          child: Container(
+                      children: [ Container(
                             alignment: Alignment.centerLeft,
                             margin: const EdgeInsets.only(left: marginHorizontalHeader,bottom: marginVerticalBetweenWidgets),
                             child: const Text("닉네임",
@@ -74,7 +90,6 @@ class Signin2 extends StatelessWidget {
                                     fontWeight: FontWeight.w300),
                                 textAlign: TextAlign.left),
                           ),
-                        ),
                         Expanded(
                           child: Container(
                             alignment: Alignment.centerLeft,
@@ -102,80 +117,82 @@ class Signin2 extends StatelessWidget {
                             ),
                           ),
                         ),
-                      ],
-                    ),
-                  ),
-
-                  Expanded(
-                    child: Column(
-                      children: [
-                        Expanded(
-                          child: Container(
+                         Container(
                             alignment: Alignment.centerLeft,
                             margin: const EdgeInsets.only(left: marginHorizontalHeader,bottom: marginVerticalBetweenWidgets),
-                            child: const Text("이름",
+                            child: const Text("생일",
                                 style: TextStyle(
                                     fontSize: fontSizeTextForm,
                                     color: Colors.black,
                                     fontWeight: FontWeight.w300),
                                 textAlign: TextAlign.left),
                           ),
-                        ),
                         Expanded(
                           child: Container(
                             alignment: Alignment.centerLeft,
                             margin: const EdgeInsets.only(left: marginHorizontalHeader,right: marginHorizontalHeader),
-                            child: TextFormField(
-                              inputFormatters: [
-                                FilteringTextInputFormatter(RegExp('[a-z A-Z ㄱ-ㅎ|가-힣|·|：]'),
-                                    allow: true)
-                              ],
-                              autovalidateMode: AutovalidateMode.onUserInteraction,
-                              validator: (value) {
-                                if (value == null || value.isEmpty) {
-                                  return '입력칸을 채워주세요.';
-                                }
-                                if (!validName.hasMatch(nameInputController.text)) {
-                                  return '잘못된 이름 형식입니다.';
-                                }
-                                return null;
-                              },
-                              decoration: const InputDecoration(
-                                border: OutlineInputBorder(),
-                                filled: true,
-                                fillColor: Colors.white,
-                                labelText: 'Name',
+                            child: ElevatedButton(
+                              style: ElevatedButton.styleFrom(
+                                textStyle: const TextStyle(fontSize: fontSizeButton),
+                                backgroundColor: Colors.white,
+                                side: const BorderSide(
+                                  color: defaultColor,
+                                  width: 2,
+                                ),
                               ),
-                              style: const TextStyle(
-                                  fontSize: fontSizeInputText, color: Colors.black),
-                              controller: nameInputController,
+                              onPressed: () async {
+                                final selectedDate = await showDatePicker(
+                                  context: context,
+                                  initialDate: date,
+                                  firstDate: DateTime(1900),
+                                  lastDate: DateTime.now(),
+                                  initialEntryMode: DatePickerEntryMode.calendarOnly,
+                                );
+                                if (selectedDate != null) {
+                                  setState(() {
+                                    date = selectedDate;
+                                    UserAttributeApi.resetBirthdate(date);  // 선택된 날짜를 UserAttributeApi에 전달
+                                  });
+                                }
+                              },
+                              child: Text(
+                                DateFormat('yy-MM-dd').format(date),
+                                style: const TextStyle(
+                                  fontSize: fontSizeTextForm,
+                                  color: Colors.black,
+                                  fontWeight: FontWeight.normal,
+                                ),
+                                textAlign: TextAlign.center,
+                              ),
                             ),
                           ),
                         ),
                       ],
                     ),
                   ),
-
                 ],
               ),
             ),
             Expanded(
-              flex: 1,
               child: Container(
                 alignment: Alignment.center,
                 child: ElevatedButton(
                     style: ElevatedButton.styleFrom(
-                      textStyle: const TextStyle(fontSize: fontSizeButton),
-                      backgroundColor: defaultColor,
+                      textStyle: const TextStyle(
+                          fontSize: fontSizeButton, fontWeight: FontWeight.bold
+                      ),
+                      backgroundColor: const Color(0xFFFEE500),
                       minimumSize: const Size(widthButton, heightButton),
+                      side: const BorderSide(color: Color(0xFFFEE500), width: 1.5),
+                      elevation: 0,
                     ),
                     onPressed: () async {
                       if (formGlobalKey.currentState!.validate()) {
                         String url = '${baseUrl}user/existsNickname';
-                        NicknameRequest nickNameRequest = NicknameRequest(nickname: nicknameInputController.text);
+                        String nickname = nicknameInputController.text;
+                        NicknameRequest nickNameRequest = NicknameRequest(nickname: nickname);
                         MessageResponse nickNameResponse = await existsNickname(url, nickNameRequest);
                         print(nickNameResponse.message);
-                        // "사용가능한 이메일입니다" 메시지가 아니라면 에러 다이얼로그 표시
                         if (nickNameResponse.message != "사용가능한 닉네임입니다") {
                           showDialog(
                             context: context,
@@ -195,18 +212,16 @@ class Signin2 extends StatelessWidget {
                             },
                           );
                         } else {
-                          // 닉네임 이름 수정 후
-                              UserAttributeApi.resetNickname(
-                                  nicknameInputController.text);
-                              UserAttributeApi.resetName(nameInputController.text);
-                              UserAttributeApi.show();
-                              // 화면 전환
-                              Navigator.of(context).push(
-                                  MaterialPageRoute(builder: ((context) => const Signin3())));
+                              KakaoSignUpRequest kakaoSignUpRequest = KakaoSignUpRequest(kakaoToken: token, nickname: nickname, birthday: DateFormat('yyyy-MM-dd')
+                                  .format(date),);
+                              UserResponse userResponse = await KakaoProvider().signUp(kakaoSignUpRequest);
+                              tokenResponse = userResponse.tokenResponse!;
+                              Navigator.of(context).pushReplacement(MaterialPageRoute(
+                                  builder: ((context) => HomeScreen(token: tokenResponse.accessToken))));
                         }
                       }
                     },
-                    child: const Text('계속하기')),
+                    child: const Text('카카오로 가입하기', style: TextStyle(color: Colors.black),),),
               ),
             )
           ],

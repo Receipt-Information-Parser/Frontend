@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:rip_front/constants.dart';
 import 'package:rip_front/http/request.dart';
 
-import '../../../providers/user_attribute_api.dart';
 import '../../http/dto.dart';
 
 class FindIDPW extends StatelessWidget {
@@ -226,11 +224,11 @@ Future<dynamic> _showdialog_id(String nickname,MessageResponse Message,BuildCont
   return showDialog(
     context: context,
     builder: (BuildContext context) => AlertDialog(
-      title: Text('이메일 찾기', style: TextStyle(color: defaultColor),),
-      content: Text(nickname + '의 아이디는' + (Message.message ?? 'Server Error') + '입니다.'),
+      title: const Text('이메일 찾기', style: TextStyle(color: defaultColor),),
+      content: Text('$nickname의 아이디는${Message.message ?? 'Server Error'}입니다.'),
       actions: [
         ElevatedButton(
-            onPressed: () => Navigator.of(context).pop(), child: Text('확인')),
+            onPressed: () => Navigator.of(context).pop(), child: const Text('확인')),
       ],
     ),
   );
@@ -239,11 +237,11 @@ Future<dynamic> _showdialog_noid(MessageResponse Message,BuildContext context) {
   return showDialog(
     context: context,
     builder: (BuildContext context) => AlertDialog(
-      title: Text('이메일 찾기', style: TextStyle(color: defaultColor),),
+      title: const Text('이메일 찾기', style: TextStyle(color: defaultColor),),
       content: Text(Message.message ?? '서버 응답에 에러가 있습니다.'),
       actions: [
         ElevatedButton(
-            onPressed: () => Navigator.of(context).pop(), child: Text('확인')),
+            onPressed: () => Navigator.of(context).pop(), child: const Text('확인')),
       ],
     ),
   );
@@ -253,7 +251,7 @@ Future<dynamic> _showdialog_password(BuildContext context) {
   return showDialog(
     context: context,
     builder: (BuildContext context) => AlertDialog(
-      title: Text('비밀번호 재설정'),
+      title: const Text('비밀번호 재설정'),
       content: Column(
         mainAxisSize: MainAxisSize.min,
         children: [

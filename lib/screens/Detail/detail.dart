@@ -95,7 +95,7 @@ class _DetailScreenState extends State<DetailScreen> {
           ),
           Container(
             alignment: Alignment.centerRight,
-            padding: EdgeInsets.all(16.0),
+            padding: const EdgeInsets.all(16.0),
             child: Text('총액: ${_totalAmount.toInt()}원')
           ),
         ],

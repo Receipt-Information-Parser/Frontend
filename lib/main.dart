@@ -3,6 +3,7 @@ import 'package:flutter_downloader/flutter_downloader.dart';
 import 'package:kakao_flutter_sdk_user/kakao_flutter_sdk_user.dart';
 import 'package:provider/provider.dart';
 import 'package:rip_front/constants.dart';
+import 'package:rip_front/models/kakao_token.dart';
 import 'package:rip_front/providers/user_attribute_api.dart';
 import 'package:rip_front/providers/user_auth_info_api.dart';
 import 'package:rip_front/screens/initial_screen/splash_screen.dart';
@@ -64,6 +65,8 @@ class MyApp extends StatelessWidget {
             value: TokenResponse("", accessToken: "", refreshToken: "")),
         Provider<CurrentIndex>.value(
             value: CurrentIndex(index: 1)), // for BottomNavigationBar
+        Provider<KakaoToken>.value(
+            value: KakaoToken(token: "", isExistUser: false))
       ],
       child: MaterialApp(
         title: 'Flutter Demo',
@@ -79,7 +82,7 @@ class MyApp extends StatelessWidget {
           // is not restarted.
           primarySwatch: createMaterialColor(defaultColor),
         ),
-        home: SplashScreen(),
+        home: const SplashScreen(),
       ),
     );
   }

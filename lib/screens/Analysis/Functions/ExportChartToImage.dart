@@ -43,4 +43,5 @@ Future<Uint8List?> _capturePng(GlobalKey<SfCartesianChartState> chartKey) async 
   } catch (e) {
     print(e);
   }
+  return null;
 }

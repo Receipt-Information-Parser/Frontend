@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
@@ -6,7 +5,6 @@ import 'package:syncfusion_flutter_charts/charts.dart';
 import '../../../http/dto.dart';
 import '../../../http/request.dart';
 import '../AnalysisChart1.dart';
-import '../DataAnalysis.dart';
 
 import '../../../constants.dart';
 import 'ExportChartToImage.dart';
@@ -14,7 +12,7 @@ import 'ExportChartToImage.dart';
 List<Widget> consumeOfitem(String sectionTitle, List<String> sectionItems, BuildContext context,{GlobalKey<SfCartesianChartState>? chartKey}) {
   TokenResponse tokenResponse = Provider.of<TokenResponse>(context);
   List<Widget> widgets = [];
-  widgets.add(Divider(
+  widgets.add(const Divider(
     color: Colors.grey,
     height: 30,
     thickness: 1,
@@ -27,13 +25,13 @@ List<Widget> consumeOfitem(String sectionTitle, List<String> sectionItems, Build
       left: marginHorizontalHeader,
     ),
     child: Text(sectionTitle,
-        style: TextStyle(
+        style: const TextStyle(
           color: defaultColor,
           fontSize: fontSizeMiddle,
           fontWeight: FontWeight.bold,
         )),
   ));
-  widgets.add(Divider(
+  widgets.add(const Divider(
     color: Colors.grey,
     height: 30,
     thickness: 1,
@@ -51,7 +49,7 @@ List<Widget> consumeOfitem(String sectionTitle, List<String> sectionItems, Build
             left: marginHorizontalHeader,
           ),
           child: Text(Item,
-              style: TextStyle(
+              style: const TextStyle(
                 color: defaultColor,
                 fontSize: fontSizeMiddle,
                 fontWeight: FontWeight.normal,
@@ -63,7 +61,7 @@ List<Widget> consumeOfitem(String sectionTitle, List<String> sectionItems, Build
             right: marginHorizontalHeader,
           ),
           child: IconButton(
-            icon: Icon(Icons.download),
+            icon: const Icon(Icons.download),
             iconSize: iconSizeSmall,
             onPressed: () async {
               if (chartKey != null) { // 다운로드 창일 때,
@@ -102,7 +100,7 @@ List<Widget> consumeOfitem(String sectionTitle, List<String> sectionItems, Build
         ),
       ],
     ));
-    widgets.add(Divider(
+    widgets.add(const Divider(
       color: Colors.grey,
       height: 30,
       thickness: 1,
