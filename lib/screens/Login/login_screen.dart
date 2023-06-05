@@ -201,7 +201,8 @@ class LoginScreen_ extends State<LoginScreen> {
                     alignment: Alignment.center,
                     margin: const EdgeInsets.only(
                         left: marginHorizontalHeader,
-                        bottom: marginVerticalBetweenWidgets),
+                        bottom: marginVerticalBetweenWidgets,
+                        right: marginHorizontalHeader),
                     child: ElevatedButton(
                       style: ElevatedButton.styleFrom(
                         textStyle: const TextStyle(fontSize: fontSizeButton),
@@ -288,7 +289,8 @@ class LoginScreen_ extends State<LoginScreen> {
                     alignment: Alignment.center,
                     margin: const EdgeInsets.only(
                         left: marginHorizontalHeader,
-                        bottom: marginVerticalBetweenWidgets),
+                        bottom: marginVerticalBetweenWidgets,
+                        right: marginHorizontalHeader),
                     child: ElevatedButton(
                       style: ElevatedButton.styleFrom(
                         textStyle: const TextStyle(
