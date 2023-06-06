@@ -70,7 +70,12 @@ class _DataAnalysisScreenState extends State<DataAnalysisScreen> {
                   return const CircularProgressIndicator(); // while data is loading
                 } else {
                   if (snapshot.hasError) {
-                    return Text('Error: ${snapshot.error}');
+                    return const Text(
+                      "저장된 영수증이 없습니다.",
+                      style: TextStyle(
+                          fontSize: 20
+                      ),
+                    );
                   } else {
                     return Column(
                       mainAxisAlignment: MainAxisAlignment.start,

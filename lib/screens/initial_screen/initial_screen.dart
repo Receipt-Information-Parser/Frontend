@@ -28,7 +28,7 @@ class InitialScreen extends StatelessWidget {
               children: [
                 Container(
                   alignment: Alignment.centerLeft,
-                  margin: const EdgeInsets.symmetric(horizontal: marginHorizontalHeader),
+                  margin: const EdgeInsets.symmetric(horizontal: marginHorizontalHeader,vertical: marginVerticalBetweenWidgets),
                   child: const Text(
                     '영수증을 한번에 정리하는',
                     textAlign: TextAlign.left,
@@ -59,7 +59,6 @@ class InitialScreen extends StatelessWidget {
                       ),
                     ],
                   )
-
                 ),
               ],
             ),
@@ -104,7 +103,7 @@ class InitialScreen extends StatelessWidget {
                       minimumSize: const Size(widthButton, heightButton),
                     ),
                     onPressed: () {
-                      Navigator.of(context).pushReplacement(MaterialPageRoute(
+                      Navigator.of(context).push(MaterialPageRoute(
                           builder: ((context) => const LoginScreen())));
                     },
                     child: const Text('로그인'),

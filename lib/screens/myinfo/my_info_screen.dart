@@ -265,10 +265,11 @@ class _MyInfoScreenState extends State<MyInfoScreen> {
                               String checkUrl = '${baseUrl}user/existsNickname';
                               NicknameRequest checkRequest = NicknameRequest(nickname: nicknameEditController.text);
                               MessageResponse checkResponse = await existsNickname(checkUrl, checkRequest);
+                              final BuildContext dialogContext = context;
                               if(checkResponse.message == '사용중인 닉네임입니다') {
                                 showDialog(
-                                  context: context,
-                                  builder: (BuildContext context) {
+                                  context: dialogContext,
+                                  builder: (BuildContext dialogContext) {
                                     return AlertDialog(
                                       title: const Text("Error", style: TextStyle(color: defaultColor),),
                                       content: const Text("사용중인 닉네임입니다"),
@@ -276,7 +277,7 @@ class _MyInfoScreenState extends State<MyInfoScreen> {
                                         TextButton(
                                           child: const Text("Close", style: TextStyle(color: defaultColor),),
                                           onPressed: () {
-                                            Navigator.of(context).pop();
+                                            Navigator.of(dialogContext).pop();
                                           },
                                         ),
                                       ],

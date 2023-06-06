@@ -264,9 +264,6 @@ class Signin3_2 extends State<Signin3> {
                             );
                           }));
                     });},
-                  //   Navigator.of(context).push(
-                  //       MaterialPageRoute(builder: ((context) => HomeScreen())));
-                  // },
                   child: const Text('계속하기'),
                 ),
               ),

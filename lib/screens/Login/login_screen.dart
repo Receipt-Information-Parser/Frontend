@@ -17,8 +17,8 @@ class LoginScreen extends StatefulWidget {
 
 class LoginScreen_ extends State<LoginScreen> {
   final formGlobalKey = GlobalKey<FormState>();
-  final validPW =
-      RegExp(r'^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$');
+  final validPW = RegExp(r'^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$');
+  // RegExp(r"^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$"); //for test
   final validEmail = RegExp(
       r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+");
   TextEditingController emailInputController = TextEditingController();
@@ -79,7 +79,8 @@ class LoginScreen_ extends State<LoginScreen> {
                         Container(
                           alignment: Alignment.bottomLeft,
                           margin: const EdgeInsets.only(
-                              left: marginHorizontalHeader),
+                              left: marginHorizontalHeader,
+                              bottom: marginVerticalBetweenWidgets),
                           child: const Text('이메일',
                               style: TextStyle(
                                   fontSize: fontSizeTextForm,
@@ -139,7 +140,8 @@ class LoginScreen_ extends State<LoginScreen> {
                         Container(
                           alignment: Alignment.centerLeft,
                           margin: const EdgeInsets.only(
-                              left: marginHorizontalHeader),
+                              left: marginHorizontalHeader,
+                              bottom: marginVerticalBetweenWidgets),
                           child: const Text('비밀번호',
                               style: TextStyle(
                                   fontSize: fontSizeTextForm,
@@ -272,10 +274,11 @@ class LoginScreen_ extends State<LoginScreen> {
                             print('Failed to load picture list: $e');
                           }
                           print('[debug]profileIMG:${userAttribute?.profileImage}');
-                          Navigator.of(context).pushReplacement(
+                          Navigator.of(context).pushAndRemoveUntil(
                             MaterialPageRoute(
                                 builder: ((context) =>
                                     HomeScreen(token: tokenResponse.accessToken))),
+                                (_) => false,
                           );
 
                         }, onError: (err) {
