@@ -1,0 +1,126 @@
+PODS:
+  - Alamofire (5.7.1)
+  - document_scanner_flutter (0.0.1):
+    - Flutter
+    - WeScan (>= 0.9)
+  - Flutter (1.0.0)
+  - flutter_downloader (0.0.1):
+    - Flutter
+  - image_picker_ios (0.0.1):
+    - Flutter
+  - kakao_flutter_sdk_common (1.4.3):
+    - Flutter
+  - KakaoSDK (2.15.0):
+    - KakaoSDKAuth (= 2.15.0)
+    - KakaoSDKCommon (= 2.15.0)
+    - KakaoSDKFriend (= 2.15.0)
+    - KakaoSDKNavi (= 2.15.0)
+    - KakaoSDKShare (= 2.15.0)
+    - KakaoSDKStory (= 2.15.0)
+    - KakaoSDKTalk (= 2.15.0)
+    - KakaoSDKTemplate (= 2.15.0)
+    - KakaoSDKUser (= 2.15.0)
+  - KakaoSDKAuth (2.15.0):
+    - KakaoSDKCommon (= 2.15.0)
+  - KakaoSDKCommon (2.15.0):
+    - KakaoSDKCommon/Common (= 2.15.0)
+    - KakaoSDKCommon/Network (= 2.15.0)
+  - KakaoSDKCommon/Common (2.15.0)
+  - KakaoSDKCommon/Network (2.15.0):
+    - Alamofire (~> 5.1)
+    - KakaoSDKCommon/Common (= 2.15.0)
+  - KakaoSDKFriend (2.15.0):
+    - KakaoSDKUser (= 2.15.0)
+  - KakaoSDKNavi (2.15.0):
+    - KakaoSDKCommon/Common (= 2.15.0)
+  - KakaoSDKShare (2.15.0):
+    - KakaoSDKCommon (= 2.15.0)
+    - KakaoSDKTemplate (= 2.15.0)
+  - KakaoSDKStory (2.15.0):
+    - KakaoSDKUser (= 2.15.0)
+  - KakaoSDKTalk (2.15.0):
+    - KakaoSDKTemplate (= 2.15.0)
+    - KakaoSDKUser (= 2.15.0)
+  - KakaoSDKTemplate (2.15.0):
+    - KakaoSDKCommon/Common (= 2.15.0)
+  - KakaoSDKUser (2.15.0):
+    - KakaoSDKAuth (= 2.15.0)
+  - path_provider_foundation (0.0.1):
+    - Flutter
+    - FlutterMacOS
+  - permission_handler_apple (9.0.4):
+    - Flutter
+  - shared_preferences_foundation (0.0.1):
+    - Flutter
+    - FlutterMacOS
+  - WeScan (1.7.0)
+
+DEPENDENCIES:
+  - document_scanner_flutter (from `.symlinks/plugins/document_scanner_flutter/ios`)
+  - Flutter (from `Flutter`)
+  - flutter_downloader (from `.symlinks/plugins/flutter_downloader/ios`)
+  - image_picker_ios (from `.symlinks/plugins/image_picker_ios/ios`)
+  - kakao_flutter_sdk_common (from `.symlinks/plugins/kakao_flutter_sdk_common/ios`)
+  - KakaoSDK
+  - path_provider_foundation (from `.symlinks/plugins/path_provider_foundation/ios`)
+  - permission_handler_apple (from `.symlinks/plugins/permission_handler_apple/ios`)
+  - shared_preferences_foundation (from `.symlinks/plugins/shared_preferences_foundation/ios`)
+
+SPEC REPOS:
+  trunk:
+    - Alamofire
+    - KakaoSDK
+    - KakaoSDKAuth
+    - KakaoSDKCommon
+    - KakaoSDKFriend
+    - KakaoSDKNavi
+    - KakaoSDKShare
+    - KakaoSDKStory
+    - KakaoSDKTalk
+    - KakaoSDKTemplate
+    - KakaoSDKUser
+    - WeScan
+
+EXTERNAL SOURCES:
+  document_scanner_flutter:
+    :path: ".symlinks/plugins/document_scanner_flutter/ios"
+  Flutter:
+    :path: Flutter
+  flutter_downloader:
+    :path: ".symlinks/plugins/flutter_downloader/ios"
+  image_picker_ios:
+    :path: ".symlinks/plugins/image_picker_ios/ios"
+  kakao_flutter_sdk_common:
+    :path: ".symlinks/plugins/kakao_flutter_sdk_common/ios"
+  path_provider_foundation:
+    :path: ".symlinks/plugins/path_provider_foundation/ios"
+  permission_handler_apple:
+    :path: ".symlinks/plugins/permission_handler_apple/ios"
+  shared_preferences_foundation:
+    :path: ".symlinks/plugins/shared_preferences_foundation/ios"
+
+SPEC CHECKSUMS:
+  Alamofire: 0123a34370cb170936ae79a8df46cc62b2edeb88
+  document_scanner_flutter: cbbff63c2e3060e0593729cea2596120b62e794c
+  Flutter: f04841e97a9d0b0a8025694d0796dd46242b2854
+  flutter_downloader: 058b9c41564a90500f67f3e432e3524613a7fd83
+  image_picker_ios: 4a8aadfbb6dc30ad5141a2ce3832af9214a705b5
+  kakao_flutter_sdk_common: 31d55af8ed73538126d26d42bf9e8049a2f76da4
+  KakaoSDK: 08316dffa8a0a040c3986d8d70b3f66448f2a2ca
+  KakaoSDKAuth: 0fe5cf1756e8a9f66f8fc77826061aafa93034f3
+  KakaoSDKCommon: 89d863b7f34398e6fb93a0acb28a204908551a39
+  KakaoSDKFriend: 09a67aa6e2e47301558cc4b74e71633bbfce399e
+  KakaoSDKNavi: b47131f0fa64857bc69d3fe7d2cad5fa70137900
+  KakaoSDKShare: f9a7dc7baa8ad9eb7b6b6a3b99802407ab3c81a2
+  KakaoSDKStory: d7c0c186bf869a6b107c5d416ad7f2a88fa524a9
+  KakaoSDKTalk: 846856743650b0eea4040a38368a7c1e8dcb0072
+  KakaoSDKTemplate: c9cbc64b0248c7a33c211a56dada7e38c1210751
+  KakaoSDKUser: a997ca5c4c18ece2ab30646ff74841bc29d4399d
+  path_provider_foundation: eaf5b3e458fc0e5fbb9940fb09980e853fe058b8
+  permission_handler_apple: 44366e37eaf29454a1e7b1b7d736c2cceaeb17ce
+  shared_preferences_foundation: e2dae3258e06f44cc55f49d42024fd8dd03c590c
+  WeScan: fed582f6c38014d529afb5aa9ffd1bad38fc72b7
+
+PODFILE CHECKSUM: 4d1bbaf1fb16d1c3977637ee5bd830dba100d7fa
+
+COCOAPODS: 1.12.1
