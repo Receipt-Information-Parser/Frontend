@@ -23,7 +23,7 @@ class Signin1 extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
         home: Scaffold(
-      resizeToAvoidBottomInset: false,
+      resizeToAvoidBottomInset: true,
       backgroundColor: Colors.white,
       body: Form(
         key: formGlobalKey,
@@ -83,7 +83,6 @@ class Signin1 extends StatelessWidget {
                             alignment: Alignment.centerLeft,
                             margin: const EdgeInsets.only(left: marginHorizontalHeader,right: marginHorizontalHeader),
                             child: TextFormField(
-
                               autovalidateMode: AutovalidateMode.onUserInteraction,
                               validator: (value) {
                                 if (value == null || value.isEmpty) {

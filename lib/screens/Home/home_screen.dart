@@ -334,7 +334,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
               case 2:
                 Navigator.of(context)
-                    .pushReplacement(MaterialPageRoute(builder: ((context) {
+                    .push(MaterialPageRoute(builder: ((context) {
                   return const MyInfoScreen();
                 })));
                 break;
