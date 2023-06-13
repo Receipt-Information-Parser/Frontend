@@ -51,7 +51,7 @@ class InitialScreen extends StatelessWidget {
                             fontWeight: FontWeight.bold),
                       ),
                       Text(
-                        ' 입니다. 환영합니다!',
+                        ' 입니다.',
                         style: TextStyle(
                             fontSize: fontSizeMiddle,
                             color: defaultColor,
@@ -60,6 +60,22 @@ class InitialScreen extends StatelessWidget {
                     ],
                   )
                 ),
+                Container(
+                  alignment: Alignment.centerLeft,
+                  margin: const EdgeInsets.symmetric(horizontal: marginHorizontalHeader),
+                  child: Row(
+                    children: const [
+                      Text(
+                          "환영합니다!",
+                        style: TextStyle(
+                          fontSize: fontSizeMiddle,
+                          color: defaultColor,
+                          fontWeight: FontWeight.bold
+                        ),
+                      )
+                    ],
+                  ),
+                )
               ],
             ),
           ),
