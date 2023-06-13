@@ -25,12 +25,13 @@ class Signin1 extends StatelessWidget {
         home: Scaffold(
       resizeToAvoidBottomInset: true,
       backgroundColor: Colors.white,
-      body: Form(
+      body:
+      Form(
         key: formGlobalKey,
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            Expanded(
+            Flexible(
               flex: 2,
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
@@ -58,12 +59,15 @@ class Signin1 extends StatelessWidget {
                 ],
               ),
             ),
-            Expanded(
-              flex: 3,
+            Flexible(
+              fit: FlexFit.loose,
+              flex: 5,
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Expanded(
+                  Flexible(
+                    fit: FlexFit.loose,
+                    flex: 3,
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.end,
                       children: [
@@ -77,7 +81,9 @@ class Signin1 extends StatelessWidget {
                                     fontWeight: FontWeight.w300),
                                 textAlign: TextAlign.left),
                           ),
-                        Expanded(
+                        Flexible(
+                          fit: FlexFit.loose,
+                          flex: 3,
                           child: Container(
                             height: 100,
                             alignment: Alignment.centerLeft,
@@ -108,7 +114,9 @@ class Signin1 extends StatelessWidget {
                     ),
                   ),
 
-                  Expanded(
+                  Flexible(
+                    fit: FlexFit.loose,
+                    flex: 3,
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
@@ -122,7 +130,9 @@ class Signin1 extends StatelessWidget {
                                     fontWeight: FontWeight.w300),
                                 textAlign: TextAlign.left),
                           ),
-                        Expanded(
+                        Flexible(
+                          fit: FlexFit.loose,
+                          flex: 3,
                           child: Container(
                             height: 100,
                             alignment: Alignment.centerLeft,
@@ -154,7 +164,9 @@ class Signin1 extends StatelessWidget {
                     ),
                   ),
 
-                  Expanded(
+                  Flexible(
+                    fit: FlexFit.loose,
+                    flex: 3,
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.start,
                       children: [
@@ -168,7 +180,8 @@ class Signin1 extends StatelessWidget {
                                     fontWeight: FontWeight.w300),
                                 textAlign: TextAlign.left),
                           ),
-                        Expanded(
+                        Flexible(
+                          fit: FlexFit.loose,
                           child: Container(
                             height: 100,
                             alignment: Alignment.centerLeft,
@@ -204,8 +217,9 @@ class Signin1 extends StatelessWidget {
                 ],
               ),
             ),
-            Expanded(
-              flex: 2,
+            Flexible(
+              fit: FlexFit.tight,
+              flex: 1,
               child: Center(
                 child: ElevatedButton(
                   style: ElevatedButton.styleFrom(

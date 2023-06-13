@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 import 'package:rip_front/http/dto.dart';
 import 'package:rip_front/http/request/KakaoProvider.dart';
 import 'package:rip_front/models/kakao_token.dart';
+import 'package:rip_front/screens/Login/kakao_login_splash_screen.dart';
 import '../../constants.dart';
 import '../../http/dto/BooleanResponse.dart';
 import '../../http/dto/KakaoRequest.dart';
@@ -81,11 +82,10 @@ class KakaoLoginButton extends StatelessWidget {
             kakaoProvider.login(
                 KakaoLoginRequest(kakaoToken: kakaoToken.token)).then((value) =>
             {
-              tokenResponse = value.tokenResponse!
+              Navigator.push(context, MaterialPageRoute(
+                  builder: ((context) => KakaoSplashScreen(token: value.tokenResponse!.accessToken))))
             });
-            Navigator.push(context, MaterialPageRoute(
-                builder: ((context) =>
-                    HomeScreen(token: tokenResponse.accessToken))));
+
           } else {
             Navigator.of(context).pushReplacement(
                 MaterialPageRoute(

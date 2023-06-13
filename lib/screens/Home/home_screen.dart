@@ -23,7 +23,7 @@ import '../myinfo/my_info_screen.dart';
 class HomeScreen extends StatefulWidget {
   final String? token;
 
-  const HomeScreen({Key? key, required this.token}) : super(key: key);
+  HomeScreen({Key? key, required this.token}) : super(key: key);
 
   @override
   _HomeScreenState createState() => _HomeScreenState(token!);
