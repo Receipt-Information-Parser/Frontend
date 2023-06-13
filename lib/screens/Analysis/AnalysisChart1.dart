@@ -31,24 +31,15 @@ class _AnalysisChart1ScreenState extends State<AnalysisChart1Screen> {
 
   bool bottomSheetToggle = false;
 
-  // List<ByProduct>? data;
+  List<ByProduct>? data;
   String? item;
 
   @override
   void initState() {
     super.initState();
-    // data = widget.apiResponse;
+    data = widget.apiResponse;
     item = widget.item;
   }
-
-  List<ByProduct> data = [
-    ByProduct(name: '과자', amount: 3000, analysisId: 2, date: DateTime.parse('2011-01-01')),
-    ByProduct(name: '과자', amount: 2000, analysisId: 2, date: DateTime.parse('2012-01-01')),
-    ByProduct(name: '과자', amount: 1500, analysisId: 2, date: DateTime.parse('2013-01-01')),
-    ByProduct(name: '과자', amount: 3500, analysisId: 2, date: DateTime.parse('2014-01-01')),
-    ByProduct(name: '과자', amount: 3500, analysisId: 2, date: DateTime.parse('2015-01-01')),
-    ByProduct(name: '과자', amount: 2000, analysisId: 2, date: DateTime.parse('2016-01-01')),
-  ];
 
   @override
   Widget build(BuildContext context) {
@@ -93,7 +84,7 @@ class _AnalysisChart1ScreenState extends State<AnalysisChart1Screen> {
               scrollDirection: Axis.horizontal,
               child: Container(
                 margin: const EdgeInsets.symmetric(vertical: 50),
-                width: data.length * 60.0,  // or another size
+                width: (data?.length)! * 60.0,  // or another size
                 child: SfCartesianChart(
                   key: chartKey,
                   primaryXAxis: CategoryAxis(
@@ -101,7 +92,7 @@ class _AnalysisChart1ScreenState extends State<AnalysisChart1Screen> {
                   ),
                   series: <ChartSeries>[
                     LineSeries<ByProduct, String>(
-                      dataSource: data,
+                      dataSource: data!,
                       xValueMapper: (ByProduct byProduct, _) => DateFormat('yyyy-MM-DD').format(byProduct.date),
                       yValueMapper: (ByProduct byProduct, _) => byProduct.amount,
                     )

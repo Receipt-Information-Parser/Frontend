@@ -87,13 +87,58 @@ List<Widget> consumeOfitem(String sectionTitle, List<String> sectionItems, Build
                 );
               }
               else{ // 화면 넘김용일때
-                //TODO: getByName API 호출 및 Navigater에 결과 pass
+                //getByName API 호출 및 Navigater에 결과 pass
                 String url = '${baseUrl}analysis/product';
                 List<ByProduct>? ApiResponse = await getByName(url,Item,tokenResponse.accessToken);
-                //TODO: apiResponse 결과 pass
+                // apiResponse 결과 pass
                 Navigator.of(context).pushReplacement(MaterialPageRoute(
                     builder: ((context) => AnalysisChart1Screen(apiResponse: ApiResponse,item: Item,))
                 ));
+
+                /// for debug /////////////////////
+                // if(Item=='과자'){
+                //   List<ByProduct>? ApiResponse =[
+                //     ByProduct(name: '과자', amount: 3000, analysisId: 2, date: DateTime.parse('2011-01-01')),
+                //     ByProduct(name: '과자', amount: 2000, analysisId: 2, date: DateTime.parse('2012-01-01')),
+                //     ByProduct(name: '과자', amount: 2500, analysisId: 2, date: DateTime.parse('2013-01-01')),
+                //     ByProduct(name: '과자', amount: 3500, analysisId: 2, date: DateTime.parse('2014-01-01')),
+                //     ByProduct(name: '과자', amount: 4000, analysisId: 2, date: DateTime.parse('2015-01-01')),
+                //     ByProduct(name: '과자', amount: 2000, analysisId: 2, date: DateTime.parse('2016-01-01')),
+                //   ];
+                //   //apiResponse 결과 pass
+                //   Navigator.of(context).pushReplacement(MaterialPageRoute(
+                //       builder: ((context) => AnalysisChart1Screen(apiResponse: ApiResponse,item: Item,))
+                //   ));
+                // }
+                // if(Item=='아이스크림'){
+                //   List<ByProduct>? ApiResponse =[
+                //     ByProduct(name: '아이스크림', amount: 1400, analysisId: 2, date: DateTime.parse('2011-01-01')),
+                //     ByProduct(name: '아이스크림', amount: 2800, analysisId: 2, date: DateTime.parse('2012-01-01')),
+                //     ByProduct(name: '아이스크림', amount: 1500, analysisId: 2, date: DateTime.parse('2013-01-01')),
+                //     ByProduct(name: '아이스크림', amount: 3500, analysisId: 2, date: DateTime.parse('2014-01-01')),
+                //     ByProduct(name: '아이스크림', amount: 3500, analysisId: 2, date: DateTime.parse('2015-01-01')),
+                //     ByProduct(name: '아이스크림', amount: 2000, analysisId: 2, date: DateTime.parse('2016-01-01')),
+                //   ];
+                //   //apiResponse 결과 pass
+                //   Navigator.of(context).pushReplacement(MaterialPageRoute(
+                //       builder: ((context) => AnalysisChart1Screen(apiResponse: ApiResponse,item: Item,))
+                //   ));
+                // }
+                // if(Item=='음료'){
+                //   List<ByProduct>? ApiResponse =[
+                //     ByProduct(name: '음료', amount: 4000, analysisId: 2, date: DateTime.parse('2011-01-01')),
+                //     ByProduct(name: '음료', amount: 2500, analysisId: 2, date: DateTime.parse('2012-01-01')),
+                //     ByProduct(name: '음료', amount: 1500, analysisId: 2, date: DateTime.parse('2013-01-01')),
+                //     ByProduct(name: '음료', amount: 4500, analysisId: 2, date: DateTime.parse('2014-01-01')),
+                //     ByProduct(name: '음료', amount: 3000, analysisId: 2, date: DateTime.parse('2015-01-01')),
+                //     ByProduct(name: '음료', amount: 2000, analysisId: 2, date: DateTime.parse('2016-01-01')),
+                //   ];
+                //   //apiResponse 결과 pass
+                //   Navigator.of(context).pushReplacement(MaterialPageRoute(
+                //       builder: ((context) => AnalysisChart1Screen(apiResponse: ApiResponse,item: Item,))
+                //   ));
+                // }
+                /// for debug fin /////////////////
               }
             },
           ),

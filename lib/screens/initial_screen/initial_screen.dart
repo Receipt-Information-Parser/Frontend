@@ -28,7 +28,7 @@ class InitialScreen extends StatelessWidget {
               children: [
                 Container(
                   alignment: Alignment.centerLeft,
-                  margin: const EdgeInsets.symmetric(horizontal: marginHorizontalHeader,vertical: marginVerticalBetweenWidgets),
+                  margin: const EdgeInsets.symmetric(horizontal: marginHorizontalHeader),
                   child: const Text(
                     '영수증을 한번에 정리하는',
                     textAlign: TextAlign.left,

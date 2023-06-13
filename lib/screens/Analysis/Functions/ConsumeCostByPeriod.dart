@@ -9,10 +9,9 @@ import '../AnalysisChart2.dart';
 import '../../../constants.dart';
 import 'ExportChartToImage.dart';
 
-List<Widget> consumeCostByPeriod(String sectionTitle, BuildContext context,{GlobalKey<SfCartesianChartState>? chartKey}) {
+List<Widget> consumeCostByPeriod(String sectionTitle, List<String> sectionItems, BuildContext context,{GlobalKey<SfCartesianChartState>? chartKey}) {
   TokenResponse tokenResponse = Provider.of<TokenResponse>(context);
   List<Widget> widgets = [];
-  List<String> sectionItems = ['연도별', '월별'];
   widgets.add(const Divider(
     color: Colors.grey,
     height: 30,
@@ -92,13 +91,34 @@ List<Widget> consumeCostByPeriod(String sectionTitle, BuildContext context,{Glob
                   String url = '${baseUrl}analysis/year';
                   print('[debug]연도별 clicked:$url');
                   ApiResponse = await getByYear(url,tokenResponse.accessToken);
+                  /// for debug /////////////////////
+                  // ApiResponse=[
+                  //   ByPeriod(date: DateTime.parse('2020-01-01'), amount: 313800, analysisId: 2),
+                  //   ByPeriod(date: DateTime.parse("2021-01-01"), amount: 378960, analysisId: 2),
+                  //   ByPeriod(date: DateTime.parse("2022-01-01"), amount: 465880, analysisId: 2),
+                  //   ByPeriod(date: DateTime.parse("2023-01-01"), amount: 579320, analysisId: 2),
+                  // ];
+                  /// for debug fin /////////////////////
                 }
                 if (item == '월별') {
                   String url = '${baseUrl}analysis/month';
                   print('[debug]월별 clicked:$url');
                   ApiResponse = await getByMonth(url,tokenResponse.accessToken);
+                  /// for debug /////////////////////
+                  // ApiResponse =[
+                  //   ByPeriod(date: DateTime.parse('2020-01-01'), amount: 113440, analysisId: 2),
+                  //   ByPeriod(date: DateTime.parse("2020-03-01"), amount: 200360, analysisId: 2),
+                  //   ByPeriod(date: DateTime.parse("2021-01-01"), amount: 265520, analysisId: 2),
+                  //   ByPeriod(date: DateTime.parse("2021-05-01"), amount: 113440, analysisId: 2),
+                  //   ByPeriod(date: DateTime.parse("2022-02-01"), amount: 200360, analysisId: 2),
+                  //   ByPeriod(date: DateTime.parse("2022-09-01"), amount: 265520, analysisId: 2),
+                  //   ByPeriod(date: DateTime.parse("2023-03-01"), amount: 113440, analysisId: 2),
+                  //   ByPeriod(date: DateTime.parse("2023-04-01"), amount: 200360, analysisId: 2),
+                  //   ByPeriod(date: DateTime.parse("2023-05-01"), amount: 265520, analysisId: 2),
+                  // ];
+                  /// for debug fin /////////////////////
                 }
-                // TODO: Navigator 결과와 같이 넘기기(response 형태에 따라 다르게 구현)
+                // Navigator 결과와 같이 넘기기(response 형태에 따라 다르게 구현)
                 Navigator.of(context).pushReplacement(MaterialPageRoute(
                     builder: ((context) => AnalysisChart2Screen(apiResponse:ApiResponse,periodType:item))
                 ));

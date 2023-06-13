@@ -31,29 +31,15 @@ class _AnalysisChart2ScreenState extends State<AnalysisChart2Screen> {
 
   bool bottomSheetToggle = false;
 
-  /// API 호출 시 주석 해제
-  // List<ByPeriod>? data;
+  List<ByPeriod>? data;
   String? periodType;
 
   @override
   void initState() {
     super.initState();
-    // data = widget.apiResponse;
+    data = widget.apiResponse;
     periodType = widget.periodType;
   }
-
-  List<ByPeriod> data = [
-    ByPeriod(date: DateTime.parse('2011-01-01'), amount: 113440, analysisId: 2),
-    ByPeriod(date: DateTime.parse("2012-01-01"), amount: 200360, analysisId: 2),
-    ByPeriod(date: DateTime.parse("2013-01-01"), amount: 265520, analysisId: 2),
-    ByPeriod(date: DateTime.parse("2014-01-01"), amount: 113440, analysisId: 2),
-    ByPeriod(date: DateTime.parse("2015-01-01"), amount: 200360, analysisId: 2),
-    ByPeriod(date: DateTime.parse("2016-01-01"), amount: 265520, analysisId: 2),
-    ByPeriod(date: DateTime.parse("2017-01-01"), amount: 113440, analysisId: 2),
-    ByPeriod(date: DateTime.parse("2018-01-01"), amount: 200360, analysisId: 2),
-    ByPeriod(date: DateTime.parse("2019-01-01"), amount: 265520, analysisId: 2),
-  ];
-
 
   @override
   Widget build(BuildContext context) {
@@ -87,7 +73,7 @@ class _AnalysisChart2ScreenState extends State<AnalysisChart2Screen> {
               child: Container(
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.start,
-                  children: consumeCostByPeriod('기간별 소비 금액',context,chartKey:chartKey),
+                  children: consumeCostByPeriod('기간별 소비 금액',[periodType!],context,chartKey:chartKey),
                 ),
               ),
             ),
@@ -98,7 +84,7 @@ class _AnalysisChart2ScreenState extends State<AnalysisChart2Screen> {
               scrollDirection: Axis.horizontal,
               child: Container(
                 margin: const EdgeInsets.symmetric(vertical: 50),
-                width: data.length * 60.0,  // or another size
+                width: (data?.length)! * 60.0,  // or another size
                 child: SfCartesianChart(
                   key: chartKey,
                   // Initialize category axis
@@ -107,7 +93,7 @@ class _AnalysisChart2ScreenState extends State<AnalysisChart2Screen> {
                   ),
                   series: <ChartSeries>[
                     ColumnSeries<ByPeriod, String>(
-                      dataSource: data,
+                      dataSource: data!,
                       xValueMapper: (ByPeriod byPeriod, _) =>
                       periodType == '연도별'
                           ? DateFormat('yyyy').format(byPeriod.date)

@@ -35,7 +35,6 @@ class _DataAnalysisScreenState extends State<DataAnalysisScreen> {
     PersistentBottomSheetController? controller;
 
     final CurrentIndex currentIndex = Provider.of<CurrentIndex>(context);
-    UserId userId = Provider.of<UserId>(context);
 
     TokenResponse tokenResponse = Provider.of<TokenResponse>(context);
 
@@ -59,7 +58,7 @@ class _DataAnalysisScreenState extends State<DataAnalysisScreen> {
             Container(
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.start,
-                children: consumeCostByPeriod('기간별 소비 금액', context),
+                children: consumeCostByPeriod('기간별 소비 금액', ['연도별', '월별'], context),
               ),
             ),
             FutureBuilder<List<String>>(
@@ -70,6 +69,12 @@ class _DataAnalysisScreenState extends State<DataAnalysisScreen> {
                   return const CircularProgressIndicator(); // while data is loading
                 } else {
                   if (snapshot.hasError) {
+                    /// for debug ////////////
+                    // return Column(
+                    //   mainAxisAlignment: MainAxisAlignment.start,
+                    //   children: consumeOfitem('품목별 소비 추이', ['과자','아이스크림','음료'], context),
+                    // ); // data loaded
+                    /// for debug fin ////////
                     return const Text(
                       "저장된 영수증이 없습니다.",
                       style: TextStyle(
