@@ -73,66 +73,64 @@ class LoginScreen_ extends State<LoginScreen> {
             Expanded(
               child: Column(
                 children: [
-                  Expanded(
-                    child: Column(
-                      children: [
-                        Container(
-                          alignment: Alignment.bottomLeft,
-                          margin: const EdgeInsets.only(
-                              left: marginHorizontalHeader,
-                              bottom: marginVerticalBetweenWidgets),
-                          child: const Text('이메일',
-                              style: TextStyle(
-                                  fontSize: fontSizeTextForm,
-                                  color: Colors.black,
-                                  fontWeight: FontWeight.w300),
-                              textAlign: TextAlign.left),
-                        ),
-                        Container(
-                          alignment: Alignment.centerLeft,
-                          padding: const EdgeInsets.only(
-                              left: marginHorizontalHeader,
-                              right: marginHorizontalHeader),
-                          child: TextFormField(
-                            autovalidateMode:
-                                AutovalidateMode.onUserInteraction,
-                            validator: (value) {
-                              if (value == null || value.isEmpty) {
-                                return '입력칸을 채워주세요.';
-                              }
-                              if (!validEmail
-                                  .hasMatch(emailInputController.text)) {
-                                return '잘못된 이메일 형식입니다.';
-                              }
-                              return null;
-                            },
-                            style: const TextStyle(fontSize: fontSizeInputText),
-                            decoration: const InputDecoration(
-                              hintText: 'username@email.com',
-                              focusedBorder: OutlineInputBorder(
-                                borderRadius:
-                                    BorderRadius.all(Radius.circular(2)),
-                                borderSide: BorderSide(
-                                    width: 1.4, color: Color(0xFF6667AB)),
-                              ),
-                              enabledBorder: OutlineInputBorder(
-                                borderRadius:
-                                    BorderRadius.all(Radius.circular(2)),
-                                borderSide: BorderSide(
-                                    width: 1.4, color: Color(0xFF6667AB)),
-                              ),
-                              border: OutlineInputBorder(
-                                borderRadius:
-                                    BorderRadius.all(Radius.circular(2)),
-                                borderSide: BorderSide(
-                                    width: 1.4, color: Color(0x0F6A6B92)),
-                              ),
+                  Column(
+                    children: [
+                      Container(
+                        alignment: Alignment.bottomLeft,
+                        margin: const EdgeInsets.only(
+                            left: marginHorizontalHeader,
+                            bottom: marginVerticalBetweenWidgets),
+                        child: const Text('이메일',
+                            style: TextStyle(
+                                fontSize: fontSizeTextForm,
+                                color: Colors.black,
+                                fontWeight: FontWeight.w300),
+                            textAlign: TextAlign.left),
+                      ),
+                      Container(
+                        alignment: Alignment.centerLeft,
+                        padding: const EdgeInsets.only(
+                            left: marginHorizontalHeader,
+                            right: marginHorizontalHeader),
+                        child: TextFormField(
+                          autovalidateMode:
+                              AutovalidateMode.onUserInteraction,
+                          validator: (value) {
+                            if (value == null || value.isEmpty) {
+                              return '입력칸을 채워주세요.';
+                            }
+                            if (!validEmail
+                                .hasMatch(emailInputController.text)) {
+                              return '잘못된 이메일 형식입니다.';
+                            }
+                            return null;
+                          },
+                          style: const TextStyle(fontSize: fontSizeInputText),
+                          decoration: const InputDecoration(
+                            hintText: 'username@email.com',
+                            focusedBorder: OutlineInputBorder(
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(2)),
+                              borderSide: BorderSide(
+                                  width: 1.4, color: Color(0xFF6667AB)),
                             ),
-                            controller: emailInputController,
+                            enabledBorder: OutlineInputBorder(
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(2)),
+                              borderSide: BorderSide(
+                                  width: 1.4, color: Color(0xFF6667AB)),
+                            ),
+                            border: OutlineInputBorder(
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(2)),
+                              borderSide: BorderSide(
+                                  width: 1.4, color: Color(0x0F6A6B92)),
+                            ),
                           ),
+                          controller: emailInputController,
                         ),
-                      ],
-                    ),
+                      ),
+                    ],
                   ),
                   Expanded(
                     child: Column(
